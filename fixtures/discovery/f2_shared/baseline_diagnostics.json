@@ -183,7 +183,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-_qiwb76i",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-lgaf89cf",
     "pkg/renderer.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",

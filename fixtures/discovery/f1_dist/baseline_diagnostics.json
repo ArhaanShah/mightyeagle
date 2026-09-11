@@ -170,7 +170,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-jh26mc8z",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-ldagvbcv",
     "pkg/normalize.py",
     "pkg/scale.py",
     "pkg/source_c.py",

@@ -248,7 +248,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-q55oxqwx",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-a84txvzh",
     "pkg/handler_a.py",
     "pkg/handler_b.py",
     "pkg/handler_c.py",
