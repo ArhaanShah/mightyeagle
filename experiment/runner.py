@@ -804,7 +804,7 @@ def _mock_tool_result(
             "Status: PASS\n"
             "Exit code: 0\n\n"
             "--- TYPE-CHECKER REPORT ---\n"
-            f"=== TYPE-CHECKER REPORT ({condition.upper()}) ===\n"
+            "=== TYPE-CHECKER REPORT ===\n"
             "--- 0 error(s), 0 record(s) total ---"
         ),
         "post_workspace_hash": f"mock_hash_gen_{generation}",

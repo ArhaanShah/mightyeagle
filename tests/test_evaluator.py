@@ -197,8 +197,19 @@ class TestEpisodeOutcome:
         outcome.compute_ever_verified_progress()
         assert outcome.ever_verified_progress is None
 
-    def test_ever_verified_progress_null_no_snapshots(self):
+    def test_ever_verified_progress_false_no_snapshots_on_normal_completion(self):
         outcome = EpisodeOutcome(episode_id="ep_00", fixture_id="f1_shared", condition="expanded")
+        outcome.compute_ever_verified_progress()
+        assert outcome.ever_verified_progress is False
+
+    @pytest.mark.parametrize(
+        "flag",
+        ["technical_failure", "token_censored", "budget_censored",
+         "request_outcome_unknown", "model_identity_failure"],
+    )
+    def test_ever_verified_progress_null_without_snapshots_when_indeterminate(self, flag):
+        outcome = EpisodeOutcome(episode_id="ep_00", fixture_id="f1_shared", condition="expanded")
+        setattr(outcome, flag, True)
         outcome.compute_ever_verified_progress()
         assert outcome.ever_verified_progress is None
 

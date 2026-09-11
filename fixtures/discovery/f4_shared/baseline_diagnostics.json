@@ -52,6 +52,8 @@
     "json",
     "--no-error-summary",
     "--no-incremental",
+    "--cache-dir",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-h9wk1c5h",
     "pkg/appconfig.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",

@@ -375,7 +375,10 @@ def _deserialize_note(s: str) -> DiagnosticRecord:
 # Expanded renderer
 # ---------------------------------------------------------------------------
 
-EXPANDED_HEADER = "=== TYPE-CHECKER REPORT (EXPANDED) ==="
+REPORT_HEADER = "=== TYPE-CHECKER REPORT ==="
+# Keep the mode-specific names as aliases for callers that import them; the
+# rendered header itself must not disclose the presentation condition.
+EXPANDED_HEADER = REPORT_HEADER
 EXPANDED_FOOTER_TPL = "--- {error_count} error(s), {total_count} record(s) total ---"
 RECORD_SEP = "---"
 
@@ -468,7 +471,7 @@ def decode_expanded(text: str) -> list[DiagnosticRecord]:
 # Grouped renderer
 # ---------------------------------------------------------------------------
 
-GROUPED_HEADER = "=== TYPE-CHECKER REPORT (GROUPED) ==="
+GROUPED_HEADER = REPORT_HEADER
 GROUPED_FOOTER_TPL = EXPANDED_FOOTER_TPL
 GROUP_SEP = "==="
 LOC_PREFIX = "  LOC"

@@ -245,26 +245,29 @@ class EpisodeOutcome:
     def compute_ever_verified_progress(self) -> None:
         """
         ever_verified_progress: True if any snapshot qualifies by cutoff.
-        False only when history is complete and all snapshots definitively fail.
-        Otherwise null.
+        False when the episode is observed to complete without verified
+        progress, including episodes with no submitted or accepted patch.
+        Otherwise null when the outcome is indeterminate.
         """
-        if not self.snapshots:
-            self.ever_verified_progress = None
-            return
+        indeterminate = (
+            self.technical_failure
+            or self.token_censored
+            or self.budget_censored
+            or self.request_outcome_unknown
+            or self.model_identity_failure
+        )
 
         any_true = any(s.verified_progress_at_snapshot is True for s in self.snapshots)
         all_false = all(s.verified_progress_at_snapshot is False for s in self.snapshots)
 
         if any_true:
             self.ever_verified_progress = True
-        elif all_false and not (
-            self.technical_failure
-            or self.request_outcome_unknown
-            or self.model_identity_failure
-        ):
-            self.ever_verified_progress = False
-        else:
+        elif indeterminate:
             self.ever_verified_progress = None
+        elif self.snapshots and not all_false:
+            self.ever_verified_progress = None
+        else:
+            self.ever_verified_progress = False
 
     def compute_final_state(self) -> None:
         """Compute final_verified_progress, final_defects_repaired, successful_completion."""

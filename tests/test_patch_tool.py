@@ -401,7 +401,7 @@ class TestFormatFeedback:
             applied_files=["pkg/mod.py"],
             runtime_status="pass",
             runtime_summary="Exit code: 0",
-            mypy_report="=== TYPE-CHECKER REPORT (EXPANDED) ===\n--- 0 error(s), 0 record(s) total ---",
+            mypy_report="=== TYPE-CHECKER REPORT ===\n--- 0 error(s), 0 record(s) total ---",
         )
         feedback = format_feedback(result)
         assert "PATCH APPLIED" in feedback
@@ -416,7 +416,7 @@ class TestFormatFeedback:
             runtime_status="fail",
             runtime_summary="Exit code: 1",
             output_limit_triggered=True,
-            mypy_report="=== TYPE-CHECKER REPORT (EXPANDED) ===\n--- 0 error(s), 0 record(s) total ---",
+            mypy_report="=== TYPE-CHECKER REPORT ===\n--- 0 error(s), 0 record(s) total ---",
         )
         feedback = format_feedback(result)
         assert "OUTPUT LIMIT" in feedback

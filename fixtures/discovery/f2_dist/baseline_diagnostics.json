@@ -52,6 +52,8 @@
     "json",
     "--no-error-summary",
     "--no-incremental",
+    "--cache-dir",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-gqbk382g",
     "pkg/handler_a.py",
     "pkg/handler_b.py"
   ],

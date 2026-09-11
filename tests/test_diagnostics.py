@@ -242,7 +242,7 @@ class TestExpanded:
     def test_header_present(self):
         parsed = make_parsed([make_record()])
         text = render_expanded(parsed)
-        assert "=== TYPE-CHECKER REPORT (EXPANDED) ===" in text
+        assert text.splitlines()[0] == "=== TYPE-CHECKER REPORT ==="
 
     def test_error_count_in_footer(self):
         records = [make_record(occurrence_index=i, line=i) for i in range(3)]
@@ -285,7 +285,7 @@ class TestGrouped:
     def test_grouped_header(self):
         parsed = make_parsed([make_record()])
         text = render_grouped(parsed)
-        assert "=== TYPE-CHECKER REPORT (GROUPED) ===" in text
+        assert text.splitlines()[0] == "=== TYPE-CHECKER REPORT ==="
 
     def test_grouped_deduplicates_same_payload(self):
         """Same message at multiple locations should appear as one group."""

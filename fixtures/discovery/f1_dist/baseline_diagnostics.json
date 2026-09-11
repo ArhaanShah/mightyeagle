@@ -53,7 +53,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-gjdtlw61",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-z5puupjz",
     "pkg/normalize.py",
     "pkg/scale.py"
   ],

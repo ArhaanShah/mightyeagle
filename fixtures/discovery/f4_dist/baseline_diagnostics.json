@@ -65,6 +65,8 @@
     "json",
     "--no-error-summary",
     "--no-incremental",
+    "--cache-dir",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-rqj4tme8",
     "pkg/db_config.py",
     "pkg/web_config.py"
   ],
