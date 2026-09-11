@@ -1,0 +1,63 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/scale.py",
+      "line": 8,
+      "col": 14,
+      "severity": "error",
+      "message": "Argument 1 to \"len\" has incompatible type \"list[float] | None\"; expected \"Sized\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/normalize.py",
+      "line": 12,
+      "col": 15,
+      "severity": "error",
+      "message": "Argument 1 to \"format_val\" has incompatible type \"float | None\"; expected \"float\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 2,
+      "file": "pkg/normalize.py",
+      "line": 13,
+      "col": 15,
+      "severity": "error",
+      "message": "Argument 1 to \"format_val\" has incompatible type \"float | None\"; expected \"float\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 3,
+  "raw_stdout": "{\"file\": \"pkg\\\\scale.py\", \"line\": 8, \"column\": 14, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"list[float] | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\normalize.py\", \"line\": 12, \"column\": 15, \"message\": \"Argument 1 to \\\"format_val\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\normalize.py\", \"line\": 13, \"column\": 15, \"message\": \"Argument 1 to \\\"format_val\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "--no-incremental",
+    "--cache-dir",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-gjdtlw61",
+    "pkg/normalize.py",
+    "pkg/scale.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

@@ -1,0 +1,74 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/web_config.py",
+      "line": 7,
+      "col": 11,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"int\")",
+      "code": "return-value",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/web_config.py",
+      "line": 10,
+      "col": 33,
+      "severity": "error",
+      "message": "Incompatible types (expression has type \"int\", TypedDict item \"workers\" has type \"str\")",
+      "code": "typeddict-item",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 2,
+      "file": "pkg/db_config.py",
+      "line": 7,
+      "col": 11,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"int\")",
+      "code": "return-value",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 3,
+      "file": "pkg/db_config.py",
+      "line": 10,
+      "col": 29,
+      "severity": "error",
+      "message": "Incompatible types (expression has type \"int\", TypedDict item \"port\" has type \"str\")",
+      "code": "typeddict-item",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 4,
+  "raw_stdout": "{\"file\": \"pkg\\\\web_config.py\", \"line\": 7, \"column\": 11, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"int\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\web_config.py\", \"line\": 10, \"column\": 33, \"message\": \"Incompatible types (expression has type \\\"int\\\", TypedDict item \\\"workers\\\" has type \\\"str\\\")\", \"hint\": null, \"code\": \"typeddict-item\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\db_config.py\", \"line\": 7, \"column\": 11, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"int\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\db_config.py\", \"line\": 10, \"column\": 29, \"message\": \"Incompatible types (expression has type \\\"int\\\", TypedDict item \\\"port\\\" has type \\\"str\\\")\", \"hint\": null, \"code\": \"typeddict-item\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "--no-incremental",
+    "pkg/db_config.py",
+    "pkg/web_config.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

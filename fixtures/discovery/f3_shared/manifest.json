@@ -1,0 +1,36 @@
+{
+  "fixture_id": "f3_shared",
+  "family": 3,
+  "structure": "shared",
+  "description": "Optional return causing multiple unpack/length errors",
+  "editable_paths": [
+    "pkg/events.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/events.py",
+    "tests/test_events.py"
+  ],
+  "protected_paths": [
+    "tests/test_events.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_pop_event_return",
+      "check_type": "ast"
+    }
+  ],
+  "required_symbols": [
+    {"path": "pkg/events.py", "name": "EventQueue", "kind": "class"},
+    {"path": "pkg/events.py", "name": "process", "kind": "function"}
+  ],
+  "contracts": []
+}

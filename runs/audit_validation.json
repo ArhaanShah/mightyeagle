@@ -1,0 +1,124 @@
+{
+  "all_passed": true,
+  "validated_at": "2026-09-11T11:34:29.981803+00:00",
+  "fixtures": {
+    "f1_dist": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2,
+        1
+      ],
+      "expanded_bytes": 704,
+      "grouped_bytes": 648,
+      "alternative_checked": false
+    },
+    "f1_shared": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        3
+      ],
+      "expanded_bytes": 716,
+      "grouped_bytes": 488,
+      "alternative_checked": true
+    },
+    "f2_dist": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2,
+        1
+      ],
+      "expanded_bytes": 704,
+      "grouped_bytes": 649,
+      "alternative_checked": false
+    },
+    "f2_shared": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2
+      ],
+      "expanded_bytes": 516,
+      "grouped_bytes": 414,
+      "alternative_checked": true
+    },
+    "f3_dist": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2,
+        1
+      ],
+      "expanded_bytes": 694,
+      "grouped_bytes": 647,
+      "alternative_checked": false
+    },
+    "f3_shared": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2
+      ],
+      "expanded_bytes": 476,
+      "grouped_bytes": 392,
+      "alternative_checked": true
+    },
+    "f4_dist": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2,
+        1,
+        1
+      ],
+      "expanded_bytes": 899,
+      "grouped_bytes": 900,
+      "alternative_checked": false
+    },
+    "f4_shared": {
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "CHECK 6: No adversarial/ directory. Adversarial checks skipped (recommended: add suppression and erasure examples)."
+      ],
+      "groupable": true,
+      "group_sizes": [
+        2,
+        1
+      ],
+      "expanded_bytes": 680,
+      "grouped_bytes": 644,
+      "alternative_checked": true
+    }
+  }
+}

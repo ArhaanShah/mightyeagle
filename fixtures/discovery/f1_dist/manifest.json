@@ -1,0 +1,48 @@
+{
+  "fixture_id": "f1_dist",
+  "family": 1,
+  "structure": "distributed",
+  "description": "Multiple independent return type defects across modules",
+  "editable_paths": [
+    "pkg/normalize.py",
+    "pkg/scale.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/normalize.py",
+    "pkg/scale.py",
+    "tests/test_metrics.py"
+  ],
+  "protected_paths": [
+    "tests/test_metrics.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_normalize",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/normalize.py"
+      ]
+    },
+    {
+      "defect_id": "d2_scale_batch",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/scale.py"
+      ]
+    }
+  ],
+  "required_symbols": [
+    {"path": "pkg/normalize.py", "name": "normalize", "kind": "function"},
+    {"path": "pkg/scale.py", "name": "scale_batch", "kind": "function"}
+  ],
+  "contracts": []
+}

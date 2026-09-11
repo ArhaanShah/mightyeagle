@@ -1,0 +1,34 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/trivial.py",
+      "line": 8,
+      "col": null,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "column": 11,
+        "hint": "Left operand is of type \"int | None\""
+      }
+    }
+  ],
+  "error_count": 1,
+  "raw_stdout": "{\"file\": \"pkg\\\\trivial.py\", \"line\": 8, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "pkg/trivial.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

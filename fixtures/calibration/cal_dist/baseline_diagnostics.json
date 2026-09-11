@@ -1,0 +1,49 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/part_b.py",
+      "line": 5,
+      "col": null,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "column": 11,
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/part_a.py",
+      "line": 5,
+      "col": null,
+      "severity": "error",
+      "message": "Argument 1 to \"len\" has incompatible type \"str | None\"; expected \"Sized\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "column": 15,
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 2,
+  "raw_stdout": "{\"file\": \"pkg\\\\part_b.py\", \"line\": 5, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\part_a.py\", \"line\": 5, \"column\": 15, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"str | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "pkg/part_a.py",
+    "pkg/part_b.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

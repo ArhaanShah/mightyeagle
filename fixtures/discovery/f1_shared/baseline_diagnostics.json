@@ -1,0 +1,60 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/pipeline.py",
+      "line": 19,
+      "col": 26,
+      "severity": "error",
+      "message": "Argument 1 to \"format_result\" has incompatible type \"float | None\"; expected \"float\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/pipeline.py",
+      "line": 25,
+      "col": 26,
+      "severity": "error",
+      "message": "Argument 1 to \"format_result\" has incompatible type \"float | None\"; expected \"float\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 2,
+      "file": "pkg/pipeline.py",
+      "line": 31,
+      "col": 26,
+      "severity": "error",
+      "message": "Argument 1 to \"format_result\" has incompatible type \"float | None\"; expected \"float\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 3,
+  "raw_stdout": "{\"file\": \"pkg\\\\pipeline.py\", \"line\": 19, \"column\": 26, \"message\": \"Argument 1 to \\\"format_result\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 25, \"column\": 26, \"message\": \"Argument 1 to \\\"format_result\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 31, \"column\": 26, \"message\": \"Argument 1 to \\\"format_result\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "--no-incremental",
+    "pkg/pipeline.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

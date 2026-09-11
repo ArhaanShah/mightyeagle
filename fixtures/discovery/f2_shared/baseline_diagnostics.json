@@ -1,0 +1,47 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/renderer.py",
+      "line": 15,
+      "col": 23,
+      "severity": "error",
+      "message": "Argument 1 to \"display_title\" has incompatible type \"MarkdownRenderer\"; expected \"Renderer\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/renderer.py",
+      "line": 16,
+      "col": 23,
+      "severity": "error",
+      "message": "Argument 1 to \"display_title\" has incompatible type \"MarkdownRenderer\"; expected \"Renderer\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 2,
+  "raw_stdout": "{\"file\": \"pkg\\\\renderer.py\", \"line\": 15, \"column\": 23, \"message\": \"Argument 1 to \\\"display_title\\\" has incompatible type \\\"MarkdownRenderer\\\"; expected \\\"Renderer\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 16, \"column\": 23, \"message\": \"Argument 1 to \\\"display_title\\\" has incompatible type \\\"MarkdownRenderer\\\"; expected \\\"Renderer\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "--no-incremental",
+    "pkg/renderer.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

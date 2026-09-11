@@ -1,0 +1,17 @@
+{
+  "frozen_at": "2026-09-11T09:38:40.365423+00:00",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.6,
+    "reasoning_effort": "medium",
+    "max_completion_tokens": 2048,
+    "include_reasoning": true,
+    "tool_choice": "auto",
+    "parallel_tool_calls": false,
+    "stream": false,
+    "max_generations_per_episode": 4,
+    "_note": "Pinned configuration. Do not modify after operational freeze. See \u00a76 of the plan."
+  },
+  "code_hash": "9a862d611de62928",
+  "screen_id": "mock_screen"
+}

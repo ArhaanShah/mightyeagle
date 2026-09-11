@@ -1,0 +1,32 @@
+{
+  "fixture_id": "cal_clean",
+  "family": 0,
+  "structure": "calibration",
+  "description": "Clean fixture with zero type errors",
+  "editable_paths": [
+    "pkg/clean.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/clean.py",
+    "tests/test_clean.py"
+  ],
+  "protected_paths": [
+    "tests/test_clean.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "clean",
+      "check_type": "ast"
+    }
+  ],
+  "contracts": []
+}

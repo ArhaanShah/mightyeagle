@@ -1,0 +1,50 @@
+{
+  "fixture_id": "f2_dist",
+  "family": 2,
+  "structure": "distributed",
+  "description": "Protocol mismatch distributed across two handler modules",
+  "editable_paths": [
+    "pkg/handler_a.py",
+    "pkg/handler_b.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/proto.py",
+    "pkg/handler_a.py",
+    "pkg/handler_b.py",
+    "tests/test_handlers.py"
+  ],
+  "protected_paths": [
+    "tests/test_handlers.py",
+    "pkg/proto.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_handler_a",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/handler_a.py"
+      ]
+    },
+    {
+      "defect_id": "d2_handler_b",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/handler_b.py"
+      ]
+    }
+  ],
+  "required_symbols": [
+    {"path": "pkg/handler_a.py", "name": "AlphaHandler", "kind": "class"},
+    {"path": "pkg/handler_b.py", "name": "BetaHandler", "kind": "class"}
+  ],
+  "contracts": []
+}

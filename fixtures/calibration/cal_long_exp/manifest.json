@@ -1,0 +1,32 @@
+{
+  "fixture_id": "cal_long_exp",
+  "family": 0,
+  "structure": "calibration",
+  "description": "Long report calibration fixture with 8 repeated errors",
+  "editable_paths": [
+    "pkg/long.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/long.py",
+    "tests/test_long.py"
+  ],
+  "protected_paths": [
+    "tests/test_long.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_fetch",
+      "check_type": "ast"
+    }
+  ],
+  "contracts": []
+}

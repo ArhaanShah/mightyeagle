@@ -1,0 +1,44 @@
+{
+  "fixture_id": "cal_dist",
+  "family": 0,
+  "structure": "calibration",
+  "description": "Distributed calibration fixture",
+  "editable_paths": [
+    "pkg/part_a.py",
+    "pkg/part_b.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/part_a.py",
+    "pkg/part_b.py",
+    "tests/test_dist.py"
+  ],
+  "protected_paths": [
+    "tests/test_dist.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_a",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/part_a.py"
+      ]
+    },
+    {
+      "defect_id": "d2_b",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/part_b.py"
+      ]
+    }
+  ],
+  "contracts": []
+}

@@ -1,0 +1,5 @@
+--- a/workspace/main.py
++++ b/workspace/main.py
+@@ -1,1 +1,1 @@
+-x: int = 'bad'
++x: int = 42

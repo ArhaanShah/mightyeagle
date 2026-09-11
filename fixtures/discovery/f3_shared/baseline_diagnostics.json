@@ -1,0 +1,47 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/events.py",
+      "line": 10,
+      "col": 13,
+      "severity": "error",
+      "message": "Argument 1 to \"len\" has incompatible type \"str | None\"; expected \"Sized\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/events.py",
+      "line": 11,
+      "col": 13,
+      "severity": "error",
+      "message": "Argument 1 to \"len\" has incompatible type \"str | None\"; expected \"Sized\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 2,
+  "raw_stdout": "{\"file\": \"pkg\\\\events.py\", \"line\": 10, \"column\": 13, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"str | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\events.py\", \"line\": 11, \"column\": 13, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"str | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "--no-incremental",
+    "pkg/events.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

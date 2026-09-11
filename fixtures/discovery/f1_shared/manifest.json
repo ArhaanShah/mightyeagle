@@ -1,0 +1,37 @@
+{
+  "fixture_id": "f1_shared",
+  "family": 1,
+  "structure": "shared",
+  "description": "Return-type annotation mismatch: one source defect causes multiple downstream type errors",
+  "editable_paths": [
+    "pkg/pipeline.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/pipeline.py",
+    "tests/test_pipeline.py"
+  ],
+  "protected_paths": [
+    "tests/test_pipeline.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_return_type",
+      "check_type": "ast",
+      "description": "compute_summary return annotation must be Optional[float]"
+    }
+  ],
+  "required_symbols": [
+    {"path": "pkg/pipeline.py", "name": "compute_summary", "kind": "function"},
+    {"path": "pkg/pipeline.py", "name": "display_stats", "kind": "function"}
+  ],
+  "contracts": []
+}

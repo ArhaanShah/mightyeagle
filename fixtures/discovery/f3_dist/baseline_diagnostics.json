@@ -1,0 +1,61 @@
+{
+  "records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/config_b.py",
+      "line": 8,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 1,
+      "file": "pkg/config_a.py",
+      "line": 9,
+      "col": 13,
+      "severity": "error",
+      "message": "Argument 1 to \"len\" has incompatible type \"str | None\"; expected \"Sized\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 2,
+      "file": "pkg/config_a.py",
+      "line": 10,
+      "col": 13,
+      "severity": "error",
+      "message": "Argument 1 to \"len\" has incompatible type \"str | None\"; expected \"Sized\"",
+      "code": "arg-type",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    }
+  ],
+  "error_count": 3,
+  "raw_stdout": "{\"file\": \"pkg\\\\config_b.py\", \"line\": 8, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\config_a.py\", \"line\": 9, \"column\": 13, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"str | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\config_a.py\", \"line\": 10, \"column\": 13, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"str | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "raw_stderr": "",
+  "exit_status": 1,
+  "command": [
+    "C:\\Users\\Arhaan\\Desktop\\mechinterp3\\.venv\\Scripts\\python.exe",
+    "-m",
+    "mypy",
+    "--output",
+    "json",
+    "--no-error-summary",
+    "--no-incremental",
+    "pkg/config_a.py",
+    "pkg/config_b.py"
+  ],
+  "checker_version": "mypy 1.11.2 (compiled: yes)",
+  "parse_status": "ok",
+  "parse_error_detail": ""
+}

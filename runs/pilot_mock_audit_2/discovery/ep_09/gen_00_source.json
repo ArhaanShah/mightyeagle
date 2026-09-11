@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/appconfig.py": "from typing import TypedDict, List\n\nclass AppConfig(TypedDict):\n    timeout: str\n\ndef get_timeout_primary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef get_timeout_secondary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef run_app() -> List[int]:\n    cfg: AppConfig = {\"timeout\": 30}\n    t1 = get_timeout_primary(cfg)\n    t2 = get_timeout_secondary(cfg)\n    return [t1, t2]\n",
+    "tests/test_appconfig.py": "from pkg.appconfig import run_app\n\ndef test_app():\n    assert run_app() == [30, 30]\n"
+  }
+}

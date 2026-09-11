@@ -1,0 +1,48 @@
+{
+  "fixture_id": "f4_dist",
+  "family": 4,
+  "structure": "distributed",
+  "description": "Typed configuration defects across multiple config modules",
+  "editable_paths": [
+    "pkg/db_config.py",
+    "pkg/web_config.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/db_config.py",
+    "pkg/web_config.py",
+    "tests/test_settings.py"
+  ],
+  "protected_paths": [
+    "tests/test_settings.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_db_port",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/db_config.py"
+      ]
+    },
+    {
+      "defect_id": "d2_web_workers",
+      "check_type": "ast",
+      "individual_repair_paths": [
+        "pkg/web_config.py"
+      ]
+    }
+  ],
+  "required_symbols": [
+    {"path": "pkg/db_config.py", "name": "DBConfig", "kind": "class"},
+    {"path": "pkg/web_config.py", "name": "WebConfig", "kind": "class"}
+  ],
+  "contracts": []
+}

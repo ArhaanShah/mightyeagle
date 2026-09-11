@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/events.py": "from typing import Optional, List\n\nclass EventQueue:\n    def pop_event(self) -> Optional[str]:\n        return \"event_data\"\n\ndef process(q: EventQueue) -> List[int]:\n    e1 = q.pop_event()\n    e2 = q.pop_event()\n    l1 = len(e1)\n    l2 = len(e2)\n    return [l1, l2]\n",
+    "tests/test_events.py": "from pkg.events import EventQueue, process\n\ndef test_events():\n    q = EventQueue()\n    assert process(q) == [10, 10]\n"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "attempt_number": 1,
+  "request_hash": "eddb864b9e04da45",
+  "timestamp_utc": "2026-09-11T11:35:33.633886+00:00",
+  "http_status": 200,
+  "request_id": "chatcmpl-df009501-df0f-4e48-b6b0-bfe22309366b",
+  "outcome": "success",
+  "retry_after": null,
+  "input_tokens_reserved": 125,
+  "output_tokens_reserved": 2048,
+  "input_tokens_actual": 78,
+  "output_tokens_actual": 41,
+  "reasoning_tokens_actual": 31,
+  "error_detail": "",
+  "quota_headers": {}
+}

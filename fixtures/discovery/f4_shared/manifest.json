@@ -1,0 +1,36 @@
+{
+  "fixture_id": "f4_shared",
+  "family": 4,
+  "structure": "shared",
+  "description": "TypedDict field type mismatch shared across accessors",
+  "editable_paths": [
+    "pkg/appconfig.py"
+  ],
+  "public_paths": [
+    "pkg/__init__.py",
+    "pkg/appconfig.py",
+    "tests/test_appconfig.py"
+  ],
+  "protected_paths": [
+    "tests/test_appconfig.py"
+  ],
+  "mypy_config": null,
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/"
+  ],
+  "defects": [
+    {
+      "defect_id": "d1_timeout_type",
+      "check_type": "ast"
+    }
+  ],
+  "required_symbols": [
+    {"path": "pkg/appconfig.py", "name": "AppConfig", "kind": "class"},
+    {"path": "pkg/appconfig.py", "name": "run_app", "kind": "function"}
+  ],
+  "contracts": []
+}

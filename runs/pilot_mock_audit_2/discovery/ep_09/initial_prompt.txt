@@ -1,0 +1,62 @@
+Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.
+
+Do not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.
+
+Use patch_and_check to apply unified diffs and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
+
+INITIAL TYPE-CHECKER REPORT
+=== TYPE-CHECKER REPORT (GROUPED) ===
+===
+severity: error
+code: return-value
+message: Incompatible return value type (got "str", expected "int")
+extras: {"hint": null}
+multiplicity: 2
+  LOC|{"col": 11, "file": "pkg/appconfig.py", "line": 7, "occurrence_index": 0}
+  LOC|{"col": 11, "file": "pkg/appconfig.py", "line": 10, "occurrence_index": 1}
+===
+severity: error
+code: typeddict-item
+message: Incompatible types (expression has type "int", TypedDict item "timeout" has type "str")
+extras: {"hint": null}
+multiplicity: 1
+  LOC|{"col": 33, "file": "pkg/appconfig.py", "line": 13, "occurrence_index": 2}
+===
+--- 3 error(s), 3 record(s) total ---
+
+SOURCE, PUBLIC TESTS, AND CONFIGURATION
+# FILE: pkg/__init__.py
+```
+
+```
+
+# FILE: pkg/appconfig.py
+```
+from typing import TypedDict, List
+
+class AppConfig(TypedDict):
+    timeout: str
+
+def get_timeout_primary(cfg: AppConfig) -> int:
+    return cfg["timeout"]
+
+def get_timeout_secondary(cfg: AppConfig) -> int:
+    return cfg["timeout"]
+
+def run_app() -> List[int]:
+    cfg: AppConfig = {"timeout": 30}
+    t1 = get_timeout_primary(cfg)
+    t2 = get_timeout_secondary(cfg)
+    return [t1, t2]
+
+```
+
+# FILE: tests/test_appconfig.py
+```
+from pkg.appconfig import run_app
+
+def test_app():
+    assert run_app() == [30, 30]
+
+```
+

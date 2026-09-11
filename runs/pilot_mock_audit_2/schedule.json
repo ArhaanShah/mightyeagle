@@ -1,0 +1,133 @@
+{
+  "seed": 20260911,
+  "episodes": [
+    {
+      "episode_id": "ep_00",
+      "fixture_id": "f3_shared",
+      "condition": "grouped",
+      "pair_index": 0,
+      "pair_order": "first",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_01",
+      "fixture_id": "f3_shared",
+      "condition": "expanded",
+      "pair_index": 0,
+      "pair_order": "second",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_02",
+      "fixture_id": "f4_dist",
+      "condition": "expanded",
+      "pair_index": 1,
+      "pair_order": "first",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_03",
+      "fixture_id": "f4_dist",
+      "condition": "grouped",
+      "pair_index": 1,
+      "pair_order": "second",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_04",
+      "fixture_id": "f2_shared",
+      "condition": "grouped",
+      "pair_index": 2,
+      "pair_order": "first",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_05",
+      "fixture_id": "f2_shared",
+      "condition": "expanded",
+      "pair_index": 2,
+      "pair_order": "second",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_06",
+      "fixture_id": "f1_dist",
+      "condition": "grouped",
+      "pair_index": 3,
+      "pair_order": "first",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_07",
+      "fixture_id": "f1_dist",
+      "condition": "expanded",
+      "pair_index": 3,
+      "pair_order": "second",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_08",
+      "fixture_id": "f4_shared",
+      "condition": "expanded",
+      "pair_index": 4,
+      "pair_order": "first",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_09",
+      "fixture_id": "f4_shared",
+      "condition": "grouped",
+      "pair_index": 4,
+      "pair_order": "second",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_10",
+      "fixture_id": "f2_dist",
+      "condition": "expanded",
+      "pair_index": 5,
+      "pair_order": "first",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_11",
+      "fixture_id": "f2_dist",
+      "condition": "grouped",
+      "pair_index": 5,
+      "pair_order": "second",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_12",
+      "fixture_id": "f1_shared",
+      "condition": "expanded",
+      "pair_index": 6,
+      "pair_order": "first",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_13",
+      "fixture_id": "f1_shared",
+      "condition": "grouped",
+      "pair_index": 6,
+      "pair_order": "second",
+      "runs_first": "expanded"
+    },
+    {
+      "episode_id": "ep_14",
+      "fixture_id": "f3_dist",
+      "condition": "grouped",
+      "pair_index": 7,
+      "pair_order": "first",
+      "runs_first": "grouped"
+    },
+    {
+      "episode_id": "ep_15",
+      "fixture_id": "f3_dist",
+      "condition": "expanded",
+      "pair_index": 7,
+      "pair_order": "second",
+      "runs_first": "grouped"
+    }
+  ]
+}
