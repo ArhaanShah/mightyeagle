@@ -209,6 +209,10 @@ tempCodeRunnerFile.py
 # PyPI configuration file
 .pypirc
 
+# Live screen artifacts are force-added only after collection is complete.
+runs/screen_003/
+runs/mock_final/
+
 # Marimo
 marimo/_static/
 marimo/_lsp/

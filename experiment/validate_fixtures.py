@@ -14,8 +14,10 @@ Groupability check: at least one genuinely repeated non-location diagnostic payl
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -50,6 +52,8 @@ class FixtureValidationResult:
     group_sizes: list[int] = field(default_factory=list)
     expanded_byte_length: int = 0
     grouped_byte_length: int = 0
+    expanded_token_estimate: int = 0
+    grouped_token_estimate: int = 0
     alternative_checked: bool = False
 
     @property
@@ -157,6 +161,34 @@ def run_oracle_checks(
     return results
 
 
+def run_contract_checks(
+    workspace: Path, fixture_dir: Path, contracts: list[dict[str, Any]]
+) -> dict[str, str]:
+    return run_oracle_checks(
+        workspace, fixture_dir,
+        [{"defect_id": item["oracle_id"]} for item in contracts],
+    )
+
+
+def required_symbols_present(
+    workspace: Path, required: list[dict[str, Any]]
+) -> bool:
+    for item in required:
+        try:
+            tree = ast.parse((workspace / item["path"]).read_text(encoding="utf-8"))
+        except (OSError, SyntaxError):
+            return False
+        name = item["name"]
+        kind = item.get("kind", "function")
+        if kind == "class":
+            found = any(isinstance(node, ast.ClassDef) and node.name == name for node in ast.walk(tree))
+        else:
+            found = any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name for node in ast.walk(tree))
+        if not found:
+            return False
+    return True
+
+
 def validate_fixture(
     fixture_id: str,
     fixtures_root: Path,
@@ -178,10 +210,23 @@ def validate_fixture(
     workspace = fixture_dir / "workspace"
     reference = fixture_dir / "reference"
     defects = manifest.get("defects", [])
+    contracts = manifest.get("contracts", [])
+    required_symbols = manifest.get("required_symbols", [])
     editable = manifest.get("editable_paths", [])
     test_command = manifest.get("test_command", ["python", "-m", "pytest", "-q"])
     mypy_config = manifest.get("mypy_config")
     is_distributed = manifest.get("structure") == "distributed"
+
+    banned = re.compile(
+        r"\b(shared|distributed|easy|hard|D1|root_cause|expanded|grouped)\b",
+        re.IGNORECASE,
+    )
+    for rel in manifest.get("public_paths", []):
+        public_file = workspace / rel
+        if public_file.is_file() and banned.search(public_file.read_text(encoding="utf-8")):
+            result.errors.append(f"PUBLIC IDENTIFIER FAIL: banned experimental identifier in {rel}.")
+    if is_distributed and len(editable) < 6:
+        result.errors.append("STRUCTURE FAIL: distributed fixture needs at least six editable local decisions.")
 
     if not workspace.exists():
         result.errors.append("workspace/ not found")
@@ -216,6 +261,11 @@ def validate_fixture(
             result.errors.append(f"CHECK 1 FAIL: Defect {did} oracle unavailable at baseline.")
         else:
             result.info.append(f"CHECK 1: Defect {did} oracle fails at baseline. [PASS]")
+    if not required_symbols_present(workspace, required_symbols):
+        result.errors.append("CHECK 1 FAIL: required public symbols missing at baseline.")
+    for contract_id, value in run_contract_checks(workspace, fixture_dir, contracts).items():
+        if value != "pass":
+            result.errors.append(f"CHECK 1 FAIL: runtime contract {contract_id} returned {value}.")
 
     # Groupability check (§4)
     from collections import Counter
@@ -241,10 +291,27 @@ def validate_fixture(
         grp_text = render_grouped(baseline_diag)
         result.expanded_byte_length = len(exp_text.encode())
         result.grouped_byte_length = len(grp_text.encode())
+        result.expanded_token_estimate = max(1, (len(exp_text) + 2) // 3)
+        result.grouped_token_estimate = max(1, (len(grp_text) + 2) // 3)
         result.info.append(
             f"ROUND-TRIP: OK. Expanded={result.expanded_byte_length}B "
             f"Grouped={result.grouped_byte_length}B"
         )
+        if result.baseline_error_count < 12 or result.baseline_error_count > 20:
+            result.errors.append(
+                f"THRESHOLD FAIL: expected 12–20 errors, got {result.baseline_error_count}."
+            )
+        if not result.group_sizes or result.group_sizes[0] < 8:
+            result.errors.append(
+                "THRESHOLD FAIL: largest exact diagnostic group must contain at least 8 occurrences."
+            )
+        if result.expanded_byte_length - result.grouped_byte_length < 1000:
+            result.errors.append("THRESHOLD FAIL: expanded report is not 1000 bytes larger.")
+        if (
+            result.grouped_byte_length == 0
+            or result.expanded_byte_length < 1.5 * result.grouped_byte_length
+        ):
+            result.errors.append("THRESHOLD FAIL: expanded report is below 1.5x grouped size.")
         if show_diagnostics:
             print(f"\n--- {fixture_id} EXPANDED ---")
             print(exp_text)
@@ -307,6 +374,10 @@ def validate_fixture(
                 result.errors.append(f"CHECK 2 FAIL: Defect {did} oracle should pass for reference but got '{res}'.")
             else:
                 result.info.append(f"CHECK 2: Defect {did} oracle passes for reference. [PASS]")
+        if not required_symbols_present(ref_workspace, required_symbols):
+            result.errors.append("CHECK 2 FAIL: reference removed required public symbols.")
+        if any(value != "pass" for value in run_contract_checks(ref_workspace, fixture_dir, contracts).values()):
+            result.errors.append("CHECK 2 FAIL: reference violates a runtime contract.")
 
     # --- Check 4: For distributed fixtures, individual repairs ---
     if is_distributed and reference.exists():
@@ -388,11 +459,14 @@ def validate_fixture(
             alt_diag = run_mypy(alt_workspace, editable, mypy_config)
             alt_tests = run_tests(alt_workspace, test_command)
             alt_oracles = run_oracle_checks(alt_workspace, fixture_dir, defects)
+            alt_contracts = run_contract_checks(alt_workspace, fixture_dir, contracts)
             if (
                 alt_diag.parse_status != "ok"
                 or alt_diag.error_count != 0
                 or not alt_tests
                 or any(value != "pass" for value in alt_oracles.values())
+                or any(value != "pass" for value in alt_contracts.values())
+                or not required_symbols_present(alt_workspace, required_symbols)
             ):
                 result.errors.append("CHECK 5 FAIL: Alternative repair was rejected.")
             else:
@@ -456,6 +530,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Validate experiment fixtures.")
     parser.add_argument("--show-diagnostics", action="store_true",
                         help="Print rendered diagnostics for each fixture")
+    parser.add_argument("--screen", choices=["initial", "final_rerun"],
+                        default="initial", help="Select the offline screen fixture set")
     parser.add_argument("--fixture", help="Validate a specific fixture ID only")
     parser.add_argument("--fixtures-root", default="fixtures/discovery",
                         help="Path to fixtures root")
@@ -469,6 +545,8 @@ def main() -> None:
 
     if args.fixture:
         fixture_ids = [args.fixture]
+    elif args.screen == "final_rerun":
+        fixture_ids = ["f1_shared", "f1_dist", "f2_shared", "f2_dist"]
     else:
         fixture_ids = sorted(d.name for d in fixtures_root.iterdir() if d.is_dir())
 
@@ -492,6 +570,8 @@ def main() -> None:
             "group_sizes": result.group_sizes,
             "expanded_bytes": result.expanded_byte_length,
             "grouped_bytes": result.grouped_byte_length,
+            "expanded_token_estimate": result.expanded_token_estimate,
+            "grouped_token_estimate": result.grouped_token_estimate,
             "alternative_checked": result.alternative_checked,
         }
 

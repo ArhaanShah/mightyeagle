@@ -3,45 +3,162 @@
     {
       "occurrence_index": 0,
       "file": "pkg/pipeline.py",
-      "line": 19,
-      "col": 26,
+      "line": 6,
+      "col": 11,
       "severity": "error",
-      "message": "Argument 1 to \"format_result\" has incompatible type \"float | None\"; expected \"float\"",
-      "code": "arg-type",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Left operand is of type \"int | None\""
       }
     },
     {
       "occurrence_index": 1,
       "file": "pkg/pipeline.py",
-      "line": 25,
-      "col": 26,
+      "line": 10,
+      "col": 11,
       "severity": "error",
-      "message": "Argument 1 to \"format_result\" has incompatible type \"float | None\"; expected \"float\"",
-      "code": "arg-type",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Left operand is of type \"int | None\""
       }
     },
     {
       "occurrence_index": 2,
       "file": "pkg/pipeline.py",
-      "line": 31,
-      "col": 26,
+      "line": 14,
+      "col": 11,
       "severity": "error",
-      "message": "Argument 1 to \"format_result\" has incompatible type \"float | None\"; expected \"float\"",
-      "code": "arg-type",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 3,
+      "file": "pkg/pipeline.py",
+      "line": 18,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 4,
+      "file": "pkg/pipeline.py",
+      "line": 22,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 5,
+      "file": "pkg/pipeline.py",
+      "line": 26,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 6,
+      "file": "pkg/pipeline.py",
+      "line": 30,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 7,
+      "file": "pkg/pipeline.py",
+      "line": 34,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 8,
+      "file": "pkg/pipeline.py",
+      "line": 38,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 9,
+      "file": "pkg/pipeline.py",
+      "line": 42,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 10,
+      "file": "pkg/pipeline.py",
+      "line": 46,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 11,
+      "file": "pkg/pipeline.py",
+      "line": 50,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
       }
     }
   ],
-  "error_count": 3,
-  "raw_stdout": "{\"file\": \"pkg\\\\pipeline.py\", \"line\": 19, \"column\": 26, \"message\": \"Argument 1 to \\\"format_result\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 25, \"column\": 26, \"message\": \"Argument 1 to \\\"format_result\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 31, \"column\": 26, \"message\": \"Argument 1 to \\\"format_result\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "error_count": 12,
+  "raw_stdout": "{\"file\": \"pkg\\\\pipeline.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 14, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 18, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 22, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 26, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 30, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 34, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 38, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 42, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 46, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\pipeline.py\", \"line\": 50, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n",
   "raw_stderr": "",
   "exit_status": 1,
   "command": [
@@ -53,7 +170,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-yi0hd2vi",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-3lakt54r",
     "pkg/pipeline.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",

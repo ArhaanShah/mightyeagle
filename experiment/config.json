@@ -7,7 +7,7 @@
   "tool_choice": "auto",
   "parallel_tool_calls": false,
   "stream": false,
-  "max_generations_per_episode": 4,
+  "max_generations_per_episode": 3,
   "rate_limit_fallback_tpm": 8000,
   "rate_limit_safety_margin_tokens": 256,
   "rate_limit_guard_seconds": 0.25,

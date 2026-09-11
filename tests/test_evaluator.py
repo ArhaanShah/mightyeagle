@@ -67,6 +67,26 @@ def compute_snap(snap: SnapshotState, baseline_defect_ids: list[str] | None = No
 # ---------------------------------------------------------------------------
 
 class TestSnapshotState:
+    def test_solution_agnostic_completion_ignores_reference_ast_checks(self):
+        snap = make_snapshot(defect_checks=[("prescribed_shape", "fail")])
+        snap.compute_aggregates(12)
+        assert snap.task_checks_pass is True
+        assert snap.defects_repaired == 12
+
+    def test_solution_agnostic_partial_progress_uses_error_count(self):
+        snap = make_snapshot(mypy_status="fail")
+        snap.mypy_error_count = 7
+        snap.compute_aggregates(12)
+        assert snap.task_checks_pass is False
+        assert snap.verified_progress_at_snapshot is True
+        assert snap.defects_repaired == 5
+
+    def test_no_progress_when_error_count_does_not_fall(self):
+        snap = make_snapshot(mypy_status="fail")
+        snap.mypy_error_count = 12
+        snap.compute_aggregates(12)
+        assert snap.verified_progress_at_snapshot is False
+
     def test_task_checks_pass_all_good(self):
         snap = make_snapshot(
             defect_checks=[("d1", "pass")],
@@ -247,10 +267,10 @@ class TestEpisodeOutcome:
         assert outcome.ever_verified_progress is True
         assert outcome.final_verified_progress is False  # last state regressed
 
-    def test_fourth_turn_success_no_final_report(self):
-        """4th generation tool call accepted and passes; no 5th gen for report."""
+    def test_third_turn_success_no_final_report(self):
+        """Third-generation tool success counts without a fourth final report."""
         outcome = EpisodeOutcome(episode_id="ep_00", fixture_id="f1_shared", condition="expanded")
-        snap = make_snapshot(generation=4, defect_checks=[("d1", "pass")])
+        snap = make_snapshot(generation=3, defect_checks=[("d1", "pass")])
         compute_snap(snap, ["d1"])
         outcome.snapshots = [snap]
         outcome.generation_cap_reached = True

@@ -24,6 +24,11 @@ FIXTURE_IDS = [
     "f4_dist",     # Family 4: typed config access, distributed
 ]
 
+# The final rerun deliberately has four fixtures and two independent matched
+# blocks per fixture.  The legacy eight-fixture list remains available for
+# reproducing screen_002 engineering artifacts.
+FINAL_FIXTURE_IDS = ["f1_shared", "f1_dist", "f2_shared", "f2_dist"]
+
 # Calibration fixtures use separate IDs (not in discovery schedule)
 CALIBRATION_FIXTURE_IDS = [
     "cal_clean",     # Clean completion
@@ -47,10 +52,34 @@ def generate_schedule(seed: int, fixture_ids: list[str] | None = None) -> list[d
       - pair_order: "first" | "second"
       - runs_first: str (condition that runs first in this pair)
     """
+    final_layout = fixture_ids is None and seed == 20260912
     if fixture_ids is None:
-        fixture_ids = list(FIXTURE_IDS)
+        fixture_ids = list(FINAL_FIXTURE_IDS if final_layout else FIXTURE_IDS)
 
     rng = random.Random(seed)
+
+    if final_layout:
+        blocks = [
+            (fixture_id, replicate, "expanded" if replicate == 1 else "grouped")
+            for fixture_id in fixture_ids
+            for replicate in (1, 2)
+        ]
+        rng.shuffle(blocks)
+        episodes: list[dict] = []
+        for pair_idx, (fixture_id, replicate, first_cond) in enumerate(blocks):
+            second_cond = "grouped" if first_cond == "expanded" else "expanded"
+            for order, cond in enumerate((first_cond, second_cond)):
+                ep_idx = pair_idx * 2 + order
+                episodes.append({
+                    "episode_id": f"ep_{ep_idx:02d}",
+                    "fixture_id": fixture_id,
+                    "condition": cond,
+                    "pair_index": pair_idx,
+                    "replicate": replicate,
+                    "pair_order": "first" if order == 0 else "second",
+                    "runs_first": first_cond,
+                })
+        return episodes
 
     # Shuffle fixture IDs
     shuffled = list(fixture_ids)
@@ -101,11 +130,13 @@ def load_schedule(run_dir: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate experiment schedule.")
-    parser.add_argument("--seed", type=int, default=20260911,
+    parser.add_argument("--seed", type=int, default=20260912,
                         help="PRNG seed (default: 20260911 per §11)")
     parser.add_argument("--run", required=True, help="Run directory path")
     parser.add_argument("--show", action="store_true",
                         help="Print schedule without saving")
+    parser.add_argument("--mock", action="store_true",
+                        help="Compatibility flag for the offline mock workflow")
     args = parser.parse_args()
 
     run_dir = Path(args.run)

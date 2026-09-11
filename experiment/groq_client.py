@@ -35,9 +35,9 @@ logger = logging.getLogger(__name__)
 DEFAULT_DAILY_TOKEN_ALLOWANCE = 180_000
 # RPM limit
 DEFAULT_RPM = 30
-# Max total HTTP attempts across a screen (96 generation + 16 retries)
-MAX_HTTP_ATTEMPTS = 112
-MAX_RETRY_HTTP_ATTEMPTS = 16
+# Max total HTTP attempts across screen_003 (60 generations + 8 retries)
+MAX_HTTP_ATTEMPTS = 68
+MAX_RETRY_HTTP_ATTEMPTS = 8
 
 
 def parse_duration_seconds(value: str | float | int | None) -> float | None:
@@ -185,9 +185,9 @@ class BudgetState:
 
     def can_record_generation(self, phase: str) -> bool:
         if phase == "calibration":
-            return self.calibration_generation_slots < 32
+            return self.calibration_generation_slots < 12
         if phase == "discovery":
-            return self.discovery_generation_slots < 64
+            return self.discovery_generation_slots < 48
         return False
 
     def record_generation(self, phase: str) -> None:
@@ -756,11 +756,11 @@ def _classify_response(gen: GenerationRecord) -> str:
     # Tool call
     tc = gen.tool_calls
     if tc:
-        if len(tc) == 1 and tc[0].get("function", {}).get("name") == "patch_and_check":
+        if len(tc) == 1 and tc[0].get("function", {}).get("name") == "edit_and_check":
             return "tool_call_received"  # will be executed by runner
         elif len(tc) > 1:
             return "model_action_invalid"  # multiple tool calls
-        elif tc[0].get("function", {}).get("name") != "patch_and_check":
+        elif tc[0].get("function", {}).get("name") != "edit_and_check":
             return "model_action_invalid"  # unknown tool
         else:
             return "tool_call_received"

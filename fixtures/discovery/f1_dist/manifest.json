@@ -1,48 +1,28 @@
 {
   "fixture_id": "f1_dist",
-  "family": 1,
+  "family": "A",
   "structure": "distributed",
-  "description": "Multiple independent return type defects across modules",
+  "description": "Independent optional-value producers",
   "editable_paths": [
-    "pkg/normalize.py",
-    "pkg/scale.py"
+    "pkg/normalize.py", "pkg/scale.py", "pkg/source_c.py",
+    "pkg/source_d.py", "pkg/source_e.py", "pkg/source_f.py"
   ],
   "public_paths": [
-    "pkg/__init__.py",
-    "pkg/normalize.py",
-    "pkg/scale.py",
-    "tests/test_metrics.py"
+    "pkg/__init__.py", "pkg/normalize.py", "pkg/scale.py",
+    "pkg/source_c.py", "pkg/source_d.py", "pkg/source_e.py",
+    "pkg/source_f.py", "tests/test_metrics.py"
   ],
-  "protected_paths": [
-    "tests/test_metrics.py"
-  ],
+  "protected_paths": ["tests/test_metrics.py"],
   "mypy_config": null,
-  "test_command": [
-    "python",
-    "-m",
-    "pytest",
-    "-q",
-    "tests/"
-  ],
-  "defects": [
-    {
-      "defect_id": "d1_normalize",
-      "check_type": "ast",
-      "individual_repair_paths": [
-        "pkg/normalize.py"
-      ]
-    },
-    {
-      "defect_id": "d2_scale_batch",
-      "check_type": "ast",
-      "individual_repair_paths": [
-        "pkg/scale.py"
-      ]
-    }
-  ],
+  "test_command": ["python", "-m", "pytest", "-q", "tests/"],
+  "defects": [],
   "required_symbols": [
-    {"path": "pkg/normalize.py", "name": "normalize", "kind": "function"},
-    {"path": "pkg/scale.py", "name": "scale_batch", "kind": "function"}
+    {"path": "pkg/normalize.py", "name": "get_value", "kind": "function"},
+    {"path": "pkg/scale.py", "name": "get_value", "kind": "function"},
+    {"path": "pkg/source_c.py", "name": "get_value", "kind": "function"},
+    {"path": "pkg/source_d.py", "name": "get_value", "kind": "function"},
+    {"path": "pkg/source_e.py", "name": "get_value", "kind": "function"},
+    {"path": "pkg/source_f.py", "name": "get_value", "kind": "function"}
   ],
   "contracts": []
 }

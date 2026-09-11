@@ -22,11 +22,10 @@
     "-q",
     "tests/"
   ],
-  "defects": [
-    {
-      "defect_id": "d1_compute",
-      "check_type": "ast"
-    }
+  "defects": [],
+  "required_symbols": [
+    {"path": "pkg/trivial.py", "name": "compute", "kind": "function"},
+    {"path": "pkg/trivial.py", "name": "run", "kind": "function"}
   ],
   "contracts": []
 }

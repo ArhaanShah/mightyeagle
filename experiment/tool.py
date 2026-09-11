@@ -1,7 +1,7 @@
 """
-tool.py — patch_and_check implementation.
+tool.py — exact structured edit implementation.
 
-Applies a multi-file unified diff to the workspace and runs validation.
+Applies ordered, exact source replacements to a workspace and runs validation.
 Returns structured feedback without exposing hidden oracle results.
 
 Key safety properties (§7):
@@ -48,28 +48,39 @@ from experiment.diagnostics import (
 TOOL_SCHEMA: dict[str, Any] = {
     "type": "function",
     "function": {
-        "name": "patch_and_check",
+        "name": "edit_and_check",
         "description": (
-            "Apply source edits and return validation feedback. The patch may use "
-            "Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) "
-            "or standard unified diff. Paths are relative to the task root. "
-            "Only existing, allowlisted source files may be edited — no new files, "
-            "deletions, renames, or binary changes. All hunks must apply exactly. "
+            "Apply exact source replacements and return validation feedback. "
+            "Submit 1–16 edits; each path is relative to the task root and each "
+            "old value must exactly match one unique substring shown in the prompt. "
+            "Only existing, allowlisted source files may be edited. "
             "Returns: application status, public runtime-test results, and the "
             "complete mypy type-checker report."
         ),
         "parameters": {
             "type": "object",
             "properties": {
-                "patch": {
-                    "type": "string",
+                "edits": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 16,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "path": {"type": "string"},
+                            "old": {"type": "string"},
+                            "new": {"type": "string"},
+                        },
+                        "required": ["path", "old", "new"],
+                        "additionalProperties": False,
+                    },
                     "description": (
-                        "A source patch in Begin-Patch or standard unified-diff format. "
-                        "Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
+                        "Example: {\"edits\":[{\"path\":\"pkg/example.py\","
+                        "\"old\":\"value: int | None\",\"new\":\"value: int\"}]}"
                     ),
                 }
             },
-            "required": ["patch"],
+            "required": ["edits"],
             "additionalProperties": False,
         },
     },
@@ -82,9 +93,19 @@ TOOL_SCHEMA: dict[str, Any] = {
 
 REJECT_REASONS = {
     "invalid_json": "Patch argument is not valid JSON.",
+    "missing_edits": "Edit argument missing required 'edits' field.",
+    "extra_properties": "Edit argument contains extra properties.",
+    "not_array": "The 'edits' field must be an array.",
+    "wrong_edit_shape": "Each edit must contain exactly path, old, and new string fields.",
+    "too_many_edits": "The edits array must contain between 1 and 16 items.",
+    "empty_old": "The 'old' value must be nonempty.",
+    "same_text": "The 'old' and 'new' values must differ.",
+    "multiple_match": "The 'old' value must occur exactly once in the current file.",
+    "zero_match": "The 'old' value does not occur in the current file.",
+    "overlapping_edits": "Edits overlap in a staged file.",
+    "protected_file": "The target file is protected and cannot be edited.",
     "missing_patch": "Patch argument missing required 'patch' field.",
-    "extra_properties": "Patch argument contains extra properties (only 'patch' is allowed).",
-    "not_string": "The 'patch' field must be a string.",
+    "not_string": "The legacy 'patch' field must be a string.",
     "parse_error": "The patch could not be parsed as a unified diff.",
     "no_hunks": "The patch contains no hunks.",
     "absolute_path": "The patch references an absolute path, which is not allowed.",
@@ -136,6 +157,7 @@ class WorkspaceConfig:
     workspace_root: Path           # staging area for this episode
     allowlisted_paths: list[str]   # task-relative paths that may be edited
     condition: str                 # "expanded" | "grouped"
+    protected_paths: list[str] = field(default_factory=list)
     task_root: str = "/task"       # canonical prefix shown to model
     mypy_config: str | None = None # path to mypy config (task-relative)
     test_command: list[str] | None = None  # command to run public tests
@@ -878,6 +900,207 @@ def validate_current_workspace(
 
 
 # ---------------------------------------------------------------------------
+# Structured exact-edit application
+# ---------------------------------------------------------------------------
+
+def _count_unrestricted_any(text: str) -> int:
+    """Count real ``Any`` expression uses, excluding comments and strings."""
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return 0
+    return sum(isinstance(node, ast.Name) and node.id == "Any" for node in ast.walk(tree))
+
+
+def _path_security_check(
+    workspace_root: Path,
+    rel: str,
+    allowlisted: set[str],
+    protected: set[str],
+) -> str | None:
+    if not isinstance(rel, str) or not rel or "\\" in rel:
+        return "invalid_path"
+    if os.path.isabs(rel) or rel.startswith("/"):
+        return "absolute_path"
+    parts = rel.split("/")
+    if any(part in ("", ".", "..") for part in parts):
+        return "traversal" if ".." in parts else "invalid_path"
+    if rel in protected:
+        return "protected_file"
+    if rel not in allowlisted:
+        return "not_allowlisted"
+    full = workspace_root / rel
+    try:
+        full.resolve().relative_to(workspace_root.resolve())
+    except ValueError:
+        return "traversal"
+    cursor = workspace_root
+    for part in parts:
+        cursor = cursor / part
+        if cursor.is_symlink():
+            return "symlink"
+    if not full.exists():
+        return "nonexistent_file"
+    if not full.is_file():
+        return "not_regular_file"
+    return None
+
+
+def apply_edits(
+    workspace_root: Path,
+    edits: list[dict[str, str]],
+    allowlisted: list[str],
+    protected: list[str] | None = None,
+) -> dict[str, Any]:
+    """Apply exact replacements atomically, returning a deterministic result."""
+    if not isinstance(edits, list) or not 1 <= len(edits) <= 16:
+        return {"status": "rejected", "reason": "too_many_edits", "files": []}
+    allow = set(allowlisted)
+    protected_set = set(protected or [])
+    staged: dict[str, str] = {}
+    introduced_ranges: dict[str, list[tuple[int, int]]] = {}
+    seen_replacements: set[tuple[str, str]] = set()
+    for edit in edits:
+        if (
+            not isinstance(edit, dict)
+            or set(edit) != {"path", "old", "new"}
+            or not all(isinstance(edit[k], str) for k in ("path", "old", "new"))
+        ):
+            return {"status": "rejected", "reason": "wrong_edit_shape", "files": []}
+        path, old, new = edit["path"], edit["old"], edit["new"]
+        if (path, old) in seen_replacements:
+            return {"status": "rejected", "reason": "overlapping_edits", "detail": path, "files": []}
+        seen_replacements.add((path, old))
+        reason = _path_security_check(workspace_root, path, allow, protected_set)
+        if reason:
+            return {"status": "rejected", "reason": reason, "detail": path, "files": []}
+        if not old:
+            return {"status": "rejected", "reason": "empty_old", "detail": path, "files": []}
+        if old == new:
+            return {"status": "rejected", "reason": "same_text", "detail": path, "files": []}
+        if path not in staged:
+            staged[path] = (workspace_root / path).read_text(encoding="utf-8")
+            introduced_ranges[path] = []
+        content = staged[path]
+        matches = [m.start() for m in re.finditer(re.escape(old), content)]
+        if len(matches) != 1:
+            return {
+                "status": "rejected",
+                "reason": "multiple_match" if len(matches) > 1 else "zero_match",
+                "detail": f"{path}: found {len(matches)} occurrence(s)",
+                "files": [],
+            }
+        start = matches[0]
+        end = start + len(old)
+        if any(start < other_end and other_start < end
+               for other_start, other_end in introduced_ranges[path]):
+            return {"status": "rejected", "reason": "overlapping_edits", "detail": path, "files": []}
+        delta = len(new) - len(old)
+        introduced_ranges[path] = [
+            (a + delta, b + delta) if a >= end else (a, b)
+            for a, b in introduced_ranges[path]
+        ]
+        introduced_ranges[path].append((start, start + len(new)))
+        staged[path] = content[:start] + new + content[end:]
+        if "# type: ignore" in new and "# type: ignore" not in old:
+            return {
+                "status": "rejected",
+                "reason": "suppression_violation",
+                "detail": path,
+                "files": [],
+            }
+        if _count_unrestricted_any(staged[path]) > _count_unrestricted_any(content):
+            return {
+                "status": "rejected",
+                "reason": "type_erasure_violation",
+                "detail": path,
+                "files": [],
+            }
+
+    originals = {p: (workspace_root / p).read_text(encoding="utf-8") for p in staged}
+    try:
+        # Validate all content before changing the live workspace.  Individual
+        # replacements are written through sibling temporary files and rolled
+        # back if a filesystem error occurs.
+        temporary: dict[str, Path] = {}
+        for rel, content in staged.items():
+            target = workspace_root / rel
+            tmp = target.with_name(f".{target.name}.edit_{uuid.uuid4().hex}")
+            tmp.write_text(content, encoding="utf-8")
+            temporary[rel] = tmp
+        replaced: list[str] = []
+        for rel, tmp in temporary.items():
+            os.replace(tmp, workspace_root / rel)
+            replaced.append(rel)
+    except Exception:
+        for rel in replaced:
+            (workspace_root / rel).write_text(originals[rel], encoding="utf-8")
+        for tmp in temporary.values():
+            if tmp.exists():
+                tmp.unlink()
+        return {"status": "rejected", "reason": "atomic_write_failed", "files": []}
+    return {"status": "applied", "reason": None, "files": sorted(staged)}
+
+
+def parse_edit_arguments(raw_args: str) -> list[dict[str, str]] | dict[str, str]:
+    """Strictly parse the structured model envelope without normalizing it."""
+    try:
+        obj = json.loads(raw_args)
+    except json.JSONDecodeError as exc:
+        return {"error": f"invalid_json: {exc}"}
+    if not isinstance(obj, dict):
+        return {"error": "invalid_json: arguments must be a JSON object"}
+    if set(obj) != {"edits"}:
+        return {"error": "missing_edits" if "edits" not in obj else "extra_properties"}
+    edits = obj["edits"]
+    if not isinstance(edits, list) or not 1 <= len(edits) <= 16:
+        return {"error": "too_many_edits" if isinstance(edits, list) else "not_array"}
+    for edit in edits:
+        if (
+            not isinstance(edit, dict)
+            or set(edit) != {"path", "old", "new"}
+            or not all(isinstance(edit[k], str) for k in ("path", "old", "new"))
+        ):
+            return {"error": "wrong_edit_shape"}
+        if not edit["old"]:
+            return {"error": "empty_old"}
+        if edit["old"] == edit["new"]:
+            return {"error": "same_text"}
+    return edits
+
+
+def edit_and_check(edits: list[dict[str, str]], config: WorkspaceConfig) -> PatchResult:
+    """Apply structured edits and validate the resulting immutable snapshot."""
+    if not config.unsafe_local and not config.container_image:
+        raise RuntimeError("Container image ID/digest is required outside unsafe-local mode.")
+    pre_hash = hash_workspace(config.workspace_root, config.allowlisted_paths)
+    edit_hash = hashlib.sha256(
+        json.dumps(edits, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    ).hexdigest()
+    result = apply_edits(
+        config.workspace_root, edits, config.allowlisted_paths,
+        getattr(config, "protected_paths", None),
+    )
+    if result["status"] != "applied":
+        return PatchResult(
+            status="rejected", reject_reason=result["reason"],
+            reject_detail=result.get("detail", ""), patch_hash=edit_hash,
+            pre_state_hash=pre_hash,
+        )
+    parsed, report, tests, infrastructure = validate_current_workspace(config)
+    return PatchResult(
+        status="applied", reject_reason=None, patch_hash=edit_hash,
+        pre_state_hash=pre_hash,
+        post_state_hash=hash_workspace(config.workspace_root, config.allowlisted_paths),
+        applied_files=result["files"], mypy_report=report,
+        runtime_summary=tests["summary"], runtime_failures=tests.get("failures", []),
+        runtime_status=tests["status"], parsed_diagnostics=parsed,
+        output_limit_triggered=tests.get("output_limit", False),
+        infrastructure_failure=infrastructure,
+    )
+
+
+# ---------------------------------------------------------------------------
 # Main tool function
 # ---------------------------------------------------------------------------
 
@@ -998,12 +1221,12 @@ def format_feedback(result: PatchResult) -> str:
     """
     if result.status == "rejected":
         reason = result.reject_reason or "unknown"
-        msg = REJECT_REASONS.get(reason, f"Patch rejected: {reason}")
+        msg = REJECT_REASONS.get(reason, f"Edit rejected: {reason}")
         detail = f"\n\nDetail: {result.reject_detail}" if result.reject_detail else ""
-        return f"PATCH REJECTED: {msg}{detail}"
+        return f"EDITS REJECTED: {msg}{detail}"
 
     lines: list[str] = []
-    lines.append(f"PATCH APPLIED: {len(result.applied_files)} file(s) modified.")
+    lines.append(f"EDITS APPLIED: {len(result.applied_files)} file(s) modified.")
     lines.append("")
 
     # Runtime test result
@@ -1029,28 +1252,10 @@ def format_feedback(result: PatchResult) -> str:
 # Parse model tool-call arguments
 # ---------------------------------------------------------------------------
 
-def parse_tool_arguments(raw_args: str) -> str | dict[str, str]:
+def parse_tool_arguments(raw_args: str) -> list[dict[str, str]] | dict[str, str]:
     """
     Parse the raw JSON arguments string from a model tool call.
-    Returns the patch string on success, or a dict {"error": reason} on failure.
+    Returns exact edits on success, or a dict {"error": reason} on failure.
     No silent repair of malformed JSON.
     """
-    try:
-        obj = json.loads(raw_args)
-    except json.JSONDecodeError as exc:
-        return {"error": f"invalid_json: {exc}"}
-
-    if not isinstance(obj, dict):
-        return {"error": "invalid_json: arguments must be a JSON object"}
-
-    if "patch" not in obj:
-        return {"error": "missing_patch"}
-
-    extra_keys = set(obj.keys()) - {"patch"}
-    if extra_keys:
-        return {"error": f"extra_properties: {sorted(extra_keys)}"}
-
-    if not isinstance(obj["patch"], str):
-        return {"error": "not_string"}
-
-    return obj["patch"]
+    return parse_edit_arguments(raw_args)

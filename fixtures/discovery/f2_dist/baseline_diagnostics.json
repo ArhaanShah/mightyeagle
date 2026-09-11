@@ -2,12 +2,12 @@
   "records": [
     {
       "occurrence_index": 0,
-      "file": "pkg/handler_b.py",
-      "line": 9,
-      "col": 20,
+      "file": "pkg/handler_f.py",
+      "line": 6,
+      "col": 15,
       "severity": "error",
-      "message": "Argument 1 to \"dispatch\" has incompatible type \"BetaHandler\"; expected \"Handler\"",
-      "code": "arg-type",
+      "message": "Incompatible return value type (got \"str\", expected \"bytes\")",
+      "code": "return-value",
       "notes": [],
       "extras": {
         "hint": null
@@ -15,33 +15,228 @@
     },
     {
       "occurrence_index": 1,
-      "file": "pkg/handler_a.py",
+      "file": "pkg/handler_f.py",
       "line": 9,
-      "col": 18,
+      "col": 20,
       "severity": "error",
-      "message": "Argument 1 to \"dispatch\" has incompatible type \"AlphaHandler\"; expected \"Handler\"",
-      "code": "arg-type",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 2,
+      "file": "pkg/handler_f.py",
+      "line": 10,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 3,
+      "file": "pkg/handler_e.py",
+      "line": 6,
+      "col": 15,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"bytes\")",
+      "code": "return-value",
       "notes": [],
       "extras": {
         "hint": null
       }
     },
     {
-      "occurrence_index": 2,
-      "file": "pkg/handler_a.py",
-      "line": 10,
-      "col": 18,
+      "occurrence_index": 4,
+      "file": "pkg/handler_e.py",
+      "line": 9,
+      "col": 20,
       "severity": "error",
-      "message": "Argument 1 to \"dispatch\" has incompatible type \"AlphaHandler\"; expected \"Handler\"",
-      "code": "arg-type",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 5,
+      "file": "pkg/handler_e.py",
+      "line": 10,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 6,
+      "file": "pkg/handler_d.py",
+      "line": 6,
+      "col": 15,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"bytes\")",
+      "code": "return-value",
       "notes": [],
       "extras": {
         "hint": null
       }
+    },
+    {
+      "occurrence_index": 7,
+      "file": "pkg/handler_d.py",
+      "line": 9,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 8,
+      "file": "pkg/handler_d.py",
+      "line": 10,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 9,
+      "file": "pkg/handler_c.py",
+      "line": 6,
+      "col": 15,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"bytes\")",
+      "code": "return-value",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 10,
+      "file": "pkg/handler_c.py",
+      "line": 9,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 11,
+      "file": "pkg/handler_c.py",
+      "line": 10,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 12,
+      "file": "pkg/handler_b.py",
+      "line": 6,
+      "col": 15,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"bytes\")",
+      "code": "return-value",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 13,
+      "file": "pkg/handler_b.py",
+      "line": 9,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 14,
+      "file": "pkg/handler_b.py",
+      "line": 10,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 15,
+      "file": "pkg/handler_a.py",
+      "line": 6,
+      "col": 15,
+      "severity": "error",
+      "message": "Incompatible return value type (got \"str\", expected \"bytes\")",
+      "code": "return-value",
+      "notes": [],
+      "extras": {
+        "hint": null
+      }
+    },
+    {
+      "occurrence_index": 16,
+      "file": "pkg/handler_a.py",
+      "line": 9,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
+    },
+    {
+      "occurrence_index": 17,
+      "file": "pkg/handler_a.py",
+      "line": 10,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"Handler\", variable has type \"TextSink\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"Handler\" have conflicts:\n    Expected:\n        def render(self, text: str) -> str\n    Got:\n        def render(self, text: str) -> bytes"
+      }
     }
   ],
-  "error_count": 3,
-  "raw_stdout": "{\"file\": \"pkg\\\\handler_b.py\", \"line\": 9, \"column\": 20, \"message\": \"Argument 1 to \\\"dispatch\\\" has incompatible type \\\"BetaHandler\\\"; expected \\\"Handler\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_a.py\", \"line\": 9, \"column\": 18, \"message\": \"Argument 1 to \\\"dispatch\\\" has incompatible type \\\"AlphaHandler\\\"; expected \\\"Handler\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_a.py\", \"line\": 10, \"column\": 18, \"message\": \"Argument 1 to \\\"dispatch\\\" has incompatible type \\\"AlphaHandler\\\"; expected \\\"Handler\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "error_count": 18,
+  "raw_stdout": "{\"file\": \"pkg\\\\handler_f.py\", \"line\": 6, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"bytes\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_f.py\", \"line\": 9, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_f.py\", \"line\": 10, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_e.py\", \"line\": 6, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"bytes\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_e.py\", \"line\": 9, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_e.py\", \"line\": 10, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_d.py\", \"line\": 6, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"bytes\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_d.py\", \"line\": 9, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_d.py\", \"line\": 10, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_c.py\", \"line\": 6, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"bytes\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_c.py\", \"line\": 9, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_c.py\", \"line\": 10, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_b.py\", \"line\": 6, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"bytes\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_b.py\", \"line\": 9, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_b.py\", \"line\": 10, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_a.py\", \"line\": 6, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"str\\\", expected \\\"bytes\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_a.py\", \"line\": 9, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\handler_a.py\", \"line\": 10, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"Handler\\\", variable has type \\\"TextSink\\\")\", \"hint\": \"Following member(s) of \\\"Handler\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> str\\n    Got:\\n        def render(self, text: str) -> bytes\", \"code\": \"assignment\", \"severity\": \"error\"}\n",
   "raw_stderr": "",
   "exit_status": 1,
   "command": [
@@ -53,9 +248,13 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-tja5xhi4",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-q55oxqwx",
     "pkg/handler_a.py",
-    "pkg/handler_b.py"
+    "pkg/handler_b.py",
+    "pkg/handler_c.py",
+    "pkg/handler_d.py",
+    "pkg/handler_e.py",
+    "pkg/handler_f.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",
   "parse_status": "ok",

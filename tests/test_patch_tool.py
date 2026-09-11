@@ -31,6 +31,7 @@ from experiment.tool import (
     REJECT_REASONS,
     PatchResult,
     WorkspaceConfig,
+    apply_edits,
     apply_patch,
     format_feedback,
     parse_tool_arguments,
@@ -348,9 +349,10 @@ class TestSuppression:
 
 class TestParseToolArguments:
     def test_valid_args(self):
-        args = json.dumps({"patch": "diff content"})
+        edits = [{"path": "pkg/mod.py", "old": "x = 1", "new": "x = 2"}]
+        args = json.dumps({"edits": edits})
         result = parse_tool_arguments(args)
-        assert result == "diff content"
+        assert result == edits
 
     def test_invalid_json(self):
         result = parse_tool_arguments("not json")
@@ -358,25 +360,94 @@ class TestParseToolArguments:
         assert "error" in result
         assert "invalid_json" in result["error"]
 
-    def test_missing_patch_key(self):
+    def test_missing_edits_key(self):
         result = parse_tool_arguments(json.dumps({"other": "value"}))
         assert isinstance(result, dict)
-        assert "missing_patch" in result["error"]
+        assert "missing_edits" in result["error"]
 
     def test_extra_properties_rejected(self):
-        result = parse_tool_arguments(json.dumps({"patch": "x", "extra": "y"}))
+        result = parse_tool_arguments(json.dumps({"edits": [], "extra": "y"}))
         assert isinstance(result, dict)
         assert "extra_properties" in result["error"]
 
-    def test_patch_not_string(self):
-        result = parse_tool_arguments(json.dumps({"patch": 42}))
+    def test_edits_not_array(self):
+        result = parse_tool_arguments(json.dumps({"edits": 42}))
         assert isinstance(result, dict)
-        assert "not_string" in result["error"]
+        assert "not_array" in result["error"]
 
     def test_not_object(self):
         result = parse_tool_arguments(json.dumps([1, 2, 3]))
         assert isinstance(result, dict)
         assert "invalid_json" in result["error"]
+
+
+class TestStructuredExactEdits:
+    def test_atomic_multi_file_replacements(self):
+        ws = make_workspace({"a.py": "a = 1\n", "b.py": "b = 2\n"})
+        try:
+            result = apply_edits(ws, [
+                {"path": "a.py", "old": "a = 1", "new": "a = 3"},
+                {"path": "b.py", "old": "b = 2", "new": "b = 4"},
+            ], ["a.py", "b.py"])
+            assert result["status"] == "applied"
+            assert (ws / "a.py").read_text() == "a = 3\n"
+            assert (ws / "b.py").read_text() == "b = 4\n"
+        finally:
+            shutil.rmtree(ws)
+
+    @pytest.mark.parametrize("old", ["missing", "x"])
+    def test_zero_or_multiple_match_is_atomic(self, old):
+        ws = make_workspace({"a.py": "x x\n", "b.py": "safe\n"})
+        try:
+            result = apply_edits(ws, [
+                {"path": "b.py", "old": "safe", "new": "changed"},
+                {"path": "a.py", "old": old, "new": "y"},
+            ], ["a.py", "b.py"])
+            assert result["status"] == "rejected"
+            assert (ws / "b.py").read_text() == "safe\n"
+        finally:
+            shutil.rmtree(ws)
+
+    def test_overlapping_ordered_edits_rejected(self):
+        ws = make_workspace({"a.py": "abcdef\n"})
+        try:
+            result = apply_edits(ws, [
+                {"path": "a.py", "old": "abc", "new": "ABC"},
+                {"path": "a.py", "old": "ABC", "new": "Z"},
+            ], ["a.py"])
+            assert result["reason"] == "overlapping_edits"
+            assert (ws / "a.py").read_text() == "abcdef\n"
+        finally:
+            shutil.rmtree(ws)
+
+    @pytest.mark.parametrize("path,reason", [
+        ("../a.py", "traversal"), ("new.py", "not_allowlisted"),
+        ("tests/test_a.py", "protected_file"),
+    ])
+    def test_path_policy_rejections(self, path, reason):
+        ws = make_workspace({"a.py": "x = 1\n", "tests/test_a.py": "pass\n"})
+        try:
+            result = apply_edits(ws, [
+                {"path": path, "old": "x = 1", "new": "x = 2"}
+            ], ["a.py", "tests/test_a.py"], ["tests/test_a.py"])
+            assert result["reason"] == reason
+        finally:
+            shutil.rmtree(ws)
+
+    @pytest.mark.parametrize("new,reason", [
+        ("x = bad  # type: ignore", "suppression_violation"),
+        ("x: Any = bad", "type_erasure_violation"),
+    ])
+    def test_workarounds_rejected(self, new, reason):
+        ws = make_workspace({"a.py": "x = bad\n"})
+        try:
+            result = apply_edits(ws, [
+                {"path": "a.py", "old": "x = bad", "new": new}
+            ], ["a.py"])
+            assert result["reason"] == reason
+            assert (ws / "a.py").read_text() == "x = bad\n"
+        finally:
+            shutil.rmtree(ws)
 
 
 # ---------------------------------------------------------------------------
@@ -391,7 +462,7 @@ class TestFormatFeedback:
             reject_detail="src.py",
         )
         feedback = format_feedback(result)
-        assert "PATCH REJECTED" in feedback
+        assert "EDITS REJECTED" in feedback
         assert "allowlist" in feedback.lower()
 
     def test_applied_feedback_structure(self):
@@ -404,7 +475,7 @@ class TestFormatFeedback:
             mypy_report="=== TYPE-CHECKER REPORT ===\n--- 0 error(s), 0 record(s) total ---",
         )
         feedback = format_feedback(result)
-        assert "PATCH APPLIED" in feedback
+        assert "EDITS APPLIED" in feedback
         assert "PUBLIC TEST RESULTS" in feedback
         assert "TYPE-CHECKER REPORT" in feedback
 

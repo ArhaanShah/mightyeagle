@@ -1,11 +1,10 @@
-from pkg.proto import dispatch
+from pkg.proto import TextSink
 
-class AlphaHandler:
-    def process(self, msg: str) -> str:
-        return f"A:{msg}"
 
-def run_a() -> str:
-    h = AlphaHandler()
-    d1 = dispatch(h, "1")
-    d2 = dispatch(h, "2")
-    return d1 + d2
+class Handler:
+    def render(self, text: str) -> bytes:
+        return f"A:{text}"
+
+
+sink_a1: TextSink = Handler()
+sink_a2: TextSink = Handler()

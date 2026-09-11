@@ -2,46 +2,163 @@
   "records": [
     {
       "occurrence_index": 0,
-      "file": "pkg/scale.py",
-      "line": 8,
-      "col": 14,
+      "file": "pkg/source_f.py",
+      "line": 6,
+      "col": 11,
       "severity": "error",
-      "message": "Argument 1 to \"len\" has incompatible type \"list[float] | None\"; expected \"Sized\"",
-      "code": "arg-type",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Left operand is of type \"int | None\""
       }
     },
     {
       "occurrence_index": 1,
-      "file": "pkg/normalize.py",
-      "line": 12,
-      "col": 15,
+      "file": "pkg/source_f.py",
+      "line": 10,
+      "col": 11,
       "severity": "error",
-      "message": "Argument 1 to \"format_val\" has incompatible type \"float | None\"; expected \"float\"",
-      "code": "arg-type",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Left operand is of type \"int | None\""
       }
     },
     {
       "occurrence_index": 2,
-      "file": "pkg/normalize.py",
-      "line": 13,
-      "col": 15,
+      "file": "pkg/source_e.py",
+      "line": 6,
+      "col": 11,
       "severity": "error",
-      "message": "Argument 1 to \"format_val\" has incompatible type \"float | None\"; expected \"float\"",
-      "code": "arg-type",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 3,
+      "file": "pkg/source_e.py",
+      "line": 10,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 4,
+      "file": "pkg/source_d.py",
+      "line": 6,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 5,
+      "file": "pkg/source_d.py",
+      "line": 10,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 6,
+      "file": "pkg/source_c.py",
+      "line": 6,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 7,
+      "file": "pkg/source_c.py",
+      "line": 10,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 8,
+      "file": "pkg/scale.py",
+      "line": 6,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 9,
+      "file": "pkg/scale.py",
+      "line": 10,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 10,
+      "file": "pkg/normalize.py",
+      "line": 6,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      }
+    },
+    {
+      "occurrence_index": 11,
+      "file": "pkg/normalize.py",
+      "line": 10,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
       }
     }
   ],
-  "error_count": 3,
-  "raw_stdout": "{\"file\": \"pkg\\\\scale.py\", \"line\": 8, \"column\": 14, \"message\": \"Argument 1 to \\\"len\\\" has incompatible type \\\"list[float] | None\\\"; expected \\\"Sized\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\normalize.py\", \"line\": 12, \"column\": 15, \"message\": \"Argument 1 to \\\"format_val\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\normalize.py\", \"line\": 13, \"column\": 15, \"message\": \"Argument 1 to \\\"format_val\\\" has incompatible type \\\"float | None\\\"; expected \\\"float\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "error_count": 12,
+  "raw_stdout": "{\"file\": \"pkg\\\\source_f.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_f.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_e.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_e.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_d.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_d.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_c.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\source_c.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\scale.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\scale.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\normalize.py\", \"line\": 6, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\normalize.py\", \"line\": 10, \"column\": 11, \"message\": \"Unsupported operand types for + (\\\"None\\\" and \\\"int\\\")\", \"hint\": \"Left operand is of type \\\"int | None\\\"\", \"code\": \"operator\", \"severity\": \"error\"}\n",
   "raw_stderr": "",
   "exit_status": 1,
   "command": [
@@ -53,9 +170,13 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-6qvibccx",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-jh26mc8z",
     "pkg/normalize.py",
-    "pkg/scale.py"
+    "pkg/scale.py",
+    "pkg/source_c.py",
+    "pkg/source_d.py",
+    "pkg/source_e.py",
+    "pkg/source_f.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",
   "parse_status": "ok",

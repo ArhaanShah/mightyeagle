@@ -1,17 +1,27 @@
 from typing import Protocol
 
-class Renderer(Protocol):
-    def render(self, text: str) -> str: ...
+ByteText = bytes
 
-class MarkdownRenderer(Renderer):
+
+class Renderer(Protocol):
+    def render(self, text: str) -> bytes: ...
+
+
+class MarkdownRenderer:
+    def render(self, text: str) -> ByteText:
+        return f"*{text}*".encode()
+
     def format(self, text: str) -> str:
         return f"*{text}*"
-    def render(self, text: str) -> str:
-        return self.format(text)
 
-def display_title(r: Renderer, title: str) -> str:
-    return r.render(title)
 
-def run_render() -> list[str]:
-    renderer = MarkdownRenderer()
-    return [display_title(renderer, title) for title in ("Hello", "World")]
+slots: list[Renderer] = [
+    MarkdownRenderer(), MarkdownRenderer(), MarkdownRenderer(),
+    MarkdownRenderer(), MarkdownRenderer(), MarkdownRenderer(),
+    MarkdownRenderer(), MarkdownRenderer(), MarkdownRenderer(),
+    MarkdownRenderer(), MarkdownRenderer(), MarkdownRenderer(),
+]
+
+
+def run_render() -> str:
+    return MarkdownRenderer().format("Hello")

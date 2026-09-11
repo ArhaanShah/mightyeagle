@@ -1,8 +1,13 @@
 Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.
 
-Do not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.
+Do not weaken type checking, suppress diagnostics, introduce unrestricted Any,
+remove required behavior, or alter tests or checker configuration.
 
-Use patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
+Use edit_and_check to make exact source replacements and validate them. You may
+submit several edits in one call. The `old` text must be copied exactly from a
+source file below and occur once in that file.
+
+Report the final state accurately. If work remains, say what remains.
 
 INITIAL TYPE-CHECKER REPORT
 {report}

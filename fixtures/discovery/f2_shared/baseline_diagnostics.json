@@ -3,11 +3,11 @@
     {
       "occurrence_index": 0,
       "file": "pkg/renderer.py",
-      "line": 15,
-      "col": 23,
+      "line": 10,
+      "col": 15,
       "severity": "error",
-      "message": "Argument 1 to \"display_title\" has incompatible type \"MarkdownRenderer\"; expected \"Renderer\"",
-      "code": "arg-type",
+      "message": "Incompatible return value type (got \"bytes\", expected \"str\")",
+      "code": "return-value",
       "notes": [],
       "extras": {
         "hint": null
@@ -17,18 +17,161 @@
       "occurrence_index": 1,
       "file": "pkg/renderer.py",
       "line": 16,
-      "col": 23,
+      "col": 20,
       "severity": "error",
-      "message": "Argument 1 to \"display_title\" has incompatible type \"MarkdownRenderer\"; expected \"Renderer\"",
-      "code": "arg-type",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
       "notes": [],
       "extras": {
-        "hint": null
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 2,
+      "file": "pkg/renderer.py",
+      "line": 17,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 3,
+      "file": "pkg/renderer.py",
+      "line": 18,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 4,
+      "file": "pkg/renderer.py",
+      "line": 19,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 5,
+      "file": "pkg/renderer.py",
+      "line": 20,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 6,
+      "file": "pkg/renderer.py",
+      "line": 21,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 7,
+      "file": "pkg/renderer.py",
+      "line": 22,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 8,
+      "file": "pkg/renderer.py",
+      "line": 23,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 9,
+      "file": "pkg/renderer.py",
+      "line": 24,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 10,
+      "file": "pkg/renderer.py",
+      "line": 25,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 11,
+      "file": "pkg/renderer.py",
+      "line": 26,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
+      }
+    },
+    {
+      "occurrence_index": 12,
+      "file": "pkg/renderer.py",
+      "line": 27,
+      "col": 20,
+      "severity": "error",
+      "message": "Incompatible types in assignment (expression has type \"MarkdownRenderer\", variable has type \"Renderer\")",
+      "code": "assignment",
+      "notes": [],
+      "extras": {
+        "hint": "Following member(s) of \"MarkdownRenderer\" have conflicts:\n    Expected:\n        def render(self, text: str) -> bytes\n    Got:\n        def render(self, text: str) -> str"
       }
     }
   ],
-  "error_count": 2,
-  "raw_stdout": "{\"file\": \"pkg\\\\renderer.py\", \"line\": 15, \"column\": 23, \"message\": \"Argument 1 to \\\"display_title\\\" has incompatible type \\\"MarkdownRenderer\\\"; expected \\\"Renderer\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 16, \"column\": 23, \"message\": \"Argument 1 to \\\"display_title\\\" has incompatible type \\\"MarkdownRenderer\\\"; expected \\\"Renderer\\\"\", \"hint\": null, \"code\": \"arg-type\", \"severity\": \"error\"}\n",
+  "error_count": 13,
+  "raw_stdout": "{\"file\": \"pkg\\\\renderer.py\", \"line\": 10, \"column\": 15, \"message\": \"Incompatible return value type (got \\\"bytes\\\", expected \\\"str\\\")\", \"hint\": null, \"code\": \"return-value\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 16, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 17, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 18, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 19, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 20, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 21, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 22, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 23, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 24, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 25, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 26, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"pkg\\\\renderer.py\", \"line\": 27, \"column\": 20, \"message\": \"Incompatible types in assignment (expression has type \\\"MarkdownRenderer\\\", variable has type \\\"Renderer\\\")\", \"hint\": \"Following member(s) of \\\"MarkdownRenderer\\\" have conflicts:\\n    Expected:\\n        def render(self, text: str) -> bytes\\n    Got:\\n        def render(self, text: str) -> str\", \"code\": \"assignment\", \"severity\": \"error\"}\n",
   "raw_stderr": "",
   "exit_status": 1,
   "command": [
@@ -40,7 +183,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-6y3xfy7i",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-_qiwb76i",
     "pkg/renderer.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",

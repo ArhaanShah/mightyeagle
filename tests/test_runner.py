@@ -129,8 +129,8 @@ class TestResponseShapes:
                     "id": "call_001",
                     "type": "function",
                     "function": {
-                        "name": "patch_and_check",
-                        "arguments": json.dumps({"patch": "--- a/pkg/mod.py\n+++ b/pkg/mod.py\n@@ -1,1 +1,1 @@\n-x: int = 1\n+x: int = 42\n"}),
+                        "name": "edit_and_check",
+                        "arguments": json.dumps({"edits": [{"path": "pkg/mod.py", "old": "x: int = 1", "new": "x: int = 42"}]}),
                     }
                 }],
             },
@@ -172,7 +172,7 @@ class TestResponseShapes:
             {
                 "finish_reason": "tool_calls",
                 "tool_calls": [{"id": "c1", "type": "function",
-                                 "function": {"name": "patch_and_check", "arguments": "not json"}}],
+                                 "function": {"name": "edit_and_check", "arguments": "not json"}}],
             },
             {"finish_reason": "stop", "content": "I give up."},
         ]
@@ -220,8 +220,8 @@ class TestResponseShapes:
                     "id": "call_001",
                     "type": "function",
                     "function": {
-                        "name": "patch_and_check",
-                        "arguments": json.dumps({"patch": "--- a/pkg/mod.py\n+++ b/pkg/mod.py\n@@ -1,1 +1,1 @@\n-x: int = 1\n+x: int = 99\n"}),
+                        "name": "edit_and_check",
+                        "arguments": json.dumps({"edits": [{"path": "pkg/mod.py", "old": "x: int = 1", "new": "x: int = 99"}]}),
                     }
                 }],
             },
@@ -230,23 +230,23 @@ class TestResponseShapes:
         outcome = make_episode(tmp_path, "f1_shared", responses)
         assert outcome.patches_submitted >= 1
 
-    def test_four_generation_cap(self, tmp_path):
-        """After 4 tool calls, episode ends with generation_cap_reached."""
+    def test_three_generation_cap(self, tmp_path):
+        """After 3 tool calls, episode ends with generation_cap_reached."""
         tool_response = {
             "finish_reason": "tool_calls",
             "tool_calls": [{
                 "id": "call_x",
                 "type": "function",
                 "function": {
-                    "name": "patch_and_check",
-                    "arguments": json.dumps({"patch": "--- a/pkg/mod.py\n+++ b/pkg/mod.py\n@@ -1,1 +1,1 @@\n-x: int = 1\n+x: int = 10\n"}),
+                    "name": "edit_and_check",
+                    "arguments": json.dumps({"edits": [{"path": "pkg/mod.py", "old": "x: int = 1", "new": "x: int = 10"}]}),
                 }
             }],
         }
-        responses = [tool_response] * 4
+        responses = [tool_response] * 3
         outcome = make_episode(tmp_path, "f1_shared", responses)
         assert outcome.generation_cap_reached is True
-        assert outcome.generations_received == 4
+        assert outcome.generations_received == 3
 
     def test_no_resampling_on_resume(self, tmp_path):
         """A completed episode is skipped on resume without re-running."""
@@ -297,6 +297,15 @@ class TestResponseShapes:
 # ---------------------------------------------------------------------------
 
 class TestSchedule:
+    def test_final_schedule_has_two_replicates_and_balanced_order(self):
+        episodes = generate_schedule(seed=20260912)
+        assert len(episodes) == 16
+        for fixture_id in {row["fixture_id"] for row in episodes}:
+            rows = [row for row in episodes if row["fixture_id"] == fixture_id]
+            assert len(rows) == 4
+            assert {row["replicate"] for row in rows} == {1, 2}
+            assert {row["runs_first"] for row in rows} == {"expanded", "grouped"}
+
     def test_deterministic_seed(self):
         """Same seed produces same schedule."""
         s1 = generate_schedule(seed=20260911)
@@ -381,6 +390,19 @@ class TestBudget:
         b.record_attempt()
         assert b.can_attempt() is False
 
+    def test_screen_003_generation_caps(self):
+        b = BudgetState()
+        for _ in range(12):
+            assert b.can_record_generation("calibration")
+            b.record_generation("calibration")
+        assert not b.can_record_generation("calibration")
+        for _ in range(48):
+            assert b.can_record_generation("discovery")
+            b.record_generation("discovery")
+        assert not b.can_record_generation("discovery")
+        assert b.max_http_attempts == 68
+        assert b.max_retry_http_attempts == 8
+
     def test_sdk_max_retries_zero(self):
         """GroqExperimentClient must configure max_retries=0 in SDK."""
         # We can't easily test the Groq SDK constructor without a key,
@@ -417,7 +439,7 @@ class TestResponseClassifier:
             finish_reason="tool_calls",
             tool_calls=[{
                 "id": "c", "type": "function",
-                "function": {"name": "patch_and_check", "arguments": "{}"}
+                "function": {"name": "edit_and_check", "arguments": "{}"}
             }]
         )
         assert _classify_response(gen) == "tool_call_received"

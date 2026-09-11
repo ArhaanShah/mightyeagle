@@ -1,8 +1,8 @@
 {
   "fixture_id": "f1_shared",
-  "family": 1,
+  "family": "A",
   "structure": "shared",
-  "description": "Return-type annotation mismatch: one source defect causes multiple downstream type errors",
+  "description": "Optional value used at repeated call sites",
   "editable_paths": [
     "pkg/pipeline.py"
   ],
@@ -22,16 +22,12 @@
     "-q",
     "tests/"
   ],
-  "defects": [
-    {
-      "defect_id": "d1_return_type",
-      "check_type": "ast",
-      "description": "compute_summary return annotation must be Optional[float]"
-    }
-  ],
+  "defects": [],
   "required_symbols": [
-    {"path": "pkg/pipeline.py", "name": "compute_summary", "kind": "function"},
+    {"path": "pkg/pipeline.py", "name": "read_value", "kind": "function"},
     {"path": "pkg/pipeline.py", "name": "display_stats", "kind": "function"}
   ],
-  "contracts": []
+  "contracts": [
+    {"oracle_id": "runtime_value", "description": "read_value returns its documented integer"}
+  ]
 }

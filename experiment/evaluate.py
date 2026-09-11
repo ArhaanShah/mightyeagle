@@ -77,9 +77,20 @@ class SnapshotState:
     defects_repaired_uncertain: bool = False
     verified_progress_at_snapshot: bool | None = None
 
-    def compute_aggregates(self, baseline_defect_check_ids: list[str]) -> None:
-        """Compute task_checks_pass, defects_repaired, verified_progress_at_snapshot."""
-        # Check definitive disqualifiers first
+    def compute_aggregates(self, baseline_error_count: int | list[str]) -> None:
+        """Compute objective, solution-agnostic snapshot outcomes.
+
+        The old list form remains readable for archived screen_002 artifacts,
+        but final-rerun callers pass the genuine baseline diagnostic count.
+        Defect/AST checks are retained only as engineering evidence and never
+        participate in scoring.
+        """
+        legacy_defect_mode = isinstance(baseline_error_count, list)
+        baseline_count = (
+            len(baseline_error_count)
+            if isinstance(baseline_error_count, list)
+            else baseline_error_count
+        )
         definitely_fails = (
             self.mypy_status == "fail"
             or self.runtime_status == "fail"
@@ -87,7 +98,7 @@ class SnapshotState:
             or self.confirmed_workaround
             or self.ambiguous_workaround
             or self.introduced_error_status in ("detected", "ambiguous")
-            or any(dc.result == "fail" for dc in self.defect_checks)
+            or (legacy_defect_mode and any(dc.result == "fail" for dc in self.defect_checks))
             or any(oc.result == "fail" for oc in self.contract_checks)
         )
         if definitely_fails:
@@ -97,7 +108,7 @@ class SnapshotState:
             and self.runtime_status == "pass"
             and self.protected_files_intact is True
             and self.introduced_error_status == "none_detected"
-            and all(dc.result == "pass" for dc in self.defect_checks)
+            and (not legacy_defect_mode or all(dc.result == "pass" for dc in self.defect_checks))
             and all(oc.result == "pass" for oc in self.contract_checks)
         ):
             self.task_checks_pass = True
@@ -105,23 +116,29 @@ class SnapshotState:
             # Unavailable/ambiguous oracles; mypy/runtime unknown — uncertain
             self.task_checks_pass = None
 
-        # defects_repaired: count baseline-failing checks now passing
-        repaired = 0
-        uncertain = False
-        for dc in self.defect_checks:
-            if dc.defect_id in baseline_defect_check_ids:
-                if dc.result == "pass":
-                    repaired += 1
-                elif dc.result == "unavailable":
-                    uncertain = True
+        if legacy_defect_mode:
+            repaired = sum(
+                dc.result == "pass" and dc.defect_id in baseline_error_count
+                for dc in self.defect_checks
+            )
+            uncertain = any(
+                dc.result == "unavailable" and dc.defect_id in baseline_error_count
+                for dc in self.defect_checks
+            )
+        else:
+            repaired = (
+                max(0, baseline_count - self.mypy_error_count)
+                if self.mypy_error_count is not None else None
+            )
+            uncertain = repaired is None
         self.defects_repaired = repaired
         self.defects_repaired_uncertain = uncertain
 
         # verified_progress_at_snapshot
         # True iff: at least one defect repaired, runtime/required checks pass,
         #   validation intact, no confirmed/ambiguous workaround, no detected/unresolved error
-        if repaired == 0:
-            if uncertain:
+        if repaired in (None, 0):
+            if repaired is None or uncertain:
                 self.verified_progress_at_snapshot = None
             else:
                 self.verified_progress_at_snapshot = False
@@ -200,7 +217,7 @@ class EpisodeOutcome:
     episode_id: str
     fixture_id: str
     condition: str  # "expanded" | "grouped"
-    scheduled_generations: int = 4
+    scheduled_generations: int = 3
 
     # Snapshot states, in order
     snapshots: list[SnapshotState] = field(default_factory=list)
@@ -213,6 +230,9 @@ class EpisodeOutcome:
     final_defects_repaired: int | None = None
     max_defects_repaired: int | None = None
     successful_completion: bool | None = None
+    errors_after_accepted_edit: list[int | None] = field(default_factory=list)
+    generation_of_first_progress: int | None = None
+    generation_of_completion: int | None = None
 
     # First-turn outcomes (generation 1 specifically)
     first_turn_patch_submitted: bool | None = None
@@ -288,6 +308,15 @@ class EpisodeOutcome:
         self.max_defects_repaired = max(counts) if counts else None
 
         self.successful_completion = last.task_checks_pass
+        self.errors_after_accepted_edit = [s.mypy_error_count for s in self.snapshots]
+        self.generation_of_first_progress = next(
+            (s.generation_number for s in self.snapshots if s.verified_progress_at_snapshot is True),
+            None,
+        )
+        self.generation_of_completion = next(
+            (s.generation_number for s in self.snapshots if s.task_checks_pass is True),
+            None,
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -301,6 +330,9 @@ class EpisodeOutcome:
             "final_defects_repaired": self.final_defects_repaired,
             "max_defects_repaired": self.max_defects_repaired,
             "successful_completion": self.successful_completion,
+            "errors_after_accepted_edit": self.errors_after_accepted_edit,
+            "generation_of_first_progress": self.generation_of_first_progress,
+            "generation_of_completion": self.generation_of_completion,
             "first_turn_patch_submitted": self.first_turn_patch_submitted,
             "first_turn_patch_valid_envelope": self.first_turn_patch_valid_envelope,
             "first_turn_patch_accepted": self.first_turn_patch_accepted,
@@ -476,7 +508,9 @@ class Evaluator:
             state.introduced_error_status = status
             state.introduced_error_records = records
 
-        state.compute_aggregates(self.defect_ids)
+        state.compute_aggregates(
+            baseline_parsed.error_count if baseline_parsed is not None else 0
+        )
         return state
 
     def _run_defect_check(

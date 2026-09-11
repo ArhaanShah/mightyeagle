@@ -1,36 +1,20 @@
 {
   "fixture_id": "f2_shared",
-  "family": 2,
+  "family": "B",
   "structure": "shared",
-  "description": "Protocol mismatch shared across multiple call sites",
-  "editable_paths": [
-    "pkg/renderer.py"
-  ],
-  "public_paths": [
-    "pkg/__init__.py",
-    "pkg/renderer.py",
-    "tests/test_renderer.py"
-  ],
-  "protected_paths": [
-    "tests/test_renderer.py"
-  ],
+  "description": "One protocol conformance mismatch at repeated use sites",
+  "editable_paths": ["pkg/renderer.py"],
+  "public_paths": ["pkg/__init__.py", "pkg/renderer.py", "tests/test_renderer.py"],
+  "protected_paths": ["tests/test_renderer.py"],
   "mypy_config": null,
-  "test_command": [
-    "python",
-    "-m",
-    "pytest",
-    "-q",
-    "tests/"
-  ],
-  "defects": [
-    {
-      "defect_id": "d1_render_method",
-      "check_type": "ast"
-    }
-  ],
+  "test_command": ["python", "-m", "pytest", "-q", "tests/"],
+  "defects": [],
   "required_symbols": [
     {"path": "pkg/renderer.py", "name": "MarkdownRenderer", "kind": "class"},
+    {"path": "pkg/renderer.py", "name": "render", "kind": "method"},
     {"path": "pkg/renderer.py", "name": "run_render", "kind": "function"}
   ],
-  "contracts": []
+  "contracts": [
+    {"oracle_id": "runtime_render", "description": "render returns encoded marked-up text"}
+  ]
 }

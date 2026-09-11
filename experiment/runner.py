@@ -43,9 +43,10 @@ from experiment.tool import (
     WorkspaceConfig,
     format_feedback,
     parse_tool_arguments,
-    patch_and_check,
+    edit_and_check,
+    apply_edits,
+    parse_edit_arguments,
     hash_workspace,
-    apply_patch,
     validate_current_workspace,
     PatchResult,
 )
@@ -76,9 +77,37 @@ CONFIG_KEYS_FOR_MODEL = {
     "include_reasoning", "tool_choice", "parallel_tool_calls", "stream",
 }
 
-MAX_GENERATIONS = 4
-CAL_MAX_EPISODES = 8
+MAX_GENERATIONS = 3
+CAL_MAX_EPISODES = 2
 DISC_EPISODES = 16
+
+
+def _predict_post_edit_hash(
+    episode_dir: Path,
+    generation: int,
+    edits: list[dict[str, str]],
+    allowlisted: list[str],
+    protected: list[str],
+) -> str | None:
+    """Reconstruct an intended post-edit state from the last durable snapshot."""
+    candidates = sorted(
+        (p for p in episode_dir.glob("gen_*_source.json")
+         if int(p.stem.split("_")[1]) < generation),
+        key=lambda p: int(p.stem.split("_")[1]),
+    )
+    if not candidates:
+        return None
+    data = json.loads(candidates[-1].read_text(encoding="utf-8"))
+    with tempfile.TemporaryDirectory(dir=episode_dir) as temp_dir:
+        root = Path(temp_dir)
+        for rel, content in data.get("files", {}).items():
+            target = root / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(content, encoding="utf-8", errors="surrogateescape")
+        applied = apply_edits(root, edits, allowlisted, protected)
+        if applied["status"] != "applied":
+            return None
+        return hash_workspace(root, allowlisted)
 
 
 def _generation_from_dict(data: dict[str, Any]) -> GenerationRecord:
@@ -126,32 +155,6 @@ def build_prompt(
     source_block: str,
 ) -> str:
     return prompt_template.replace("{report}", report).replace("{source_block}", source_block)
-
-
-def _predict_post_patch_hash(
-    episode_dir: Path, generation: int, patch_text: str, allowlisted: list[str],
-) -> str | None:
-    """Apply a patch to the latest durable source snapshot, never the live tree."""
-    candidates = sorted(
-        (
-            p for p in episode_dir.glob("gen_*_source.json")
-            if int(p.stem.split("_")[1]) < generation
-        ),
-        key=lambda p: int(p.stem.split("_")[1]),
-    )
-    if not candidates:
-        return None
-    data = json.loads(candidates[-1].read_text(encoding="utf-8"))
-    with tempfile.TemporaryDirectory(dir=episode_dir) as temp_dir:
-        root = Path(temp_dir)
-        for rel, content in data.get("files", {}).items():
-            target = root / rel
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(content, encoding="utf-8", errors="surrogateescape")
-        applied = apply_patch(root, patch_text, allowlisted)
-        if applied["status"] != "applied":
-            return None
-        return hash_workspace(root, allowlisted)
 
 
 # ---------------------------------------------------------------------------
@@ -391,6 +394,7 @@ def run_episode(
         workspace_root=staging_workspace,
         allowlisted_paths=allowlisted,
         condition=condition,
+        protected_paths=manifest.get("protected_paths", []),
         task_root="/task",
         mypy_config=manifest.get("mypy_config"),
         test_command=manifest.get("test_command"),
@@ -591,12 +595,12 @@ def run_episode(
                 outcome.first_turn_patch_valid_envelope = True
 
             # Parse arguments (no silent repair)
-            parsed_patch = parse_tool_arguments(raw_args)
+            parsed_action = parse_tool_arguments(raw_args)
 
-            if isinstance(parsed_patch, dict):
+            if isinstance(parsed_action, dict):
                 ep_log.append_event("model_action_invalid", {
                     "generation": generation_number,
-                    "reason": parsed_patch["error"],
+                    "reason": parsed_action["error"],
                 })
                 if generation_number == 1:
                     outcome.first_turn_patch_valid_envelope = False
@@ -606,58 +610,56 @@ def run_episode(
                 outcome.termination_reason = "model_action_invalid"
                 break
 
+            action_text = json.dumps(parsed_action, sort_keys=True)
             # Apply patch + validate (§14: log intent before, result after)
             ep_log.append_event("tool_intent", {
                 "generation": generation_number,
-                "patch_hash": hashlib.sha256(parsed_patch.encode()).hexdigest()[:16],
+                "edit_hash": hashlib.sha256(action_text.encode()).hexdigest()[:16],
                 "pre_workspace_hash": hash_workspace(staging_workspace, allowlisted),
             })
 
-            ep_log.save_patch(generation_number, parsed_patch)
+            (episode_dir / f"gen_{generation_number:02d}_edits.json").write_text(
+                json.dumps(parsed_action, indent=2), encoding="utf-8"
+            )
             if mock:
-                tool_result = _mock_tool_result(parsed_patch, generation_number, condition)
+                tool_result = _mock_tool_result(action_text, generation_number, condition)
                 patch_result = None
             else:
-                current_hash = hash_workspace(staging_workspace, allowlisted)
-                expected_post_hash = _predict_post_patch_hash(
-                    episode_dir, generation_number, parsed_patch, allowlisted
-                )
-                if resume_workspace_diverged:
-                    if current_hash != expected_post_hash:
-                        raise RuntimeError(
-                            f"Resume blocked for {episode_id}: state is neither the "
-                            "recorded pre-patch nor predicted post-patch state"
-                        )
-                    parsed_diag, report, tests, infrastructure = validate_current_workspace(
-                        workspace_cfg
+                replayed_applied_edit = False
+                if resume and resume_workspace_diverged:
+                    predicted = _predict_post_edit_hash(
+                        episode_dir, generation_number, parsed_action,
+                        allowlisted, manifest.get("protected_paths", []),
                     )
-                    applied_files = sorted(set(
-                        match.group(1).split("\t")[0]
-                        for match in re.finditer(r"^\+\+\+ b/(.+)$", parsed_patch, re.MULTILINE)
-                    ))
+                    current = hash_workspace(staging_workspace, allowlisted)
+                    if predicted != current:
+                        outcome.technical_failure = True
+                        outcome.termination_reason = "resume_workspace_diverged"
+                        break
+                    parsed_diag, report, tests, infrastructure = validate_current_workspace(workspace_cfg)
                     patch_result_obj = PatchResult(
                         status="applied", reject_reason=None,
-                        patch_hash=hashlib.sha256(parsed_patch.encode()).hexdigest(),
-                        pre_state_hash=saved_state["workspace_hash"] if saved_state else "",
-                        post_state_hash=current_hash,
-                        applied_files=applied_files,
+                        patch_hash=hashlib.sha256(action_text.encode()).hexdigest(),
+                        pre_state_hash=saved_state.get("workspace_hash", "") if saved_state else "",
+                        post_state_hash=current,
+                        applied_files=sorted({edit["path"] for edit in parsed_action}),
                         mypy_report=report,
                         runtime_summary=tests["summary"],
                         runtime_failures=tests.get("failures", []),
                         runtime_status=tests["status"],
                         parsed_diagnostics=parsed_diag,
-                        output_limit_triggered=tests.get("output_limit", False),
                         infrastructure_failure=infrastructure,
                     )
+                    replayed_applied_edit = True
                     resume_workspace_diverged = False
                     ep_log.append_event(
-                        "patch_recovered_without_reapply",
-                        {"generation": generation_number, "post_workspace_hash": current_hash},
+                        "edit_application_recovered", {"generation": generation_number}
                     )
                 else:
-                    patch_result_obj = patch_and_check(parsed_patch, workspace_cfg)
+                    patch_result_obj = edit_and_check(parsed_action, workspace_cfg)
                 tool_result = {
                     "status": patch_result_obj.status,
+                    "reject_reason": patch_result_obj.reject_reason,
                     "feedback": format_feedback(patch_result_obj),
                     "post_workspace_hash": patch_result_obj.post_state_hash,
                     "policy_observations": patch_result_obj.policy_observations,
@@ -678,6 +680,10 @@ def run_episode(
 
             # Track first-turn acceptance
             accepted = tool_result["status"] == "applied"
+            if tool_result.get("reject_reason") in {
+                "suppression_violation", "type_erasure_violation"
+            }:
+                outcome.forbidden_attempt_observed = True
             if generation_number == 1:
                 outcome.first_turn_patch_accepted = accepted
                 if not accepted:
@@ -702,7 +708,9 @@ def run_episode(
                     snap.ambiguous_workaround = bool(
                         patch_result.policy_observations if patch_result else []
                     )
-                    snap.compute_aggregates(evaluator.defect_ids)
+                    snap.compute_aggregates(
+                        baseline_diag.error_count if baseline_diag is not None else 0
+                    )
                 outcome.snapshots.append(snap)
                 ep_log.save_snapshot(generation_number, snap)
                 ep_log.save_source_snapshot(generation_number, staging_workspace)
@@ -718,7 +726,7 @@ def run_episode(
                         "id": tool_call["id"],
                         "type": "function",
                         "function": {
-                            "name": "patch_and_check",
+                            "name": tool_call.get("function", {}).get("name", "edit_and_check"),
                             "arguments": raw_args,
                         },
                     }
@@ -738,7 +746,7 @@ def run_episode(
                 outcome, messages, hash_workspace(staging_workspace, allowlisted)
             )
 
-            # 4th generation tool call: executed but no 5th generation
+            # Third-generation tool call is executed, with no fourth report turn.
             if generation_number == MAX_GENERATIONS:
                 outcome.generation_cap_reached = True
                 # Check if task succeeds despite cap
@@ -865,7 +873,7 @@ def run_calibration(
         cal_fixtures_root = fixtures_root / "discovery"
 
     outcomes: list[EpisodeOutcome] = []
-    cal_fixture_ids = CALIBRATION_FIXTURE_IDS
+    cal_fixture_ids = ["cal_trivial"]
 
     for i, fixture_id in enumerate(cal_fixture_ids[:CAL_MAX_EPISODES]):
         episode_id = f"cal_{i:02d}"
@@ -993,6 +1001,17 @@ def run_discovery(
         budget_path = run_dir / "budget_state.json"
         budget_path.write_text(json.dumps(budget.to_dict(), indent=2), encoding="utf-8")
 
+        interface_failures = sum(
+            item.model_action_invalid
+            and item.first_turn_patch_valid_envelope is False
+            for item in outcomes
+        )
+        if interface_failures >= 2:
+            raise RuntimeError(
+                "Stopped after two discovery JSON/tool-interface pathologies; "
+                "scheduled rows remain unfilled and must not be selectively rerun."
+            )
+
     return outcomes
 
 
@@ -1006,8 +1025,10 @@ def _run_preflight(
     errors: list[str] = []
 
     schema_description = TOOL_SCHEMA["function"]["description"]
-    if "Begin-Patch" not in schema_description or "unified diff" not in schema_description:
-        errors.append("Tool schema does not advertise both patch formats.")
+    if "exact source replacements" not in schema_description or "unique substring" not in schema_description:
+        errors.append("Tool schema does not describe strict exact edits.")
+    if "patch" in TOOL_SCHEMA["function"]["parameters"].get("properties", {}):
+        errors.append("Legacy patch input remains model-facing.")
     config_path = Path(__file__).parent / "config.json"
     try:
         harness_config = json.loads(config_path.read_text(encoding="utf-8"))
@@ -1069,11 +1090,15 @@ def _run_preflight(
     pair_checks: dict[str, Any] = {}
     for episode in episodes:
         by_fixture.setdefault(episode["fixture_id"], []).append(episode)
-    for fixture_id, pair in by_fixture.items():
-        conditions = {item["condition"] for item in pair}
-        if len(pair) != 2 or conditions != {"expanded", "grouped"}:
-            errors.append(f"Invalid condition pair for {fixture_id}.")
+    for fixture_id, fixture_rows in by_fixture.items():
+        conditions = [item["condition"] for item in fixture_rows]
+        if len(fixture_rows) != 4 or conditions.count("expanded") != 2 or conditions.count("grouped") != 2:
+            errors.append(f"Invalid two-replication layout for {fixture_id}.")
             continue
+        for pair_index in {item["pair_index"] for item in fixture_rows}:
+            block = [item for item in fixture_rows if item["pair_index"] == pair_index]
+            if len(block) != 2 or {item["condition"] for item in block} != {"expanded", "grouped"}:
+                errors.append(f"Invalid matched block {pair_index} for {fixture_id}.")
         try:
             manifest = load_fixture(fixture_id, fixtures_root)
             workspace = fixtures_root / fixture_id / "workspace"
@@ -1103,8 +1128,8 @@ def _run_preflight(
         raise SystemExit(f"Preflight failed with {len(errors)} error(s).")
 
     logger.info(
-        "Preflight passed. Budget estimate: %d episodes x 4 gens = %d generation slots max.",
-        len(episodes), len(episodes) * 4
+        "Preflight passed. Budget estimate: %d episodes x 3 gens = %d generation slots max.",
+        len(episodes), len(episodes) * MAX_GENERATIONS
     )
     target = run_dir / "preflight.json"
     tmp = target.with_suffix(f".tmp_{os.getpid()}_{time.time_ns()}")
@@ -1165,7 +1190,9 @@ def _inspect_validation_image(image_ref: str) -> dict[str, Any]:
 # Freeze command (§10, §16)
 # ---------------------------------------------------------------------------
 
-def run_freeze(run_dir: Path, config: dict[str, Any]) -> None:
+def run_freeze(
+    run_dir: Path, config: dict[str, Any], require_clean_git: bool = False
+) -> None:
     """Save frozen_config.json (§10). Requires calibration review record and passing fixture validation."""
     review_path = run_dir / "calibration" / "review.json"
     if not review_path.exists():
@@ -1195,6 +1222,14 @@ def run_freeze(run_dir: Path, config: dict[str, Any]) -> None:
             f"frozen_config.json already exists at {freeze_path}. "
             "A new screen ID is required for any material change."
         )
+
+    if require_clean_git:
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            capture_output=True, text=True, timeout=15, check=True,
+        ).stdout.strip()
+        if status:
+            raise RuntimeError("A clean Git worktree is required before freezing.")
 
     validation_image = _inspect_validation_image(config["validation_image"])
     experiment_dir = Path(__file__).parent
@@ -1228,6 +1263,13 @@ def run_freeze(run_dir: Path, config: dict[str, Any]) -> None:
         "prompt_hash": prompt_hash,
         "tool_schema_hash": tool_schema_hash,
         "fixture_validation_hash": validation_hash,
+        "requirements_lock_hash": hashlib.sha256(
+            Path("requirements-lock.txt").read_bytes()
+        ).hexdigest(),
+        "analysis_hashes": {
+            name: hashlib.sha256((experiment_dir / name).read_bytes()).hexdigest()
+            for name in ("evaluate.py", "summarize.py")
+        },
         "validation_image": validation_image,
         "package_versions": {
             "python": sys.version.split()[0],
@@ -1258,45 +1300,40 @@ def run_calibration_gate(run_dir: Path) -> dict[str, Any]:
             outcomes.append(json.loads(path.read_text(encoding="utf-8")))
         except (OSError, json.JSONDecodeError):
             failures.append(f"invalid_outcome:{path}")
-    if not outcomes:
-        failures.append("missing_calibration_outcomes")
+    if len(outcomes) != 2:
+        failures.append(f"expected_two_calibration_outcomes:got_{len(outcomes)}")
+    if {out.get("condition") for out in outcomes} != {"expanded", "grouped"}:
+        failures.append("missing_condition")
     for out in outcomes:
+        episode_id = out.get("episode_id", "")
         for key in ("technical_failure", "request_outcome_unknown", "model_identity_failure", "rate_limit_censored"):
             if out.get(key):
-                failures.append(f"{key}:{out.get('episode_id', '')}")
-    accepted = [out for out in outcomes if out.get("patches_accepted", 0) > 0]
-    trivial = [out for out in accepted if out.get("fixture_id") == "cal_trivial"]
-    if {out.get("condition") for out in trivial} != {"expanded", "grouped"}:
-        failures.append("cal_trivial_tool_loop_missing")
-    if not any(out.get("fixture_id") in {"cal_dist", "cal_long_exp"} for out in accepted):
-        failures.append("additional_repair_acceptance_missing")
-    for patch_path in sorted((run_dir / "calibration").glob("**/gen_*_patch.diff")):
+                failures.append(f"{key}:{episode_id}")
+        if out.get("fixture_id") != "cal_trivial":
+            failures.append(f"wrong_fixture:{episode_id}")
+        if out.get("first_turn_patch_submitted") is not True:
+            failures.append(f"first_generation_not_submitted:{episode_id}")
+        if out.get("first_turn_patch_valid_envelope") is not True:
+            failures.append(f"first_generation_schema_invalid:{episode_id}")
+        if out.get("first_turn_patch_accepted") is not True:
+            failures.append(f"first_generation_not_accepted:{episode_id}")
+        if out.get("successful_completion") is not True:
+            failures.append(f"calibration_not_completed:{episode_id}")
+    for gen_path in sorted((run_dir / "calibration").glob("**/gen_01.json")):
         try:
-            patch_text = patch_path.read_text(encoding="utf-8")
-            if patch_text.lstrip().startswith("*** Begin Patch"):
-                # A neighboring tool result is the durable rejection record.
-                result_path = patch_path.with_name(patch_path.name.replace("_patch.diff", "_tool_result.json"))
-                if result_path.exists() and json.loads(result_path.read_text(encoding="utf-8")).get("status") == "rejected":
-                    feedback = json.loads(result_path.read_text(encoding="utf-8")).get("feedback", "")
-                    added = {
-                        line[1:]
-                        for line in patch_text.splitlines()
-                        if line.startswith("+") and not line.startswith("+++")
-                    }
-                    removed = {
-                        line[1:]
-                        for line in patch_text.splitlines()
-                        if line.startswith("-") and not line.startswith("---")
-                    }
-                    if (
-                        "no hunks" in feedback.lower()
-                        and added
-                        and removed
-                        and added != removed
-                    ):
-                        failures.append("begin_patch_rejected_as_no_hunks")
-        except (OSError, json.JSONDecodeError):
-            continue
+            generation = json.loads(gen_path.read_text(encoding="utf-8"))
+            calls = generation.get("tool_calls", [])
+            if len(calls) != 1 or calls[0].get("function", {}).get("name") != "edit_and_check":
+                failures.append(f"generation_1_wrong_tool:{gen_path.parent.name}")
+                continue
+            parsed = parse_edit_arguments(calls[0]["function"].get("arguments", ""))
+            if isinstance(parsed, dict):
+                failures.append(f"generation_1_raw_arguments_invalid:{gen_path.parent.name}")
+            result_path = gen_path.with_name("gen_01_tool_result.json")
+            if not result_path.exists() or json.loads(result_path.read_text(encoding="utf-8")).get("status") != "applied":
+                failures.append(f"generation_1_missing_snapshot:{gen_path.parent.name}")
+        except (OSError, KeyError, json.JSONDecodeError) as exc:
+            failures.append(f"generation_1_unreadable:{gen_path}:{exc}")
     result = {"passed": not failures, "failures": failures,
               "outcome_count": len(outcomes)}
     (run_dir / "calibration_gate.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
@@ -1338,6 +1375,8 @@ def main() -> None:
                         help="Use mock client (no API calls)")
     parser.add_argument("--freeze", action="store_true",
                         help="Save operational freeze (requires calibration review)")
+    parser.add_argument("--require-clean-git", action="store_true",
+                        help="Require a clean committed worktree when freezing")
     parser.add_argument("--calibration-gate", action="store_true",
                         help="Run machine calibration acceptance gate")
     parser.add_argument("--preflight", action="store_true",
@@ -1374,7 +1413,7 @@ def main() -> None:
         return
 
     if args.freeze:
-        run_freeze(run_dir, config)
+        run_freeze(run_dir, config, require_clean_git=args.require_clean_git)
         return
 
     if args.preflight:
@@ -1410,14 +1449,12 @@ def main() -> None:
                         "id": "call_mock_001",
                         "type": "function",
                         "function": {
-                            "name": "patch_and_check",
-                            "arguments": json.dumps({"patch":
-                                "--- a/workspace/main.py\n"
-                                "+++ b/workspace/main.py\n"
-                                "@@ -1,1 +1,1 @@\n"
-                                "-x: int = 'bad'\n"
-                                "+x: int = 42\n"
-                            })
+                            "name": "edit_and_check",
+                            "arguments": json.dumps({"edits": [{
+                                "path": "pkg/example.py",
+                                "old": "x: int = 'bad'",
+                                "new": "x: int = 42"
+                            }]})
                         }
                     }],
                     "input_tokens": 500,
