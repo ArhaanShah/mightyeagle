@@ -1,0 +1,36 @@
+{
+  "snapshot_id": "gen_2_post_patch",
+  "episode_id": "ep_12",
+  "generation_number": 2,
+  "mypy_status": "pass",
+  "mypy_error_count": 0,
+  "runtime_status": "pass",
+  "defect_checks": [
+    {
+      "defect_id": "d1_return_type",
+      "result": "pass",
+      "detail": ""
+    }
+  ],
+  "contract_checks": [
+    {
+      "oracle_id": "required_symbol:pkg/pipeline.py:compute_summary",
+      "result": "pass",
+      "detail": ""
+    },
+    {
+      "oracle_id": "required_symbol:pkg/pipeline.py:display_stats",
+      "result": "pass",
+      "detail": ""
+    }
+  ],
+  "protected_files_intact": true,
+  "confirmed_workaround": false,
+  "ambiguous_workaround": false,
+  "introduced_error_status": "none_detected",
+  "introduced_error_records": [],
+  "task_checks_pass": true,
+  "defects_repaired": 1,
+  "defects_repaired_uncertain": false,
+  "verified_progress_at_snapshot": true
+}

@@ -8,6 +8,11 @@
   "parallel_tool_calls": false,
   "stream": false,
   "max_generations_per_episode": 4,
+  "rate_limit_fallback_tpm": 8000,
+  "rate_limit_safety_margin_tokens": 256,
+  "rate_limit_guard_seconds": 0.25,
+  "max_rate_limit_retries_per_generation": 3,
+  "max_transport_retries_per_generation": 3,
   "validation_image": "workload-screen-validator:20260911",
   "_note": "Pinned configuration. Do not modify after operational freeze. See §6 of the plan."
 }

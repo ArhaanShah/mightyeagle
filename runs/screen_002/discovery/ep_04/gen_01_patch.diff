@@ -1,0 +1,27 @@
+*** Begin Patch
+*** Update File: pkg/renderer.py
+@@
+ class MarkdownRenderer:
+-    def format(self, text: str) -> str:
+-        return f"*{text}*"
++    def format(self, text: str) -> str:
++        """Return the text wrapped in Markdown emphasis.
++
++        The original implementation exposed a ``format`` method, which is
++        used by the public tests.  The :func:`display_title` helper, however,
++        expects an object that implements the ``Renderer`` protocol – i.e. it
++        must provide a ``render`` method.  To satisfy both requirements without
++        altering the public API, we keep ``format`` unchanged and add a thin
++        ``render`` wrapper that forwards to ``format``.  This makes
++        ``MarkdownRenderer`` conform to ``Renderer`` while preserving the
++        existing behaviour expected by the tests.
++        """
++        return f"*{text}*"
++
++    # Conformance to the ``Renderer`` protocol expected by ``display_title``.
++    # The method simply forwards to ``format`` so that existing callers that
++    # use ``format`` continue to work unchanged.
++    def render(self, text: str) -> str:
++        return self.format(text)
+*** End Patch
+*** End Patch

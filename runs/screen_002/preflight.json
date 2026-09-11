@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-09-11T14:43:18.754582+00:00",
+  "episodes": 16,
+  "pair_checks": {
+    "f3_shared": {
+      "workspace_hash": "f058d8e6a21e5aa6e9805ccff0942cf5bdb714ed611c9e3f4f291aae6e57c88b",
+      "source_hash": "a417f4191ee1ff068826ce6327b051de8c69b7edb47a73e114bdc61e82358c64",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "06915d03360db66598f2660001ef37cbc8ef994e843458317a9a0f999c3dcb4c",
+      "grouped_report_hash": "e7c923f7f33eae9fee8e43b59666059b9140d6d6d4674d7d6b72ac0d89501da6"
+    },
+    "f4_dist": {
+      "workspace_hash": "ae7d6a42c75c238df7f686d2f49f69e305abf7de404fe17fae3e05d27465a2ec",
+      "source_hash": "9d9463e86a499c581d215aae675b324f73b3d0a98929a25994d97a4ccf5410c8",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "27982dfc02a3db95bd735315d9c3aa4663584cbb0b7000a7e368eec1492e9417",
+      "grouped_report_hash": "d310f1179b0fe9d5b0e3e5caacf00a3ffde5d0a2c692f96053c86c63322a3acc"
+    },
+    "f2_shared": {
+      "workspace_hash": "8a206136ecb9fe781ccde3b18be9620aacd54658a732a5bf5fce2f45e76a5f1c",
+      "source_hash": "4c4ceb788477434fd4df7f4668edaf644c99d4abe4063cb4b922d92a9f947249",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "cf9233d185004a460c2565a5f886b76d82c21c44d63d0e73176a3035e75f2c8e",
+      "grouped_report_hash": "4588121ba405033c7fd4b40a6794733159100b376544769fd57448d0e72c8a98"
+    },
+    "f1_dist": {
+      "workspace_hash": "871596d3aa3810620cbc566e227a0d1aacdc8eb07c90e53e9c73c878b43a4472",
+      "source_hash": "7dd52fee57db4aa803824e970ed1e3a66df92a4d084659fcb6f6b5e8721633ed",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "34b08bef1b629afa88a8c49ae82b6ac5b3c620e1bfb26643d102f85904c06cb5",
+      "grouped_report_hash": "4c52ee68ea4bd9301075a88fc72d33bade3cbbffc725669b8c01dc1c3fc24a76"
+    },
+    "f4_shared": {
+      "workspace_hash": "2d5af8783fca3a111d6c5cea1cd61324614a0b6371e9c31f5474eb47c65500cd",
+      "source_hash": "b10709ae9ce0f976b80082a703082bc5542797c47c7325e653d65370500f150c",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "c4277f2bc42c184fd8f744196154ebcd93914441af1cacb63c14adb587ae57bb",
+      "grouped_report_hash": "2c216fbb19d7fe912982bcd91716676481cf5af571054a0b72b6496d330059da"
+    },
+    "f2_dist": {
+      "workspace_hash": "07c31b7802aad7522949c7582eec2b102bba8f99ccfec36a1ab39bc990f8baa2",
+      "source_hash": "a24aee2653d1dc0481f148943dcc8b5e1e5aa7b1454e763f54cdf4351e30d0d9",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "0e4a5a1d51c591a4575000a224fb359d4f3e6be8a69356b0a48c3cb8b0910bf9",
+      "grouped_report_hash": "19aa950f0ec694bc09b57b1ea2d873c8f8fb85be1e816eec7a321f8391d94084"
+    },
+    "f1_shared": {
+      "workspace_hash": "3ee660e44c4914e5df0a0161d5f5103837882b44f4caa18a26a1a979e8ead591",
+      "source_hash": "9616e601a18d81b0045c74695a0204f1d2c5577d6a6fd02da03e0d10c1a3e307",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "91e863da1ae57923842c23452cd2e51f6eabf0aa37b43a0b9264e3d607af1508",
+      "grouped_report_hash": "4170f960e6d0f0565a40ed2e2e5790c1ff0332b12b8afafdf5922dad470048eb"
+    },
+    "f3_dist": {
+      "workspace_hash": "404d2e5bc2be5fed09ddf12143a49f8bc42722079b37bb92dbbd6162ec371665",
+      "source_hash": "048e2ab2230b774cc7639e84c584ef66a8957b701d84b2a3a1678fcab554c57b",
+      "scaffold_hash": "4f38876e2aaca488429431a6e2d60695ab8032680cf5c4a2d12d36a4fe4c4376",
+      "expanded_report_hash": "3961b9ad06abb028624299ab850e5f44e3256394a061704a0636c5a7706a7ef3",
+      "grouped_report_hash": "86c152ac7aec72d3da81e1652d228ec5c14b314e392428744b3ab0f219429c8a"
+    }
+  },
+  "estimated_generation_slots": 64
+}

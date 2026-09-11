@@ -1,0 +1,7 @@
+{
+  "status": "applied",
+  "feedback": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n===\nseverity: error\ncode: arg-type\nmessage: Argument 1 to \"dispatch\" has incompatible type \"BetaHandler\"; expected \"Handler\"\nextras: {\"hint\": null}\nmultiplicity: 1\n  LOC|{\"col\": 20, \"file\": \"pkg/handler_b.py\", \"line\": 9, \"occurrence_index\": 0}\n===\n--- 1 error(s), 1 record(s) total ---",
+  "post_workspace_hash": "84287191b5e6d709d07b7e5272f981714da4e9fa53272ec409e8175ba4d5db7d",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

@@ -1,0 +1,7 @@
+{
+  "status": "rejected",
+  "feedback": "PATCH REJECTED: The patch contains no hunks.\n\nDetail: no_hunks",
+  "post_workspace_hash": "",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

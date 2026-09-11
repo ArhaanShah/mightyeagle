@@ -1,0 +1,29 @@
+*** Begin Patch
+*** Update File: pkg/config_a.py
+@@
+-from typing import Optional
+-
+-def get_host() -> Optional[str]:
+-    return "localhost"
++"""Configuration utilities for host handling.
++
++The original implementation declared ``get_host`` as returning ``Optional[str]``
++even though it always returns a concrete string.  This caused ``mypy`` to flag
++the calls to ``len`` because ``len`` expects a ``Sized`` object, not ``None``.
++
++We tighten the return type to ``str`` while keeping the runtime behaviour
++identical.  The function still returns ``"localhost"`` and the public API is
++unchanged for callers that expect a non‑null host.
++"""
++
++from typing import Optional
++
++
++def get_host() -> str:
++    """Return the host name.
++
++    The function is deliberately simple for the purpose of the exercises; it
++    always returns the literal ``"localhost"``.
++    """
++    return "localhost"
+*** End Patch

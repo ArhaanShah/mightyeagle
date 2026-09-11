@@ -1,0 +1,10 @@
+{"timestamp": "2026-09-11T14:36:26.697911+00:00", "event_type": "episode_start", "data": {"episode_id": "cal_01_grouped", "fixture_id": "cal_trivial", "condition": "grouped", "workspace_hash": "7a5cad079e502d35aaa6165ac87c68724fd430de0f5ea72957700a35857a40f6", "prompt_length": 1238, "report_hash": "8c9e59dd40aabba724f6fec6a719e625582a733260d462cc9ecdae97bece8f22", "source_hash": "720f04d38c5445359e33ac70288fdb6686ce7d0116c04197c42cc3c2b48e44ad"}}
+{"timestamp": "2026-09-11T14:36:26.721604+00:00", "event_type": "api_intent", "data": {"generation": 1, "message_count": 1}}
+{"timestamp": "2026-09-11T14:36:28.245995+00:00", "event_type": "tool_intent", "data": {"generation": 1, "patch_hash": "5679bdeb3ac42764", "pre_workspace_hash": "7a5cad079e502d35aaa6165ac87c68724fd430de0f5ea72957700a35857a40f6"}}
+{"timestamp": "2026-09-11T14:36:28.273715+00:00", "event_type": "tool_result", "data": {"generation": 1, "status": "rejected", "post_workspace_hash": ""}}
+{"timestamp": "2026-09-11T14:36:28.298804+00:00", "event_type": "api_intent", "data": {"generation": 2, "message_count": 3}}
+{"timestamp": "2026-09-11T14:36:31.591057+00:00", "event_type": "tool_intent", "data": {"generation": 2, "patch_hash": "2f5f14ca1727e5d0", "pre_workspace_hash": "7a5cad079e502d35aaa6165ac87c68724fd430de0f5ea72957700a35857a40f6"}}
+{"timestamp": "2026-09-11T14:36:38.197189+00:00", "event_type": "tool_result", "data": {"generation": 2, "status": "applied", "post_workspace_hash": "325583fc21a437336e19894c0b652bea4568af86bd8bc7d53afd998686e41504"}}
+{"timestamp": "2026-09-11T14:36:38.263471+00:00", "event_type": "api_intent", "data": {"generation": 3, "message_count": 5}}
+{"timestamp": "2026-09-11T14:36:57.574852+00:00", "event_type": "model_final", "data": {"generation": 3}}
+{"timestamp": "2026-09-11T14:36:57.581037+00:00", "event_type": "episode_end", "data": {"termination_reason": "model_final"}}

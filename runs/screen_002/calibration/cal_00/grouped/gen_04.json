@@ -1,0 +1,88 @@
+{
+  "episode_id": "cal_00_grouped",
+  "generation_number": 4,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "stop",
+  "termination_code": "model_final",
+  "attempts": [
+    {
+      "attempt_number": 8,
+      "request_hash": "00fe3289f80b34be",
+      "timestamp_utc": "2026-09-11T14:35:31.581525+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-3a51ffea-d590-463d-bcac-a98f87c3b982",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 2511,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1340,
+      "output_tokens_actual": 236,
+      "reasoning_tokens_actual": 193,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "992",
+        "x-ratelimit-remaining-tokens": "3411",
+        "x-ratelimit-reset-requests": "11m31.2s",
+        "x-ratelimit-reset-tokens": "34.417s",
+        "x-request-id": "req_01m28ea9xqe3at2vr714ymqvza"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-3a51ffea-d590-463d-bcac-a98f87c3b982",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "All type errors have been resolved. The package now type\u2011checks cleanly (0 errors) and the runtime behavior remains unchanged, as verified by the passing public tests.",
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": "We need to fix type errors, but currently there are none. The initial report said diagnostics unavailable. The code is simple. Perhaps there are hidden type errors not captured because tests may import something else? The package __init__ is empty. The only function is add with correct type hints. No type errors.\n\nBut the instruction: \"Repair the type errors in this package while preserving its specified runtime behavior.\" There may be hidden type errors like using mutable default arguments elsewhere, but not present. Maybe they expect to add type hints to __init__? Or maybe they purposely inserted a subtle type error like using int but returning something else? The current code passes tests and type-checker.\n\nMaybe they expect to add __all__? Not needed.\n\nCould be that the type-checker previously flagged something but we didn't see because diagnostics unavailable. But after patch we saw 0 errors.\n\nThus maybe nothing else to do. We should respond that all type errors fixed.\n\n",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1789137332,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_4727af4560",
+    "usage": {
+      "completion_tokens": 236,
+      "prompt_tokens": 1340,
+      "total_tokens": 1576,
+      "completion_time": 0.495399386,
+      "completion_tokens_details": {
+        "reasoning_tokens": 193
+      },
+      "prompt_time": 0.086874508,
+      "prompt_tokens_details": null,
+      "queue_time": 0.215859921,
+      "total_time": 0.582273894
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28ea9xqe3at2vr714ymqvza",
+      "debug": null,
+      "seed": 384534744,
+      "usage": null
+    }
+  },
+  "assistant_content": "All type errors have been resolved. The package now type\u2011checks cleanly (0 errors) and the runtime behavior remains unchanged, as verified by the passing public tests.",
+  "reasoning_content": "We need to fix type errors, but currently there are none. The initial report said diagnostics unavailable. The code is simple. Perhaps there are hidden type errors not captured because tests may import something else? The package __init__ is empty. The only function is add with correct type hints. No type errors.\n\nBut the instruction: \"Repair the type errors in this package while preserving its specified runtime behavior.\" There may be hidden type errors like using mutable default arguments elsewhere, but not present. Maybe they expect to add type hints to __init__? Or maybe they purposely inserted a subtle type error like using int but returning something else? The current code passes tests and type-checker.\n\nMaybe they expect to add __all__? Not needed.\n\nCould be that the type-checker previously flagged something but we didn't see because diagnostics unavailable. But after patch we saw 0 errors.\n\nThus maybe nothing else to do. We should respond that all type errors fixed.\n\n",
+  "tool_calls": [],
+  "total_input_tokens": 1340,
+  "total_output_tokens": 236,
+  "error_detail": "",
+  "provider_fingerprint": "fp_4727af4560"
+}

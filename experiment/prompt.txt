@@ -2,7 +2,7 @@ Repair the type errors in this package while preserving its specified runtime be
 
 Do not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.
 
-Use patch_and_check to apply unified diffs and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
+Use patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
 
 INITIAL TYPE-CHECKER REPORT
 {report}

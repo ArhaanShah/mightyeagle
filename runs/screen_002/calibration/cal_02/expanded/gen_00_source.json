@@ -1,0 +1,8 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/part_a.py": "from typing import Optional\ndef get_a() -> Optional[str]:\n    return \"A\"\ndef run_a() -> int:\n    return len(get_a())\n",
+    "pkg/part_b.py": "from typing import Optional\ndef get_b() -> Optional[int]:\n    return 10\ndef run_b() -> int:\n    return get_b() + 1\n",
+    "tests/test_dist.py": "from pkg.part_a import run_a\nfrom pkg.part_b import run_b\ndef test_dist():\n    assert run_a() == 1\n    assert run_b() == 11\n"
+  }
+}

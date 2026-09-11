@@ -53,7 +53,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-g7fxte95",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-yi0hd2vi",
     "pkg/pipeline.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",

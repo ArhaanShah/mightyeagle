@@ -1,0 +1,19 @@
+*** Begin Patch
+*** Update File: pkg/appconfig.py
+@@
+-from typing import TypedDict, List
+-
+-class AppConfig(TypedDict):
+-    timeout: str
++from typing import TypedDict, List
++
++# The configuration dictionary contains a numeric timeout value. The original
++# type annotation incorrectly declared the ``timeout`` field as ``str`` which
++# caused mypy to report a mismatch when the integer literal ``30`` was stored
++# and later returned as an ``int``.  Updating the ``TypedDict`` definition to
++# reflect the actual runtime type resolves the type errors while preserving the
++# intended behaviour of the module.
++class AppConfig(TypedDict):
++    timeout: int
+*** End Patch
+*** End Patch

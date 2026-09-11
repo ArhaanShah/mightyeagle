@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/clean.py": "def add(a: int, b: int) -> int:\n    return a + b\n",
+    "tests/test_clean.py": "from pkg.clean import add\ndef test_add():\n    assert add(1, 2) == 3\n"
+  }
+}

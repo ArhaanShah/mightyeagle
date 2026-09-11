@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-588f82dc-186d-4440-a06b-99e5d585778f",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need to format patch correctly. Use Begin-Patch format. Let's craft.",
+        "tool_calls": [
+          {
+            "id": "fc_2ee21552-354b-40bc-b2f6-7123b3ac9e50",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/long.py\\n@@\\n-from typing import Optional, List\\n-\\n-def fetch_data() -\\u003e Optional[str]:\\n-    return \\\"item\\\"\\n+from typing import List\\n+\\n+# NOTE:\\n+# The original implementation annotated ``fetch_data`` as returning\\n+# ``Optional[str]`` even though the function always returns a concrete\\n+# string value.  This caused ``len(fetch_data())`` to be flagged by the\\n+# type checker because ``len`` expects a ``Sized`` object, not ``None``.\\n+#\\n+# Changing the return type to ``str`` accurately reflects the runtime\\n+# behaviour and eliminates the spurious type errors while preserving the\\n+# public API (the function still returns a string).  No other code depends\\n+# on the optional nature of the return value.\\n+\\n+def fetch_data() -\\u003e str:\\n+    \\\"\\\"\\\"Return a deterministic string.\\n+\\n+    The function is deliberately simple \u2013 it always returns the literal\\n+    ``\\\"item\\\"`` \u2013 so callers can safely assume the result is a non\u2011null\\n+    ``str``.\\n+    \\\"\\\"\\\"\\n+    return \\\"item\\\"\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137532,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_5082008e34",
+  "usage": {
+    "completion_tokens": 300,
+    "prompt_tokens": 1426,
+    "total_tokens": 1726,
+    "completion_time": 0.654362384,
+    "completion_tokens_details": {
+      "reasoning_tokens": 17
+    },
+    "prompt_time": 0.471101715,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.980169712,
+    "total_time": 1.125464099
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28egb7ze5avz85pn9cwcw48",
+    "debug": null,
+    "seed": 1397012903,
+    "usage": null
+  }
+}

@@ -1,0 +1,54 @@
+*** Begin Patch
+*** Update File: pkg/normalize.py
+@@
+-from typing import Optional
+-
+-def normalize(value: float, scale: float) -> Optional[float]:
+-    return value / scale if scale != 0 else 0.0
++"""Normalization utilities.
++
++The original implementation annotated :func:`normalize` as returning
++``Optional[float]`` even though the function never returns ``None`` – it
++always produces a ``float`` (``0.0`` when ``scale`` is zero).  This caused
++type‑checking errors when the result was passed to :func:`format_val`,
++which expects a plain ``float``.
++
++The fix is to tighten the return type to ``float`` and remove the unused
++``Optional`` import.  The runtime behaviour is unchanged: callers still
++receive ``0.0`` for a zero ``scale``.
++"""
++
++def normalize(value: float, scale: float) -> float:
++    """Return ``value / scale`` or ``0.0`` if ``scale`` is zero.
++
++    The function never returns ``None``; the type hint now reflects that.
++    """
++    return value / scale if scale != 0 else 0.0
+*** End Patch
+*** Begin Patch
+*** Update File: pkg/scale.py
+@@
+-from typing import Optional, List
+-
+-def scale_batch(items: List[float], factor: float) -> Optional[List[float]]:
+-    return [x * factor for x in items]
++"""Batch scaling utilities.
++
++Similar to ``normalize`` the original type annotation claimed the function
++could return ``None`` (``Optional[List[float]]``) even though the implementation
++always produces a list.  This mismatch led to a ``len`` call on a value typed as
++``list[float] | None``.
++
++We correct the signature to return ``List[float]`` and drop the unnecessary
++``Optional`` import, preserving the exact runtime semantics.
++"""
++
++from typing import List
++
++def scale_batch(items: List[float], factor: float) -> List[float]:
++    """Scale each item in ``items`` by ``factor`` and return a new list.
++
++    The function always returns a list; it never returns ``None``.
++    """
++    return [x * factor for x in items]
+*** End Patch

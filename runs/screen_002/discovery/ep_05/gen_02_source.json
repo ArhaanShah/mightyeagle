@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/renderer.py": "from typing import Protocol, List\n\nclass Renderer(Protocol):\n    def render(self, text: str) -> str: ...\n\nclass MarkdownRenderer:\n    def format(self, text: str) -> str:\n        \"\"\"Return the markdown-formatted version of *text*.\n\n        The original implementation only provided a ``format`` method, which\n        meant that ``MarkdownRenderer`` did not satisfy the ``Renderer``\n        protocol required by :func:`display_title`.  Adding a ``render`` method\n        that forwards to ``format`` preserves the public API expected by the\n        tests while allowing the object to be used wherever a ``Renderer`` is\n        required.\n        \"\"\"\n        return f\"*{text}*\"\n\n    # The ``Renderer`` protocol expects a ``render`` method.  Implement it as a\n    # thin wrapper around ``format`` so that ``MarkdownRenderer`` conforms to\n    # the protocol without breaking existing callers that use ``format``.\n    def render(self, text: str) -> str:\n        return self.format(text)\n\ndef display_title(r: Renderer, title: str) -> str:\n    return r.render(title)\n\ndef run_render() -> List[str]:\n    m = MarkdownRenderer()\n    t1 = display_title(m, \"Hello\")\n    t2 = display_title(m, \"World\")\n    return [t1, t2]\n",
+    "tests/test_renderer.py": "from pkg.renderer import MarkdownRenderer\n\ndef test_renderer():\n    m = MarkdownRenderer()\n    assert m.format(\"Hello\") == \"*Hello*\"\n"
+  }
+}

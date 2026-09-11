@@ -1,0 +1,30 @@
+*** Begin Patch
+*** Update File: pkg/normalize.py
+@@
+-from typing import Optional
+-
+-def normalize(value: float, scale: float) -> Optional[float]:
+-    return value / scale if scale != 0 else 0.0
++"""Normalization utilities.
++
++The original implementation annotated :func:`normalize` as returning
++``Optional[float]`` even though the function always returns a ``float`` –
++it returns ``value / scale`` when ``scale`` is non‑zero and ``0.0`` otherwise.
++Returning ``Optional`` caused the callers in :func:`run_norm` to receive a
++``float | None`` which is incompatible with :func:`format_val` that expects a
++plain ``float``.  The type hint was therefore incorrect and resulted in
++``arg-type`` mypy errors.
++
++We fix the annotation to ``float`` and drop the unused ``Optional`` import.
++The runtime behaviour is unchanged – the function still returns ``0.0`` for a
++zero ``scale``.
++"""
++
++def normalize(value: float, scale: float) -> float:
++    """Return ``value / scale`` or ``0.0`` when ``scale`` is zero.
++
++    The function never returns ``None``; it always yields a ``float``.
++    """
++    return value / scale if scale != 0 else 0.0
+*** End Patch
+*** End Patch

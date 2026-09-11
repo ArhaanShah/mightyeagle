@@ -1,0 +1,74 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.\n\nDo not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.\n\nUse patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.\n\nINITIAL TYPE-CHECKER REPORT\n[DIAGNOSTICS UNAVAILABLE]\n\nSOURCE, PUBLIC TESTS, AND CONFIGURATION\n# FILE: pkg/__init__.py\n```\n\n```\n\n# FILE: pkg/clean.py\n```\ndef add(a: int, b: int) -> int:\n    return a + b\n\n```\n\n# FILE: tests/test_clean.py\n```\nfrom pkg.clean import add\ndef test_add():\n    assert add(1, 2) == 3\n\n```\n\n"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "fc_ae164660-0a62-4155-96af-57046497cb0e",
+          "type": "function",
+          "function": {
+            "name": "patch_and_check",
+            "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/clean.py\\n@@\\n-def add(a: int, b: int) -\\u003e int:\\n-    return a + b\\n+def add(a: int, b: int) -\\u003e int:\\n+    return a + b\\n*** End Patch\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "fc_ae164660-0a62-4155-96af-57046497cb0e",
+      "content": "PATCH REJECTED: The patch contains no hunks.\n\nDetail: Patch contains no effective changes"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "fc_1a3bdaff-38f7-45db-a342-c89b3cc9fbcb",
+          "type": "function",
+          "function": {
+            "name": "patch_and_check",
+            "arguments": "{\"patch\":\"*** Begin Patch\\n*** End Patch\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "fc_1a3bdaff-38f7-45db-a342-c89b3cc9fbcb",
+      "content": "PATCH REJECTED: The patch contains no hunks.\n\nDetail: no_hunks"
+    }
+  ],
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_completion_tokens": 2048,
+  "include_reasoning": true,
+  "tool_choice": "auto",
+  "parallel_tool_calls": false,
+  "stream": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "description": "Apply source edits and return validation feedback. The patch may use Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) or standard unified diff. Paths are relative to the task root. Only existing, allowlisted source files may be edited — no new files, deletions, renames, or binary changes. All hunks must apply exactly. Returns: application status, public runtime-test results, and the complete mypy type-checker report.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "patch": {
+              "type": "string",
+              "description": "A source patch in Begin-Patch or standard unified-diff format. Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
+            }
+          },
+          "required": [
+            "patch"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

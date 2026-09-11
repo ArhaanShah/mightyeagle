@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-d02894b8-8eb6-4166-9aef-78e0d20cab02",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "The tests passed and type-checker reports no errors. However, we added runtime type checks that may be unnecessary but fine. The original code had no errors. The request: \"Repair the type errors in this package while preserving its specified runtime behavior.\" There were no type errors initially. But we added extra behavior: rejecting bool, raising TypeError. That changes runtime behavior (original allowed bool). Tests didn't cover that. Might violate requirement to preserve behavior. Should not change behavior. So we need to revert changes. Since there were no type errors, maybe there is hidden type error not caught? The type-checker report shows none. So maybe the task expects no changes. But we must output final state. Since we made changes, need to revert to original to preserve behavior. Let's revert patch.\n\n",
+        "tool_calls": [
+          {
+            "id": "fc_0c4594db-21b5-44f7-95e6-2e27d0b17782",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/clean.py\\n@@\\n-def add(a: int, b: int) -\\\\u003e int:\\n-    \\\"\\\"\\\"Return the sum of two integers.\\n-\\n-    The function is deliberately strict about its input types: it only accepts\\n-    instances of :class:`int`.  While ``bool`` is a subclass of ``int`` in Python,\\n-    treating it as a regular integer would be surprising for callers that are\\n-    expecting *numeric* values.  Therefore we explicitly reject ``bool`` as\\n-    well.  This runtime validation aligns the implementation with the static\\n-    type hints and helps the test suite surface type\u2011related misuse.\\n-    \\\"\\\"\\\"\\n-\\n-    # ``isinstance(True, int)`` returns ``True`` because ``bool`` subclasses\\n-    # ``int``.  We guard against that because the type signature advertises\\n-    # ``int`` \u2013 not a boolean flag.\\n-    if isinstance(a, bool) or isinstance(b, bool):\\n-        raise TypeError(\\\"bool is not a valid int argument for add()\\\")\\n-    if not isinstance(a, int) or not isinstance(b, int):\\n-        raise TypeError(\\\"add() arguments must be int\\\")\\n-    return a + b\\n+def add(a: int, b: int) -\\\\u003e int:\\n+    return a + b\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137331,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_e1a78f200e",
+  "usage": {
+    "completion_tokens": 501,
+    "prompt_tokens": 966,
+    "total_tokens": 1467,
+    "completion_time": 1.050676,
+    "completion_tokens_details": {
+      "reasoning_tokens": 161
+    },
+    "prompt_time": 0.145814102,
+    "prompt_tokens_details": null,
+    "queue_time": 0.402762327,
+    "total_time": 1.196490102
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28ea7hjekb88wzng977jd1e",
+    "debug": null,
+    "seed": 1484722492,
+    "usage": null
+  }
+}

@@ -1,0 +1,13 @@
+{"timestamp": "2026-09-11T14:45:09.782711+00:00", "event_type": "episode_start", "data": {"episode_id": "ep_03", "fixture_id": "f4_dist", "condition": "grouped", "workspace_hash": "3a47b940dd9c9cfe925e6a97a527a0a82ae517af3417f846cff68c6d7b9883d2", "prompt_length": 2253, "report_hash": "d310f1179b0fe9d5b0e3e5caacf00a3ffde5d0a2c692f96053c86c63322a3acc", "source_hash": "9d9463e86a499c581d215aae675b324f73b3d0a98929a25994d97a4ccf5410c8"}}
+{"timestamp": "2026-09-11T14:45:09.818273+00:00", "event_type": "api_intent", "data": {"generation": 1, "message_count": 1}}
+{"timestamp": "2026-09-11T14:45:11.591243+00:00", "event_type": "tool_intent", "data": {"generation": 1, "patch_hash": "b0712cfb664fcdf9", "pre_workspace_hash": "3a47b940dd9c9cfe925e6a97a527a0a82ae517af3417f846cff68c6d7b9883d2"}}
+{"timestamp": "2026-09-11T14:45:11.621213+00:00", "event_type": "tool_result", "data": {"generation": 1, "status": "rejected", "post_workspace_hash": ""}}
+{"timestamp": "2026-09-11T14:45:11.649142+00:00", "event_type": "api_intent", "data": {"generation": 2, "message_count": 3}}
+{"timestamp": "2026-09-11T14:45:42.128477+00:00", "event_type": "tool_intent", "data": {"generation": 2, "patch_hash": "d42993d8d5300a0a", "pre_workspace_hash": "3a47b940dd9c9cfe925e6a97a527a0a82ae517af3417f846cff68c6d7b9883d2"}}
+{"timestamp": "2026-09-11T14:45:42.158478+00:00", "event_type": "tool_result", "data": {"generation": 2, "status": "rejected", "post_workspace_hash": ""}}
+{"timestamp": "2026-09-11T14:45:42.175913+00:00", "event_type": "api_intent", "data": {"generation": 3, "message_count": 5}}
+{"timestamp": "2026-09-11T14:45:44.122669+00:00", "event_type": "tool_intent", "data": {"generation": 3, "patch_hash": "58147721c343adbe", "pre_workspace_hash": "3a47b940dd9c9cfe925e6a97a527a0a82ae517af3417f846cff68c6d7b9883d2"}}
+{"timestamp": "2026-09-11T14:45:50.561198+00:00", "event_type": "tool_result", "data": {"generation": 3, "status": "applied", "post_workspace_hash": "6041a29b4a42c162de17863c3ed752065ec05ef609b6f2b9606156e91f894bb3"}}
+{"timestamp": "2026-09-11T14:45:50.615320+00:00", "event_type": "api_intent", "data": {"generation": 4, "message_count": 7}}
+{"timestamp": "2026-09-11T14:46:12.520463+00:00", "event_type": "model_final", "data": {"generation": 4}}
+{"timestamp": "2026-09-11T14:46:12.530638+00:00", "event_type": "episode_end", "data": {"termination_reason": "model_final"}}

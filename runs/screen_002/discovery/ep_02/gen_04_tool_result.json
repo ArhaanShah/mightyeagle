@@ -1,0 +1,7 @@
+{
+  "status": "rejected",
+  "feedback": "PATCH REJECTED: A patch hunk did not match the current file content exactly.\n\nDetail: Expected one exact match, found 0",
+  "post_workspace_hash": "",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

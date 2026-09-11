@@ -75,6 +75,7 @@ def build_csv(rows: list[dict[str, Any]]) -> str:
         "first_turn_verified_progress",
         "generation_cap_reached", "token_censored", "budget_censored",
         "model_action_invalid", "technical_failure", "request_outcome_unknown",
+        "rate_limit_censored",
         "provider_content_filtered", "model_identity_failure",
         "final_report_observed", "termination_reason",
         "generations_received", "patches_submitted", "patches_accepted",
@@ -121,6 +122,7 @@ def build_summary_md(
     tech_fail = sum(1 for r in rows if r.get("technical_failure") is True)
     token_cens = sum(1 for r in rows if r.get("token_censored") is True)
     budget_cens = sum(1 for r in rows if r.get("budget_censored") is True)
+    rate_cens = sum(1 for r in rows if r.get("rate_limit_censored") is True)
     unknown_out = sum(1 for r in rows if r.get("request_outcome_unknown") is True)
     content_filt = sum(1 for r in rows if r.get("provider_content_filtered") is True)
     id_fail = sum(1 for r in rows if r.get("model_identity_failure") is True)
@@ -130,6 +132,7 @@ def build_summary_md(
     lines.append(f"- Technical failures: {tech_fail}")
     lines.append(f"- Token censored: {token_cens}")
     lines.append(f"- Budget censored: {budget_cens}")
+    lines.append(f"- Rate-limit censored: {rate_cens}")
     lines.append(f"- Request outcome unknown: {unknown_out}")
     lines.append(f"- Content filtered: {content_filt}")
     lines.append(f"- Model identity failures: {id_fail}")

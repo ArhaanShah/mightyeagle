@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-ae1bab85-52d8-43a9-8d92-9142af5b1363",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need to run type checking. There's no diagnostics provided. Probably there are type errors elsewhere. Let's run patch_and_check to see diagnostics.",
+        "tool_calls": [
+          {
+            "id": "fc_a64a1532-f4cd-449c-bd7d-2288f519e554",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/clean.py\\n@@\\n-def add(a: int, b: int) -\\u003e int:\\n-    return a + b\\n+def add(a: int, b: int) -\\u003e int:\\n+    return a + b\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137320,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_5d041d5b40",
+  "usage": {
+    "completion_tokens": 117,
+    "prompt_tokens": 450,
+    "total_tokens": 567,
+    "completion_time": 0.247703552,
+    "completion_tokens_details": {
+      "reasoning_tokens": 29
+    },
+    "prompt_time": 0.023025149,
+    "prompt_tokens_details": null,
+    "queue_time": 0.210848241,
+    "total_time": 0.270728701
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28e9xy6eys9h2jzftkq6tbx",
+    "debug": null,
+    "seed": 1870687875,
+    "usage": null
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-0d800832-8509-4cbc-9b3c-c230cbfef793",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need proper diff format. Use Begin-Patch format. Let's craft correctly.",
+        "tool_calls": [
+          {
+            "id": "fc_5293b2e8-6ce5-4bcc-86f7-4a70ffc54867",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/part_a.py\\n@@\\n-from typing import Optional\\n-def get_a() -\\u003e Optional[str]:\\n-    return \\\"A\\\"\\n-def run_a() -\\u003e int:\\n-    return len(get_a())\\n+\\\"\\\"\\\"Utilities for part A.\\n+\\n+The original implementation annotated ``get_a`` as returning ``Optional[str]``\\n+even though it always returns a concrete string. This caused ``len`` to be\\n+applied to a ``str | None`` value, which the type checker flagged as an error.\\n+\\n+We tighten the return type to ``str`` while keeping the runtime behaviour\\n+identical \u2013 the function still returns ``\\\"A\\\"``.  The tests expect ``run_a`` to\\n+return ``1``, which remains true.\\n+\\\"\\\"\\\"\\n+\\n+from typing import Optional  # retained for potential future use\\n+\\n+\\n+def get_a() -\\u003e str:\\n+    \\\"\\\"\\\"Return the constant string ``\\\"A\\\"``.\\n+\\n+    The function never returns ``None``; the ``Optional`` annotation was a\\n+    mistake.\\n+    \\\"\\\"\\\"\\n+    return \\\"A\\\"\\n+\\n+\\n+def run_a() -\\u003e int:\\n+    \\\"\\\"\\\"Return the length of the string produced by :func:`get_a`.\\\"\\\"\\\"\\n+    return len(get_a())\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137495,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_19b184c447",
+  "usage": {
+    "completion_tokens": 354,
+    "prompt_tokens": 1169,
+    "total_tokens": 1523,
+    "completion_time": 0.759908093,
+    "completion_tokens_details": {
+      "reasoning_tokens": 17
+    },
+    "prompt_time": 0.061709603,
+    "prompt_tokens_details": null,
+    "queue_time": 0.401924993,
+    "total_time": 0.821617696
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28ef84wecyrwx53j35sk7s3",
+    "debug": null,
+    "seed": 1821492986,
+    "usage": null
+  }
+}

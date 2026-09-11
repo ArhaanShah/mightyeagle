@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/clean.py": "def add(a: int, b: int) -> int:\n    \"\"\"Return the sum of two integers.\n\n    The function is deliberately strict about its input types: it only accepts\n    instances of :class:`int`.  While ``bool`` is a subclass of ``int`` in Python,\n    treating it as a regular integer would be surprising for callers that are\n    expecting *numeric* values.  Therefore we explicitly reject ``bool`` as\n    well.  This runtime validation aligns the implementation with the static\n    type hints and helps the test suite surface type\u2011related misuse.\n    \"\"\"\n\n    # ``isinstance(True, int)`` returns ``True`` because ``bool`` subclasses\n    # ``int``.  We guard against that because the type signature advertises\n    # ``int`` \u2013 not a boolean flag.\n    if isinstance(a, bool) or isinstance(b, bool):\n        raise TypeError(\"bool is not a valid int argument for add()\")\n    if not isinstance(a, int) or not isinstance(b, int):\n        raise TypeError(\"add() arguments must be int\")\n    return a + b\n",
+    "tests/test_clean.py": "from pkg.clean import add\ndef test_add():\n    assert add(1, 2) == 3\n"
+  }
+}

@@ -1,0 +1,23 @@
+*** Begin Patch
+*** Update File: pkg/pipeline.py
+@@
+-from typing import Optional, List
++from typing import List
+@@
+-def compute_summary(values: List[float]) -> Optional[float]:
+-    if not values:
+-        return 0.0
+-    total = sum(values)
+-    return total / len(values)
++def compute_summary(values: List[float]) -> float:
++    """Compute the arithmetic mean of a list of numbers.
++
++    Returns ``0.0`` for an empty list to keep the return type consistently a
++    ``float``. This aligns with the expectations of callers such as
++    ``format_result`` which require a ``float`` argument.
++    """
++    if not values:
++        return 0.0
++    total = sum(values)
++    return total / len(values)
+*** End Patch

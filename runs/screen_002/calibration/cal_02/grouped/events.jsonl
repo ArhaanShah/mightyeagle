@@ -1,0 +1,13 @@
+{"timestamp": "2026-09-11T14:37:43.808002+00:00", "event_type": "episode_start", "data": {"episode_id": "cal_02_grouped", "fixture_id": "cal_dist", "condition": "grouped", "workspace_hash": "2a640717d9d0b8103b791eb20240cf39149709c882f1bb6c3e8a2c9246dfd159", "prompt_length": 1657, "report_hash": "3ed65113c2f861410f08c9c788aa0830bdbd866f50a054637dec512a1cc594d7", "source_hash": "c08b7042f419477e1a7143306053095317b4e13260684beb8d1631904647c4ee"}}
+{"timestamp": "2026-09-11T14:37:43.843255+00:00", "event_type": "api_intent", "data": {"generation": 1, "message_count": 1}}
+{"timestamp": "2026-09-11T14:37:45.648384+00:00", "event_type": "tool_intent", "data": {"generation": 1, "patch_hash": "c7788f9a76c6d360", "pre_workspace_hash": "2a640717d9d0b8103b791eb20240cf39149709c882f1bb6c3e8a2c9246dfd159"}}
+{"timestamp": "2026-09-11T14:37:45.673993+00:00", "event_type": "tool_result", "data": {"generation": 1, "status": "rejected", "post_workspace_hash": ""}}
+{"timestamp": "2026-09-11T14:37:45.697186+00:00", "event_type": "api_intent", "data": {"generation": 2, "message_count": 3}}
+{"timestamp": "2026-09-11T14:38:15.174950+00:00", "event_type": "tool_intent", "data": {"generation": 2, "patch_hash": "d4ff7b7c685babed", "pre_workspace_hash": "2a640717d9d0b8103b791eb20240cf39149709c882f1bb6c3e8a2c9246dfd159"}}
+{"timestamp": "2026-09-11T14:38:22.267512+00:00", "event_type": "tool_result", "data": {"generation": 2, "status": "applied", "post_workspace_hash": "a15e34383cf42207cdcc5471d1836687852f16a03014934c0bd66457effda2e4"}}
+{"timestamp": "2026-09-11T14:38:22.333028+00:00", "event_type": "api_intent", "data": {"generation": 3, "message_count": 5}}
+{"timestamp": "2026-09-11T14:38:26.355085+00:00", "event_type": "tool_intent", "data": {"generation": 3, "patch_hash": "cd4267b5f6d57b1c", "pre_workspace_hash": "a15e34383cf42207cdcc5471d1836687852f16a03014934c0bd66457effda2e4"}}
+{"timestamp": "2026-09-11T14:38:33.553797+00:00", "event_type": "tool_result", "data": {"generation": 3, "status": "applied", "post_workspace_hash": "6a23c672fadb806bb5b2b88f8dc65524bb0772d4191076d0534b046853d6e5f1"}}
+{"timestamp": "2026-09-11T14:38:33.604492+00:00", "event_type": "api_intent", "data": {"generation": 4, "message_count": 7}}
+{"timestamp": "2026-09-11T14:38:48.101789+00:00", "event_type": "model_final", "data": {"generation": 4}}
+{"timestamp": "2026-09-11T14:38:48.105297+00:00", "event_type": "episode_end", "data": {"termination_reason": "model_final"}}

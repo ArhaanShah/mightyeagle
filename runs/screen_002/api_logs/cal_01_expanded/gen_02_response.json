@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-118ea1dc-6505-409d-9fb6-234e98757f8f",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need to format patch correctly. Use Begin-Patch format. Let's produce correct patch.",
+        "tool_calls": [
+          {
+            "id": "fc_45cf404f-e993-46de-ae33-d0763d2fe857",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/trivial.py\\n@@\\n-from typing import Optional\\n-\\n-def compute(x: int) -\\u003e Optional[int]:\\n-    return x * 2\\n+from typing import Optional\\n+\\n+# The function always returns an integer (twice the input). The original\\n+# annotation used ``Optional[int]`` which suggested that ``None`` could be\\n+# returned, causing a type\u2011checking error when the result is used in an\\n+# arithmetic expression.  The implementation never returns ``None`` so we\\n+# tighten the return type to ``int``.  This preserves the runtime behaviour\\n+# while satisfying the type checker.\\n+def compute(x: int) -\\u003e int:\\n+    return x * 2\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137379,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_6dedd2be22",
+  "usage": {
+    "completion_tokens": 205,
+    "prompt_tokens": 780,
+    "total_tokens": 985,
+    "completion_time": 0.432476609,
+    "completion_tokens_details": {
+      "reasoning_tokens": 19
+    },
+    "prompt_time": 0.040766224,
+    "prompt_tokens_details": null,
+    "queue_time": 0.219294063,
+    "total_time": 0.473242833
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28ebq9feb7aa7hs1fcga3xd",
+    "debug": null,
+    "seed": 173078482,
+    "usage": null
+  }
+}

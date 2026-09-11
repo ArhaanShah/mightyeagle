@@ -1,0 +1,45 @@
+{
+  "id": "chatcmpl-06027d97-0922-4b35-87b9-1d1d710ff5f1",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "Implemented a `render` method in `MarkdownRenderer` that forwards to the existing `format` method, ensuring compliance with the `Renderer` protocol while preserving original functionality. Added comprehensive docstrings for clarity. All type errors resolved and tests pass.",
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "All type errors fixed. Need ensure behavior unchanged: display_title uses render, now works. Tests only test format. run_render returns list using display_title, should work. No further changes. Provide final answer.",
+        "tool_calls": null
+      }
+    }
+  ],
+  "created": 1789138012,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_60e4b492db",
+  "usage": {
+    "completion_tokens": 101,
+    "prompt_tokens": 1456,
+    "total_tokens": 1557,
+    "completion_time": 0.212683792,
+    "completion_tokens_details": {
+      "reasoning_tokens": 43
+    },
+    "prompt_time": 0.091598987,
+    "prompt_tokens_details": null,
+    "queue_time": 0.522846148,
+    "total_time": 0.304282779
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28ez1b8ef48dh8rjxxqvxb4",
+    "debug": null,
+    "seed": 492695651,
+    "usage": null
+  }
+}

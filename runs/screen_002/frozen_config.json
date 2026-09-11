@@ -1,0 +1,46 @@
+{
+  "frozen_at": "2026-09-11T14:43:08.707468+00:00",
+  "config": {
+    "model": "openai/gpt-oss-120b",
+    "temperature": 0.6,
+    "reasoning_effort": "medium",
+    "max_completion_tokens": 2048,
+    "include_reasoning": true,
+    "tool_choice": "auto",
+    "parallel_tool_calls": false,
+    "stream": false,
+    "max_generations_per_episode": 4,
+    "rate_limit_fallback_tpm": 8000,
+    "rate_limit_safety_margin_tokens": 256,
+    "rate_limit_guard_seconds": 0.25,
+    "max_rate_limit_retries_per_generation": 3,
+    "max_transport_retries_per_generation": 3,
+    "validation_image": "workload-screen-validator:20260911",
+    "_note": "Pinned configuration. Do not modify after operational freeze. See \u00a76 of the plan."
+  },
+  "code_hash": "39f23e2cc32d66afa970396f932f9c050102211ad0844057ab0903ae0128f683",
+  "fixtures_hash": "2fbbdb94eb5bf8a6b521d8401981279adc56241a0d15113ba39e97a32cdf24aa",
+  "prompt_hash": "c97658bdb280a55487f80f936f47f33d75627deaf38490592985c80bee4fad11",
+  "tool_schema_hash": "7adb5a1fec599ce9f17af22b4ef594e515afdf7c3b835d9276a402ab1fca07a2",
+  "fixture_validation_hash": "1177eeb6b8e30fd5b3e18d97d3cbb820c24bc2c695362358a0f33e8574b12eae",
+  "validation_image": {
+    "reference": "workload-screen-validator:20260911",
+    "image_id": "sha256:c0abead0e33b08224f4b12e46d23803bf08ae0f7dc51f375d8330186bcab0346",
+    "repo_digests": [
+      "workload-screen-validator@sha256:c0abead0e33b08224f4b12e46d23803bf08ae0f7dc51f375d8330186bcab0346"
+    ],
+    "python_version": "3.12.10",
+    "mypy_version": "1.11.2",
+    "pytest_version": "8.3.3"
+  },
+  "package_versions": {
+    "python": "3.12.6",
+    "groq": "1.7.0"
+  },
+  "code_provenance": {
+    "git_commit": "63a75b637ee2696a273c0a5a6e0d76c83aa1e40c",
+    "git_diff_hash": "ecbddbdfffa861e215f4ab58ea2f32bb032eb7b4b9bf5173a0dfbbb3713d39a6",
+    "content_hash": "39f23e2cc32d66afa970396f932f9c050102211ad0844057ab0903ae0128f683"
+  },
+  "screen_id": "screen_002"
+}

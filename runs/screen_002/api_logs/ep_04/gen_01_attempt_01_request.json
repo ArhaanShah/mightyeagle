@@ -1,0 +1,38 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.\n\nDo not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.\n\nUse patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.\n\nINITIAL TYPE-CHECKER REPORT\n=== TYPE-CHECKER REPORT ===\n===\nseverity: error\ncode: arg-type\nmessage: Argument 1 to \"display_title\" has incompatible type \"MarkdownRenderer\"; expected \"Renderer\"\nextras: {\"hint\": null}\nmultiplicity: 2\n  LOC|{\"col\": 23, \"file\": \"pkg/renderer.py\", \"line\": 15, \"occurrence_index\": 0}\n  LOC|{\"col\": 23, \"file\": \"pkg/renderer.py\", \"line\": 16, \"occurrence_index\": 1}\n===\n--- 2 error(s), 2 record(s) total ---\n\nSOURCE, PUBLIC TESTS, AND CONFIGURATION\n# FILE: pkg/__init__.py\n```\n\n```\n\n# FILE: pkg/renderer.py\n```\nfrom typing import Protocol, List\n\nclass Renderer(Protocol):\n    def render(self, text: str) -> str: ...\n\nclass MarkdownRenderer:\n    def format(self, text: str) -> str:\n        return f\"*{text}*\"\n\ndef display_title(r: Renderer, title: str) -> str:\n    return r.render(title)\n\ndef run_render() -> List[str]:\n    m = MarkdownRenderer()\n    t1 = display_title(m, \"Hello\")\n    t2 = display_title(m, \"World\")\n    return [t1, t2]\n\n```\n\n# FILE: tests/test_renderer.py\n```\nfrom pkg.renderer import MarkdownRenderer\n\ndef test_renderer():\n    m = MarkdownRenderer()\n    assert m.format(\"Hello\") == \"*Hello*\"\n\n```\n\n"
+    }
+  ],
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_completion_tokens": 2048,
+  "include_reasoning": true,
+  "tool_choice": "auto",
+  "parallel_tool_calls": false,
+  "stream": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "description": "Apply source edits and return validation feedback. The patch may use Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) or standard unified diff. Paths are relative to the task root. Only existing, allowlisted source files may be edited — no new files, deletions, renames, or binary changes. All hunks must apply exactly. Returns: application status, public runtime-test results, and the complete mypy type-checker report.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "patch": {
+              "type": "string",
+              "description": "A source patch in Begin-Patch or standard unified-diff format. Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
+            }
+          },
+          "required": [
+            "patch"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

@@ -40,7 +40,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-f6okuoww",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-6y3xfy7i",
     "pkg/renderer.py"
   ],
   "checker_version": "mypy 1.11.2 (compiled: yes)",

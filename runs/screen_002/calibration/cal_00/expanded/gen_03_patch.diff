@@ -1,0 +1,9 @@
+*** Begin Patch
+*** Update File: pkg/clean.py
+@@
+-def add(a: int, b: int) -> int:
+-    return a + b
++# Simple addition function with type hints
++def add(a: int, b: int) -> int:
++    return a + b
+*** End Patch

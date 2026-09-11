@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-e5c84e9c-7e3a-4677-91e1-b00cabb17e69",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "The patch format must be Begin-Patch format. I attempted but maybe syntax wrong. Need to follow *** Begin Patch etc. Let's craft proper Begin-Patch.\n\n",
+        "tool_calls": [
+          {
+            "id": "fc_8d323e9e-078e-43a6-aea8-c72ccd6a0e20",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/handler_a.py\\n@@\\n class AlphaHandler:\\n-    def process(self, msg: str) -\\u003e str:\\n-        return f\\\"A:{msg}\\\"\\n+    def process(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Process a message and return a formatted string.\\n+\\n+        This method is part of the public API used by the tests. The\\n+        :func:`pkg.proto.dispatch` helper expects a ``handle`` method as\\n+        defined by the ``Handler`` protocol. To satisfy the protocol while\\n+        preserving the original behaviour we provide a thin ``handle``\\n+        wrapper that forwards to ``process``.\\n+        \\\"\\\"\\\"\\n+        return f\\\"A:{msg}\\\"\\n+\\n+    # The protocol ``Handler`` requires a ``handle`` method. Adding this\\n+    # method makes ``AlphaHandler`` a structural subtype of ``Handler``\\n+    # without altering its external contract.\\n+    def handle(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Delegate to :meth:`process` to satisfy the ``Handler`` protocol.\\n+\\n+        Keeping the implementation separate from ``process`` ensures that\\n+        existing callers that rely on ``process`` continue to work unchanged.\\n+        \\\"\\\"\\\"\\n+        return self.process(msg)\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789138261,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_9d1f936695",
+  "usage": {
+    "completion_tokens": 362,
+    "prompt_tokens": 1218,
+    "total_tokens": 1580,
+    "completion_time": 0.771483134,
+    "completion_tokens_details": {
+      "reasoning_tokens": 33
+    },
+    "prompt_time": 0.10782318,
+    "prompt_tokens_details": null,
+    "queue_time": 0.34911336,
+    "total_time": 0.879306314
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28f6mqxedpahvdbcew6w9sq",
+    "debug": null,
+    "seed": 1107085743,
+    "usage": null
+  }
+}

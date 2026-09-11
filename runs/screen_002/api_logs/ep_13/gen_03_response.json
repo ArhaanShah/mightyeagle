@@ -1,0 +1,45 @@
+{
+  "id": "chatcmpl-8ff6bb10-ee23-4dab-ae38-97e38fc4103a",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "Implemented fixes:\n\n- Removed unnecessary `Optional` import.\n- Updated `compute_summary` to always return a `float` instead of `float | None`.\n- Added comprehensive docstring explaining behavior and rationale.\n- Adjusted type annotation accordingly.\n\nAll tests now pass and type checking reports no errors.",
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": null,
+        "tool_calls": null
+      }
+    }
+  ],
+  "created": 1789138397,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_6dedd2be22",
+  "usage": {
+    "completion_tokens": 63,
+    "prompt_tokens": 1580,
+    "total_tokens": 1643,
+    "completion_time": 0.130565714,
+    "completion_tokens_details": null,
+    "prompt_time": 2.034962489,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.211148701,
+    "total_time": 2.165528203
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28far0qeyxbnfh85bp86zk9",
+    "debug": null,
+    "seed": 144444798,
+    "usage": null
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/events.py": "from typing import Optional, List\n\nclass EventQueue:\n    def pop_event(self) -> Optional[str]:\n        return \"event_data\"\n\ndef process(q: EventQueue) -> List[int]:\n    \"\"\"Process two events from the queue and return their lengths.\n\n    ``EventQueue.pop_event`` is typed as returning ``Optional[str]`` because a\n    real implementation could signal an empty queue with ``None``.  In the\n    simplified test scenario the method always returns a string, but the type\n    checker still sees the possibility of ``None``.  To satisfy static typing\n    without changing the public API we assert that the values are not ``None``.\n    The assertions act as runtime guards (preserving behaviour) and also narrow\n    the type for the subsequent ``len`` calls.\n    \"\"\"\n\n    e1 = q.pop_event()\n    e2 = q.pop_event()\n    # Ensure the values are strings for type checking and runtime safety.\n    assert e1 is not None, \"EventQueue.pop_event() returned None for the first event\"\n    assert e2 is not None, \"EventQueue.pop_event() returned None for the second event\"\n    l1 = len(e1)\n    l2 = len(e2)\n    return [l1, l2]\n",
+    "tests/test_events.py": "from pkg.events import EventQueue, process\n\ndef test_events():\n    q = EventQueue()\n    assert process(q) == [10, 10]\n"
+  }
+}

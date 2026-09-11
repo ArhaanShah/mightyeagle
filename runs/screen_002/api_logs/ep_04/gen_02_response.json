@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-3bec3d30-02ae-4f3f-9a9c-efb3834375d0",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need proper diff format. Use *** Begin Patch etc. Let's craft correctly.",
+        "tool_calls": [
+          {
+            "id": "fc_6fe9af67-e42d-4c3d-8b5d-fcfe71c39ccc",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/renderer.py\\n@@\\n class MarkdownRenderer:\\n-    def format(self, text: str) -\\u003e str:\\n-        return f\\\"*{text}*\\\"\\n+    def format(self, text: str) -\\u003e str:\\n+        \\\"\\\"\\\"Return the text wrapped in Markdown emphasis.\\n+\\n+        The original implementation exposed a ``format`` method, which is\\n+        used by the public tests.  The :func:`display_title` helper, however,\\n+        expects an object that implements the ``Renderer`` protocol \u2013 i.e. it\\n+        must provide a ``render`` method.  To satisfy both requirements without\\n+        altering the public API, we keep ``format`` unchanged and add a thin\\n+        ``render`` wrapper that forwards to ``format``.  This makes\\n+        ``MarkdownRenderer`` conform to ``Renderer`` while preserving the\\n+        existing behaviour expected by the tests.\\n+        \\\"\\\"\\\"\\n+        return f\\\"*{text}*\\\"\\n+\\n+    def render(self, text: str) -\\u003e str:\\n+        \\\"\\\"\\\"Adapter method to satisfy the ``Renderer`` protocol.\\n+\\n+        Delegates to :meth:`format` so that callers expecting a ``Renderer``\\n+        (such as :func:`display_title`) receive the same output as callers\\n+        using ``format`` directly.\\n+        \\\"\\\"\\\"\\n+        return self.format(text)\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137976,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_8ea50c0161",
+  "usage": {
+    "completion_tokens": 364,
+    "prompt_tokens": 1039,
+    "total_tokens": 1403,
+    "completion_time": 0.991662327,
+    "completion_tokens_details": {
+      "reasoning_tokens": 17
+    },
+    "prompt_time": 0.200852196,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.350475324,
+    "total_time": 1.192514523
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28exxg7eaqavvkjt889ekpb",
+    "debug": null,
+    "seed": 880178130,
+    "usage": null
+  }
+}

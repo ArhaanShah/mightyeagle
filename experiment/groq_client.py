@@ -14,6 +14,7 @@ import json
 import logging
 import os
 import time
+import re
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +40,31 @@ MAX_HTTP_ATTEMPTS = 112
 MAX_RETRY_HTTP_ATTEMPTS = 16
 
 
+def parse_duration_seconds(value: str | float | int | None) -> float | None:
+    """Parse provider durations such as ``57.63s`` or ``2m59.56s``."""
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    text = str(value).strip()
+    matches = re.findall(r"(\d+(?:\.\d+)?)([smh])", text)
+    if not matches:
+        try:
+            return float(text)
+        except ValueError:
+            return None
+    factors = {"s": 1.0, "m": 60.0, "h": 3600.0}
+    return sum(float(number) * factors[unit] for number, unit in matches)
+
+
+@dataclass
+class TokenRateState:
+    limit_tokens: int | None = None
+    remaining_tokens: int | None = None
+    reset_at_monotonic: float | None = None
+    last_updated_monotonic: float | None = None
+
+
 # ---------------------------------------------------------------------------
 # Attempt record
 # ---------------------------------------------------------------------------
@@ -59,6 +85,8 @@ class AttemptRecord:
     reasoning_tokens_actual: int | None
     error_detail: str
     quota_headers: dict[str, str] = field(default_factory=dict)
+    wait_reason: str | None = None
+    wait_seconds: float | None = None
 
 
 @dataclass
@@ -213,6 +241,11 @@ class GroqExperimentClient:
         self.log_dir = log_dir
         self.max_retries_per_call = max_retries_per_call
         self._attempt_counter = 0
+        self.token_rate = TokenRateState()
+        self.rate_limit_safety_margin = int(model_settings.get("_rate_limit_safety_margin_tokens", 256))
+        self.rate_limit_guard = float(model_settings.get("_rate_limit_guard_seconds", 0.25))
+        self.fallback_tpm = int(model_settings.get("_rate_limit_fallback_tpm", 8000))
+        self.max_rate_limit_retries = int(model_settings.get("_max_rate_limit_retries_per_generation", 3))
 
     def _persist_budget(self) -> None:
         if not self.log_dir:
@@ -266,6 +299,35 @@ class GroqExperimentClient:
             or str(k).lower().startswith(allowed[1])
         }
 
+    def _update_token_rate(self, headers: dict[str, str]) -> None:
+        now = time.monotonic()
+        def integer(name: str) -> int | None:
+            try:
+                return int(headers[name])
+            except (KeyError, TypeError, ValueError):
+                return None
+        limit = integer("x-ratelimit-limit-tokens")
+        remaining = integer("x-ratelimit-remaining-tokens")
+        reset = parse_duration_seconds(headers.get("x-ratelimit-reset-tokens"))
+        if limit is not None:
+            self.token_rate.limit_tokens = limit
+        if remaining is not None:
+            self.token_rate.remaining_tokens = remaining
+        if reset is not None:
+            self.token_rate.reset_at_monotonic = now + reset
+        self.token_rate.last_updated_monotonic = now
+
+    def _pace_tokens(self, reservation: int) -> float:
+        state = self.token_rate
+        if state.limit_tokens is None and reservation > self.fallback_tpm:
+            raise RuntimeError("Single request reservation exceeds fallback TPM limit")
+        if state.remaining_tokens is None or state.reset_at_monotonic is None:
+            return 0.0
+        deficit = reservation + self.rate_limit_safety_margin - state.remaining_tokens
+        if deficit <= 0:
+            return 0.0
+        return max(0.0, state.reset_at_monotonic - time.monotonic()) + self.rate_limit_guard
+
     def _build_request_payload(
         self,
         messages: list[dict[str, Any]],
@@ -274,7 +336,7 @@ class GroqExperimentClient:
         payload: dict[str, Any] = {
             "model": self.model_id,
             "messages": messages,
-            **self.model_settings,
+            **{k: v for k, v in self.model_settings.items() if not k.startswith("_")},
         }
         if tool_schema:
             payload["tools"] = [tool_schema]
@@ -350,6 +412,13 @@ class GroqExperimentClient:
                 logger.info("RPM limit near, waiting %.1fs", rpm_wait)
                 time.sleep(rpm_wait)
 
+            token_wait = self._pace_tokens(estimated_total)
+            if token_wait > 0:
+                logger.info("TPM limit near, waiting %.2fs", token_wait)
+                time.sleep(token_wait)
+                self.token_rate.remaining_tokens = None
+                self.token_rate.reset_at_monotonic = None
+
             self._attempt_counter += 1
             self.budget.record_attempt(is_retry=attempt_num > 1)
             self._persist_budget()
@@ -369,6 +438,8 @@ class GroqExperimentClient:
                 output_tokens_actual=None,
                 reasoning_tokens_actual=None,
                 error_detail="",
+                wait_reason="token_tpm" if token_wait > 0 else None,
+                wait_seconds=token_wait if token_wait > 0 else None,
             )
             self._persist_request(
                 episode_id, generation_number, attempt_num, payload
@@ -376,14 +447,23 @@ class GroqExperimentClient:
 
             try:
                 # Send request — no automatic retries
-                response = self.client.chat.completions.create(**payload)
+                endpoint = self.client.chat.completions
+                raw_headers: dict[str, str] = {}
+                if hasattr(endpoint, "with_raw_response"):
+                    raw = endpoint.with_raw_response.create(**payload)
+                    raw_headers = self._quota_headers(raw)
+                    self._update_token_rate(raw_headers)
+                    response = raw.parse()
+                else:
+                    response = endpoint.create(**payload)
 
                 attempt.http_status = 200
                 attempt.outcome = "success"
                 attempt.request_id = getattr(response, "id", None)
-                attempt.quota_headers = self._quota_headers(
+                attempt.quota_headers = raw_headers or self._quota_headers(
                     getattr(response, "response", response)
                 )
+                self._update_token_rate(attempt.quota_headers)
 
                 # Extract usage
                 usage = getattr(response, "usage", None)
@@ -478,6 +558,7 @@ class GroqExperimentClient:
                 headers = getattr(exc, "response", None)
                 if headers and hasattr(headers, "headers"):
                     attempt.quota_headers = self._quota_headers(headers)
+                    self._update_token_rate(attempt.quota_headers)
                     ra = headers.headers.get("Retry-After")
                     if ra:
                         try:
@@ -489,6 +570,14 @@ class GroqExperimentClient:
                 attempts.append(attempt)
                 self._log_attempt(attempt)
                 last_error = str(exc)
+
+                if attempt_num > self.max_rate_limit_retries:
+                    record.attempts = attempts
+                    record.termination_code = "rate_limit_censored"
+                    record.error_detail = "Rate limit remained unresolved after bounded retries."
+                    self.budget.release(estimated_total)
+                    self._persist_budget()
+                    return record
 
                 logger.warning(
                     "Rate limit on attempt %d, waiting %.1fs", attempt_num, retry_after
@@ -522,6 +611,9 @@ class GroqExperimentClient:
             except APIStatusError as exc:
                 http_status = getattr(exc, "status_code", None)
                 attempt.http_status = http_status
+                response_obj = getattr(exc, "response", None)
+                attempt.quota_headers = self._quota_headers(response_obj)
+                self._update_token_rate(attempt.quota_headers)
                 attempt.error_detail = str(exc)[:200]
 
                 # Content filtering
@@ -541,6 +633,49 @@ class GroqExperimentClient:
                     record.attempts = attempts
                     record.termination_code = "request_outcome_unknown"
                     record.error_detail = str(exc)
+                    return record
+
+                # Groq reports malformed model-generated tool arguments as a 400.
+                # This is a model action observation, not a harness failure.
+                body: Any = getattr(exc, "body", None)
+                if body is None:
+                    response_obj = getattr(exc, "response", None)
+                    try:
+                        body = response_obj.json() if response_obj is not None else None
+                    except Exception:
+                        body = None
+                error_obj = body.get("error", body) if isinstance(body, dict) else {}
+                if isinstance(error_obj, dict) and error_obj.get("code") == "tool_use_failed":
+                    attempt.outcome = "model_action_invalid"
+                    attempt.error_detail = json.dumps({
+                        "type": error_obj.get("type"),
+                        "code": error_obj.get("code"),
+                        "message": error_obj.get("message"),
+                        "failed_generation": error_obj.get("failed_generation"),
+                    }, ensure_ascii=False)[:4000]
+                    attempts.append(attempt)
+                    self._log_attempt(attempt)
+                    if self.log_dir:
+                        error_dir = self.log_dir / episode_id
+                        error_dir.mkdir(parents=True, exist_ok=True)
+                        (error_dir / f"gen_{generation_number:02d}_provider_error.json").write_text(
+                            json.dumps({
+                                "http_status": http_status,
+                                "request_hash": req_hash,
+                                "generation_number": generation_number,
+                                "error": {
+                                    key: error_obj.get(key)
+                                    for key in ("type", "code", "message", "failed_generation")
+                                },
+                                "rate_limit_headers": attempt.quota_headers,
+                            }, indent=2, ensure_ascii=False),
+                            encoding="utf-8",
+                        )
+                    record.attempts = attempts
+                    record.termination_code = "model_action_invalid"
+                    record.error_detail = attempt.error_detail
+                    self.budget.release(estimated_total)
+                    self._persist_budget()
                     return record
 
                 # 400 with model-produced malformed tool: NOT a generic retry (§9)

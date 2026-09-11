@@ -1,0 +1,106 @@
+{
+  "episode_id": "ep_05",
+  "generation_number": 2,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "tool_calls",
+  "termination_code": "tool_call_received",
+  "attempts": [
+    {
+      "attempt_number": 19,
+      "request_hash": "7a653c5a2067ca07",
+      "timestamp_utc": "2026-09-11T14:46:54.607894+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-39289f26-c9b0-455e-9dbe-c35e75a1d4c4",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 1926,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1022,
+      "output_tokens_actual": 308,
+      "reasoning_tokens_actual": 16,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "955",
+        "x-ratelimit-remaining-tokens": "4383",
+        "x-ratelimit-reset-requests": "1h4m48s",
+        "x-ratelimit-reset-tokens": "27.127s",
+        "x-request-id": "req_01m28ez4nees1aghngt6778bgw"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-39289f26-c9b0-455e-9dbe-c35e75a1d4c4",
+    "choices": [
+      {
+        "finish_reason": "tool_calls",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": null,
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": "We need proper diff format. Use *** Begin Patch format. Let's craft.",
+          "tool_calls": [
+            {
+              "id": "fc_1cc39781-045b-4c14-bb69-1c6a401b67e2",
+              "function": {
+                "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/renderer.py\\n@@\\n class MarkdownRenderer:\\n-    def format(self, text: str) -\\u003e str:\\n-        return f\\\"*{text}*\\\"\\n+    def format(self, text: str) -\\u003e str:\\n+        \\\"\\\"\\\"Return the markdown-formatted version of *text*.\\n+\\n+        The original implementation only provided a ``format`` method, which\\n+        meant that ``MarkdownRenderer`` did not satisfy the ``Renderer``\\n+        protocol required by :func:`display_title`.  Adding a ``render`` method\\n+        that forwards to ``format`` preserves the public API expected by the\\n+        tests while allowing the object to be used wherever a ``Renderer`` is\\n+        required.\\n+        \\\"\\\"\\\"\\n+        return f\\\"*{text}*\\\"\\n+\\n+    # The ``Renderer`` protocol expects a ``render`` method.  Implement it as a\\n+    # thin wrapper around ``format`` so that ``MarkdownRenderer`` conforms to\\n+    # the protocol without breaking existing callers that use ``format``.\\n+    def render(self, text: str) -\\u003e str:\\n+        return self.format(text)\\n*** End Patch\"}",
+                "name": "patch_and_check"
+              },
+              "type": "function"
+            }
+          ]
+        }
+      }
+    ],
+    "created": 1789138015,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_3166198c1d",
+    "usage": {
+      "completion_tokens": 308,
+      "prompt_tokens": 1022,
+      "total_tokens": 1330,
+      "completion_time": 0.662955617,
+      "completion_tokens_details": {
+        "reasoning_tokens": 16
+      },
+      "prompt_time": 0.048372095,
+      "prompt_tokens_details": null,
+      "queue_time": 0.334483432,
+      "total_time": 0.711327712
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28ez4nees1aghngt6778bgw",
+      "debug": null,
+      "seed": 412177447,
+      "usage": null
+    }
+  },
+  "assistant_content": null,
+  "reasoning_content": "We need proper diff format. Use *** Begin Patch format. Let's craft.",
+  "tool_calls": [
+    {
+      "id": "fc_1cc39781-045b-4c14-bb69-1c6a401b67e2",
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/renderer.py\\n@@\\n class MarkdownRenderer:\\n-    def format(self, text: str) -\\u003e str:\\n-        return f\\\"*{text}*\\\"\\n+    def format(self, text: str) -\\u003e str:\\n+        \\\"\\\"\\\"Return the markdown-formatted version of *text*.\\n+\\n+        The original implementation only provided a ``format`` method, which\\n+        meant that ``MarkdownRenderer`` did not satisfy the ``Renderer``\\n+        protocol required by :func:`display_title`.  Adding a ``render`` method\\n+        that forwards to ``format`` preserves the public API expected by the\\n+        tests while allowing the object to be used wherever a ``Renderer`` is\\n+        required.\\n+        \\\"\\\"\\\"\\n+        return f\\\"*{text}*\\\"\\n+\\n+    # The ``Renderer`` protocol expects a ``render`` method.  Implement it as a\\n+    # thin wrapper around ``format`` so that ``MarkdownRenderer`` conforms to\\n+    # the protocol without breaking existing callers that use ``format``.\\n+    def render(self, text: str) -\\u003e str:\\n+        return self.format(text)\\n*** End Patch\"}"
+      }
+    }
+  ],
+  "total_input_tokens": 1022,
+  "total_output_tokens": 308,
+  "error_detail": "",
+  "provider_fingerprint": "fp_3166198c1d"
+}

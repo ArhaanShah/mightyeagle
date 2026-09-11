@@ -53,7 +53,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-kw8h9qbq",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-m_zntvd9",
     "pkg/config_a.py",
     "pkg/config_b.py"
   ],

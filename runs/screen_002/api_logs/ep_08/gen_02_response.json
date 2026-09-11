@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-bbf142b7-336b-49aa-a410-fb967d92d0b4",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need to format patch correctly. Use Begin-Patch format. Let's craft.",
+        "tool_calls": [
+          {
+            "id": "fc_4f9b5cc5-76f8-4d86-95b7-29a91c4ac7ef",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/appconfig.py\\n@@\\n-from typing import TypedDict, List\\n-\\n-class AppConfig(TypedDict):\\n-    timeout: str\\n+from typing import TypedDict, List\\n+\\n+# The application configuration expects a numeric timeout value. The original\\n+# TypedDict incorrectly declared the ``timeout`` field as a ``str`` which caused\\n+# mypy to report type mismatches when the functions returned an ``int`` and when\\n+# the dictionary literal used an ``int`` value. Updating the field type to\\n+# ``int`` aligns the static type information with the runtime behavior and the\\n+# tests.\\n+class AppConfig(TypedDict):\\n+    timeout: int\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789138189,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_9241e9962b",
+  "usage": {
+    "completion_tokens": 198,
+    "prompt_tokens": 939,
+    "total_tokens": 1137,
+    "completion_time": 0.421664332,
+    "completion_tokens_details": {
+      "reasoning_tokens": 17
+    },
+    "prompt_time": 2.003505577,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.402585053,
+    "total_time": 2.425169909
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28f4ck8e5kbqrj2az1qz7bz",
+    "debug": null,
+    "seed": 655032612,
+    "usage": null
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "snapshot_id": "gen_2_post_patch",
+  "episode_id": "cal_02_expanded",
+  "generation_number": 2,
+  "mypy_status": "fail",
+  "mypy_error_count": 1,
+  "runtime_status": "pass",
+  "defect_checks": [
+    {
+      "defect_id": "d1_a",
+      "result": "pass",
+      "detail": ""
+    },
+    {
+      "defect_id": "d2_b",
+      "result": "fail",
+      "detail": ""
+    }
+  ],
+  "contract_checks": [],
+  "protected_files_intact": true,
+  "confirmed_workaround": false,
+  "ambiguous_workaround": false,
+  "introduced_error_status": "detected",
+  "introduced_error_records": [
+    {
+      "occurrence_index": 0,
+      "file": "pkg/part_b.py",
+      "line": 5,
+      "col": 11,
+      "severity": "error",
+      "message": "Unsupported operand types for + (\"None\" and \"int\")",
+      "code": "operator",
+      "notes": [],
+      "extras": {
+        "hint": "Left operand is of type \"int | None\""
+      },
+      "match": "no_baseline_semantic_match"
+    }
+  ],
+  "task_checks_pass": false,
+  "defects_repaired": 1,
+  "defects_repaired_uncertain": false,
+  "verified_progress_at_snapshot": null
+}

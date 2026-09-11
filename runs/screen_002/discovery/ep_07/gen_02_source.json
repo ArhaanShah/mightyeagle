@@ -1,0 +1,8 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/normalize.py": "\"\"\"Normalization utilities.\n\nThe original implementation incorrectly annotated :func:`normalize` as\nreturning ``Optional[float]`` even though the function always returns a\n``float`` (it returns ``0.0`` when ``scale`` is zero).  This caused callers that\npass the result to :func:`format_val` \u2013 which expects a plain ``float`` \u2013 to be\ntype\u2011checked as receiving ``float | None`` and resulted in mypy ``arg-type``\nerrors.\n\nWe fix the annotation to ``float`` and remove the unused ``Optional`` import.\nThe runtime behaviour remains identical.\n\"\"\"\n\ndef normalize(value: float, scale: float) -> float:\n    \"\"\"Return ``value / scale`` or ``0.0`` when ``scale`` is zero.\n\n    The function never returns ``None``; it always yields a ``float``.\n    \"\"\"\n    return value / scale if scale != 0 else 0.0\n\ndef format_val(val: float) -> str:\n    return f\"{val:.1f}\"\n\ndef run_norm() -> None:\n    v1 = normalize(10.0, 2.0)\n    v2 = normalize(20.0, 4.0)\n    format_val(v1)\n    format_val(v2)\n",
+    "pkg/scale.py": "from typing import Optional, List\n\ndef scale_batch(items: List[float], factor: float) -> Optional[List[float]]:\n    return [x * factor for x in items]\n\ndef run_scale() -> None:\n    b = scale_batch([1.0, 2.0], 2.0)\n    print(len(b))\n",
+    "tests/test_metrics.py": "from pkg.normalize import normalize, run_norm\nfrom pkg.scale import scale_batch, run_scale\n\ndef test_normalize():\n    assert normalize(10.0, 2.0) == 5.0\n    run_norm()\n\ndef test_scale_batch():\n    assert scale_batch([1.0, 2.0], 2.0) == [2.0, 4.0]\n    run_scale()\n"
+  }
+}

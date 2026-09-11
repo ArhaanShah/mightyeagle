@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-7c420c18-45de-41e5-b730-ebae2f0f2e54",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need to fix type errors. In AppConfig TypedDict defines timeout: str but actual values are int. Should be int. Change TypedDict to timeout: int. Also function returns int, fine.\n\nAlso get_timeout functions return cfg[\"timeout\"], which is int, fine.\n\nUpdate code accordingly.\n\nRun patch_and_check.",
+        "tool_calls": [
+          {
+            "id": "fc_1c97e90d-1023-4f13-a310-381fae0fb0a7",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/appconfig.py\\n@@\\n-from typing import TypedDict, List\\n-\\n-class AppConfig(TypedDict):\\n-    timeout: str\\n+from typing import TypedDict, List\\n+\\n+# The application configuration expects a numeric timeout value. The original\\n+# TypedDict incorrectly declared the ``timeout`` field as a ``str`` which caused\\n+# mypy to report type mismatches when the functions returned an ``int`` and when\\n+# the dictionary literal used an ``int`` value. Updating the field type to\\n+# ``int`` aligns the static type information with the runtime behavior and the\\n+# tests.\\n+class AppConfig(TypedDict):\\n+    timeout: int\\n*** End Patch\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789138155,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_e5b4e54fbb",
+  "usage": {
+    "completion_tokens": 254,
+    "prompt_tokens": 731,
+    "total_tokens": 985,
+    "completion_time": 0.552065963,
+    "completion_tokens_details": {
+      "reasoning_tokens": 66
+    },
+    "prompt_time": 0.221206094,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.402174156,
+    "total_time": 0.773272057
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28f3d55eegtqsrd922swa1q",
+    "debug": null,
+    "seed": 133331027,
+    "usage": null
+  }
+}

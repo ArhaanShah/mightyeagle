@@ -1,0 +1,86 @@
+{
+  "episode_id": "cal_01_grouped",
+  "generation_number": 3,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "stop",
+  "termination_code": "model_final",
+  "attempts": [
+    {
+      "attempt_number": 14,
+      "request_hash": "d264da9f9c2bb15f",
+      "timestamp_utc": "2026-09-11T14:36:56.799134+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-6f0da2de-deb1-4a2c-a934-360dcbd5880a",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 2530,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1440,
+      "output_tokens_actual": 67,
+      "reasoning_tokens_actual": null,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "986",
+        "x-ratelimit-remaining-tokens": "6192",
+        "x-ratelimit-reset-requests": "20m9.6s",
+        "x-ratelimit-reset-tokens": "13.56s",
+        "x-request-id": "req_01m28ecwzde6saz25engsyzxnn"
+      },
+      "wait_reason": "token_tpm",
+      "wait_seconds": 18.52100000000064
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-6f0da2de-deb1-4a2c-a934-360dcbd5880a",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Implemented comprehensive fixes in **pkg/trivial.py**:\n\n- Added detailed module and function docstrings.\n- Corrected `compute` return type from `Optional[int]` to `int`.\n- Updated function signatures and documentation.\n- Preserved original runtime behavior.\n\nAll tests now pass and type checking reports zero errors.",
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1789137417,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_47082602e2",
+    "usage": {
+      "completion_tokens": 67,
+      "prompt_tokens": 1440,
+      "total_tokens": 1507,
+      "completion_time": 0.141499328,
+      "completion_tokens_details": null,
+      "prompt_time": 0.065528636,
+      "prompt_tokens_details": null,
+      "queue_time": 0.334482992,
+      "total_time": 0.207027964
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28ecwzde6saz25engsyzxnn",
+      "debug": null,
+      "seed": 1861048910,
+      "usage": null
+    }
+  },
+  "assistant_content": "Implemented comprehensive fixes in **pkg/trivial.py**:\n\n- Added detailed module and function docstrings.\n- Corrected `compute` return type from `Optional[int]` to `int`.\n- Updated function signatures and documentation.\n- Preserved original runtime behavior.\n\nAll tests now pass and type checking reports zero errors.",
+  "reasoning_content": null,
+  "tool_calls": [],
+  "total_input_tokens": 1440,
+  "total_output_tokens": 67,
+  "error_detail": "",
+  "provider_fingerprint": "fp_47082602e2"
+}

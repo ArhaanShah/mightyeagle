@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/trivial.py": "from typing import Optional\n\ndef compute(x: int) -> Optional[int]:\n    return x * 2\n\ndef run() -> int:\n    val = compute(5)\n    return val + 1\n",
+    "tests/test_trivial.py": "from pkg.trivial import run\ndef test_trivial():\n    assert run() == 11\n"
+  }
+}

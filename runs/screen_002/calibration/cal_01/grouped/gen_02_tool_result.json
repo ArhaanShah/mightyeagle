@@ -1,0 +1,7 @@
+{
+  "status": "applied",
+  "feedback": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n===\n--- 0 error(s), 0 record(s) total ---",
+  "post_workspace_hash": "325583fc21a437336e19894c0b652bea4568af86bd8bc7d53afd998686e41504",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

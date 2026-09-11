@@ -1,0 +1,7 @@
+{
+  "status": "rejected",
+  "feedback": "PATCH REJECTED: The patch could not be parsed as a unified diff.\n\nDetail: parse_error",
+  "post_workspace_hash": "",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

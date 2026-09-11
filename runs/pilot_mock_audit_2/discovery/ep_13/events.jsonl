@@ -1,7 +1,0 @@
-{"timestamp": "2026-09-11T11:23:35.210813+00:00", "event_type": "episode_start", "data": {"episode_id": "ep_13", "fixture_id": "f1_shared", "condition": "grouped", "workspace_hash": "542cd1893474fb133b8ad2d122dcea33ae2f032467c1a69d04161368f83539e4", "prompt_length": 2898, "report_hash": "5ec138b1446ecef4a8cd2c6fff3b199f519b637aacccab39d1a571e91c32c97a", "source_hash": "9616e601a18d81b0045c74695a0204f1d2c5577d6a6fd02da03e0d10c1a3e307"}}
-{"timestamp": "2026-09-11T11:23:35.250813+00:00", "event_type": "api_intent", "data": {"generation": 1, "message_count": 1}}
-{"timestamp": "2026-09-11T11:23:35.264195+00:00", "event_type": "tool_intent", "data": {"generation": 1, "patch_hash": "94f69dbc609b2415", "pre_workspace_hash": "542cd1893474fb133b8ad2d122dcea33ae2f032467c1a69d04161368f83539e4"}}
-{"timestamp": "2026-09-11T11:23:35.285701+00:00", "event_type": "tool_result", "data": {"generation": 1, "status": "applied", "post_workspace_hash": "mock_hash_gen_1"}}
-{"timestamp": "2026-09-11T11:23:35.322015+00:00", "event_type": "api_intent", "data": {"generation": 2, "message_count": 3}}
-{"timestamp": "2026-09-11T11:23:35.331896+00:00", "event_type": "model_final", "data": {"generation": 2}}
-{"timestamp": "2026-09-11T11:23:35.339316+00:00", "event_type": "episode_end", "data": {"termination_reason": "model_final"}}

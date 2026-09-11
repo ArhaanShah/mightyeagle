@@ -66,7 +66,7 @@
     "--no-error-summary",
     "--no-incremental",
     "--cache-dir",
-    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-rqj4tme8",
+    "C:\\Users\\Arhaan\\AppData\\Local\\Temp\\fixture-mypy-amavhp52",
     "pkg/db_config.py",
     "pkg/web_config.py"
   ],

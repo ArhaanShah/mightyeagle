@@ -228,6 +228,7 @@ class EpisodeOutcome:
     model_action_invalid: bool = False
     technical_failure: bool = False
     request_outcome_unknown: bool = False
+    rate_limit_censored: bool = False
     final_report_observed: bool = False
     provider_content_filtered: bool = False
     model_identity_failure: bool = False
@@ -254,6 +255,7 @@ class EpisodeOutcome:
             or self.token_censored
             or self.budget_censored
             or self.request_outcome_unknown
+            or self.rate_limit_censored
             or self.model_identity_failure
         )
 
@@ -311,6 +313,7 @@ class EpisodeOutcome:
             "model_action_invalid": self.model_action_invalid,
             "technical_failure": self.technical_failure,
             "request_outcome_unknown": self.request_outcome_unknown,
+            "rate_limit_censored": self.rate_limit_censored,
             "final_report_observed": self.final_report_observed,
             "provider_content_filtered": self.provider_content_filtered,
             "model_identity_failure": self.model_identity_failure,

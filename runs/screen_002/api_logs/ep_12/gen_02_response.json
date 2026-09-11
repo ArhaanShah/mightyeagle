@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-32a03420-cd4d-4d23-b908-4db31af6c076",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "The patch format must be correct. Use Begin-Patch format. Let's craft proper Begin-Patch.",
+        "tool_calls": [
+          {
+            "id": "fc_41277bec-832d-45b3-bbf3-42b073e69c52",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/pipeline.py\\n@@\\n-from typing import Optional, List\\n+from typing import List\\n@@\\n-def compute_summary(values: List[float]) -\\u003e Optional[float]:\\n-    if not values:\\n-        return 0.0\\n-    total = sum(values)\\n-    return total / len(values)\\n+def compute_summary(values: List[float]) -\\u003e float:\\n+    \\\"\\\"\\\"Compute the arithmetic mean of *values*.\\n+\\n+    The original implementation annotated the return type as\\n+    ``Optional[float]`` even though it never returned ``None`` \u2013 the empty\\n+    list case yielded ``0.0``.  Aligning the annotation with the actual\\n+    behaviour removes the need for callers to handle ``None`` and resolves\\n+    the type errors where the result is passed to :func:`format_result`,\\n+    which expects a plain ``float``.\\n+    \\\"\\\"\\\"\\n+    if not values:\\n+        # Preserve the historic behaviour of returning 0.0 for an empty\\n+        # collection while satisfying the ``float`` return type.\\n+        return 0.0\\n+    total = sum(values)\\n+    return total / len(values)\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789138348,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_f73454f048",
+  "usage": {
+    "completion_tokens": 321,
+    "prompt_tokens": 1356,
+    "total_tokens": 1677,
+    "completion_time": 0.688487935,
+    "completion_tokens_details": {
+      "reasoning_tokens": 21
+    },
+    "prompt_time": 1.063913914,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.477743115,
+    "total_time": 1.752401849
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28f97w5e50vxdt78zm6wf94",
+    "debug": null,
+    "seed": 684593962,
+    "usage": null
+  }
+}

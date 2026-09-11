@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/long.py": "from typing import Optional, List\n\ndef fetch_data() -> Optional[str]:\n    return \"item\"\n\ndef run_many() -> List[int]:\n    res = []\n    # 8 identical call site errors\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    return res\n",
+    "tests/test_long.py": "from pkg.long import run_many\ndef test_long():\n    assert run_many() == [4] * 8\n"
+  }
+}

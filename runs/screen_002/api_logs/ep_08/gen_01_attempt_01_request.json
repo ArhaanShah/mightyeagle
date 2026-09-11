@@ -1,0 +1,38 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.\n\nDo not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.\n\nUse patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.\n\nINITIAL TYPE-CHECKER REPORT\n=== TYPE-CHECKER REPORT ===\n---\noccurrence_index: 0\nseverity: error\nfile: pkg/appconfig.py\nline: 7\ncol: 11\ncode: return-value\nmessage: Incompatible return value type (got \"str\", expected \"int\")\nextras: {\"hint\": null}\n---\noccurrence_index: 1\nseverity: error\nfile: pkg/appconfig.py\nline: 10\ncol: 11\ncode: return-value\nmessage: Incompatible return value type (got \"str\", expected \"int\")\nextras: {\"hint\": null}\n---\noccurrence_index: 2\nseverity: error\nfile: pkg/appconfig.py\nline: 13\ncol: 33\ncode: typeddict-item\nmessage: Incompatible types (expression has type \"int\", TypedDict item \"timeout\" has type \"str\")\nextras: {\"hint\": null}\n---\n--- 3 error(s), 3 record(s) total ---\n\nSOURCE, PUBLIC TESTS, AND CONFIGURATION\n# FILE: pkg/__init__.py\n```\n\n```\n\n# FILE: pkg/appconfig.py\n```\nfrom typing import TypedDict, List\n\nclass AppConfig(TypedDict):\n    timeout: str\n\ndef get_timeout_primary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef get_timeout_secondary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef run_app() -> List[int]:\n    cfg: AppConfig = {\"timeout\": 30}\n    t1 = get_timeout_primary(cfg)\n    t2 = get_timeout_secondary(cfg)\n    return [t1, t2]\n\n```\n\n# FILE: tests/test_appconfig.py\n```\nfrom pkg.appconfig import run_app\n\ndef test_app():\n    assert run_app() == [30, 30]\n\n```\n\n"
+    }
+  ],
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_completion_tokens": 2048,
+  "include_reasoning": true,
+  "tool_choice": "auto",
+  "parallel_tool_calls": false,
+  "stream": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "description": "Apply source edits and return validation feedback. The patch may use Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) or standard unified diff. Paths are relative to the task root. Only existing, allowlisted source files may be edited — no new files, deletions, renames, or binary changes. All hunks must apply exactly. Returns: application status, public runtime-test results, and the complete mypy type-checker report.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "patch": {
+              "type": "string",
+              "description": "A source patch in Begin-Patch or standard unified-diff format. Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
+            }
+          },
+          "required": [
+            "patch"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

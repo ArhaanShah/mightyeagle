@@ -1,0 +1,21 @@
+*** Begin Patch
+*** Update File: pkg/events.py
+@@
+-from typing import Optional, List
++from typing import List
+@@
+-class EventQueue:
+-    def pop_event(self) -> Optional[str]:
+-        return "event_data"
++class EventQueue:
++    def pop_event(self) -> str:
++        """Return the next event data.
++
++        The original implementation annotated the return type as ``Optional[str]``
++        even though the method always returns a string. This caused type errors
++        when ``len`` was called on the result because ``None`` is not ``Sized``.
++        Updating the annotation to ``str`` resolves the static type checking
++        issue while preserving the runtime behavior.
++        """
++        return "event_data"
+*** End Patch

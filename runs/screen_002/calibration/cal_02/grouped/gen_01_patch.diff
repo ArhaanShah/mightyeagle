@@ -1,0 +1,41 @@
+*** Begin Patch
+*** Update File: pkg/part_a.py
+@@
+-from typing import Optional
+-def get_a() -> Optional[str]:
+-    return "A"
+-def run_a() -> int:
+-    return len(get_a())
++"""Utilities for part A.
++
++The original implementation annotated :func:`get_a` as returning ``Optional[str]``
++even though the function always returns a concrete string.  This caused the
++type‑checker to complain when ``len`` was called on the result because ``len``
++expects a ``Sized`` object, not ``None``.  The runtime behaviour required by the
++tests is that ``run_a`` returns the length of the string ``"A"`` – i.e. ``1``.
++
++To satisfy the type checker without altering the observable behaviour we tighten
++the return type of :func:`get_a` to ``str``.  The implementation itself remains
++unchanged.
++"""
++
++from typing import Optional  # retained for potential future use
++
++
++def get_a() -> str:
++    """Return the constant string ``"A"``.
++
++    The function is deliberately simple; it never returns ``None``.
++    """
++    return "A"
++
++
++def run_a() -> int:
++    """Return the length of the string produced by :func:`get_a`.
++
++    Because :func:`get_a` now has a non‑optional return type, ``len`` is safely
++    applied and the static type checker recognises the result as an ``int``.
++    """
++    return len(get_a())
+*** End Patch
+*** End Patch

@@ -1,0 +1,56 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.\n\nDo not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.\n\nUse patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.\n\nINITIAL TYPE-CHECKER REPORT\n=== TYPE-CHECKER REPORT ===\n===\nseverity: error\ncode: return-value\nmessage: Incompatible return value type (got \"str\", expected \"int\")\nextras: {\"hint\": null}\nmultiplicity: 2\n  LOC|{\"col\": 11, \"file\": \"pkg/appconfig.py\", \"line\": 7, \"occurrence_index\": 0}\n  LOC|{\"col\": 11, \"file\": \"pkg/appconfig.py\", \"line\": 10, \"occurrence_index\": 1}\n===\nseverity: error\ncode: typeddict-item\nmessage: Incompatible types (expression has type \"int\", TypedDict item \"timeout\" has type \"str\")\nextras: {\"hint\": null}\nmultiplicity: 1\n  LOC|{\"col\": 33, \"file\": \"pkg/appconfig.py\", \"line\": 13, \"occurrence_index\": 2}\n===\n--- 3 error(s), 3 record(s) total ---\n\nSOURCE, PUBLIC TESTS, AND CONFIGURATION\n# FILE: pkg/__init__.py\n```\n\n```\n\n# FILE: pkg/appconfig.py\n```\nfrom typing import TypedDict, List\n\nclass AppConfig(TypedDict):\n    timeout: str\n\ndef get_timeout_primary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef get_timeout_secondary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef run_app() -> List[int]:\n    cfg: AppConfig = {\"timeout\": 30}\n    t1 = get_timeout_primary(cfg)\n    t2 = get_timeout_secondary(cfg)\n    return [t1, t2]\n\n```\n\n# FILE: tests/test_appconfig.py\n```\nfrom pkg.appconfig import run_app\n\ndef test_app():\n    assert run_app() == [30, 30]\n\n```\n\n"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "fc_1a25ef27-43b9-420e-ba1b-f9f5993a49e4",
+          "type": "function",
+          "function": {
+            "name": "patch_and_check",
+            "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/appconfig.py\\n@@\\n-from typing import TypedDict, List\\n-\\n-class AppConfig(TypedDict):\\n-    timeout: str\\n+from typing import TypedDict, List\\n+\\n+# The configuration dictionary contains a numeric timeout value. The original\\n+# type annotation incorrectly declared the ``timeout`` field as ``str`` which\\n+# caused mypy to report a mismatch when the integer literal ``30`` was stored\\n+# and later returned as an ``int``.  Updating the ``TypedDict`` definition to\\n+# reflect the actual runtime type resolves the type errors while preserving the\\n+# intended behaviour of the module.\\n+class AppConfig(TypedDict):\\n+    timeout: int\\n*** End Patch\\n*** End Patch\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "fc_1a25ef27-43b9-420e-ba1b-f9f5993a49e4",
+      "content": "PATCH REJECTED: The patch could not be parsed as a unified diff.\n\nDetail: parse_error"
+    }
+  ],
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_completion_tokens": 2048,
+  "include_reasoning": true,
+  "tool_choice": "auto",
+  "parallel_tool_calls": false,
+  "stream": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "description": "Apply source edits and return validation feedback. The patch may use Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) or standard unified diff. Paths are relative to the task root. Only existing, allowlisted source files may be edited — no new files, deletions, renames, or binary changes. All hunks must apply exactly. Returns: application status, public runtime-test results, and the complete mypy type-checker report.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "patch": {
+              "type": "string",
+              "description": "A source patch in Begin-Patch or standard unified-diff format. Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
+            }
+          },
+          "required": [
+            "patch"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

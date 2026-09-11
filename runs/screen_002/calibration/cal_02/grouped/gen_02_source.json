@@ -1,0 +1,8 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/part_a.py": "\"\"\"Utilities for part A.\n\nThe original implementation annotated ``get_a`` as returning ``Optional[str]``\neven though it always returns a concrete string. This caused ``len`` to be\napplied to a ``str | None`` value, which the type checker flagged as an error.\n\nWe tighten the return type to ``str`` while keeping the runtime behaviour\nidentical \u2013 the function still returns ``\"A\"``.  The tests expect ``run_a`` to\nreturn ``1``, which remains true.\n\"\"\"\n\nfrom typing import Optional  # retained for potential future use\n\n\ndef get_a() -> str:\n    \"\"\"Return the constant string ``\"A\"``.\n\n    The function never returns ``None``; the ``Optional`` annotation was a\n    mistake.\n    \"\"\"\n    return \"A\"\n\n\ndef run_a() -> int:\n    \"\"\"Return the length of the string produced by :func:`get_a`.\"\"\"\n    return len(get_a())\n",
+    "pkg/part_b.py": "from typing import Optional\ndef get_b() -> Optional[int]:\n    return 10\ndef run_b() -> int:\n    return get_b() + 1\n",
+    "tests/test_dist.py": "from pkg.part_a import run_a\nfrom pkg.part_b import run_b\ndef test_dist():\n    assert run_a() == 1\n    assert run_b() == 11\n"
+  }
+}

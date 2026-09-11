@@ -1,0 +1,34 @@
+from typing import List
+
+# NOTE:
+# The original implementation annotated ``fetch_data`` as returning
+# ``Optional[str]`` even though the function always returns a concrete
+# string value.  This caused ``len(fetch_data())`` to be flagged by the
+# type checker because ``len`` expects a ``Sized`` object, not ``None``.
+#
+# Changing the return type to ``str`` accurately reflects the runtime
+# behaviour and eliminates the spurious type errors while preserving the
+# public API (the function still returns a string).  No other code depends
+# on the optional nature of the return value.
+
+def fetch_data() -> str:
+    """Return a deterministic string.
+
+    The function is deliberately simple – it always returns the literal
+    ``"item"`` – so callers can safely assume the result is a non‑null
+    ``str``.
+    """
+    return "item"
+
+def run_many() -> List[int]:
+    res = []
+    # 8 identical call site errors
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    return res

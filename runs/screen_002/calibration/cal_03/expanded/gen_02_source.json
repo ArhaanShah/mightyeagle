@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/long.py": "from typing import List\n\n# NOTE:\n# The original implementation annotated ``fetch_data`` as returning\n# ``Optional[str]`` even though the function always returns a concrete\n# string value.  This caused ``len(fetch_data())`` to be flagged by the\n# type checker because ``len`` expects a ``Sized`` object, not ``None``.\n#\n# Changing the return type to ``str`` accurately reflects the runtime\n# behaviour and eliminates the spurious type errors while preserving the\n# public API (the function still returns a string).  No other code depends\n# on the optional nature of the return value.\n\ndef fetch_data() -> str:\n    \"\"\"Return a deterministic string.\n\n    The function is deliberately simple \u2013 it always returns the literal\n    ``\"item\"`` \u2013 so callers can safely assume the result is a non\u2011null\n    ``str``.\n    \"\"\"\n    return \"item\"\n\ndef run_many() -> List[int]:\n    res = []\n    # 8 identical call site errors\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    return res\n",
+    "tests/test_long.py": "from pkg.long import run_many\ndef test_long():\n    assert run_many() == [4] * 8\n"
+  }
+}

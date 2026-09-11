@@ -1,0 +1,7 @@
+{
+  "status": "applied",
+  "feedback": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n---\noccurrence_index: 0\nseverity: error\nfile: pkg/scale.py\nline: 8\ncol: 14\ncode: arg-type\nmessage: Argument 1 to \"len\" has incompatible type \"list[float] \\| None\"; expected \"Sized\"\nextras: {\"hint\": null}\n---\n--- 1 error(s), 1 record(s) total ---",
+  "post_workspace_hash": "bfc4a004fe46905d79e94fd0cecfd91a052cd185768524e7f72c23c6be1828e1",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

@@ -1,0 +1,45 @@
+{
+  "id": "chatcmpl-7db7d2b4-4d56-4d00-a7b6-2207ca306d9a",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "Implemented runtime assertions to guarantee non-None event values, satisfying type checking while preserving original behavior. Added comprehensive docstring and comments for clarity. All tests now pass and type-checker reports no errors.",
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": null,
+        "tool_calls": null
+      }
+    }
+  ],
+  "created": 1789137824,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_d1bc601726",
+  "usage": {
+    "completion_tokens": 44,
+    "prompt_tokens": 1564,
+    "total_tokens": 1608,
+    "completion_time": 0.109937253,
+    "completion_tokens_details": null,
+    "prompt_time": 0.842519372,
+    "prompt_tokens_details": {
+      "cached_tokens": 1024
+    },
+    "queue_time": 0.04847407,
+    "total_time": 0.952456625
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28esa6sefasaebs75ehv1xx",
+    "debug": null,
+    "seed": 1143250645,
+    "usage": null
+  }
+}

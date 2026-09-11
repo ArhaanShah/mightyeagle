@@ -1,0 +1,8 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/part_a.py": "\"\"\"Utilities for part A.\n\nThe original implementation annotated ``get_a`` as returning ``Optional[str]``\neven though it always returns a concrete string. This caused a type\u2011checking\nerror because ``len`` expects a ``Sized`` object, but the static type was\n``str | None``. By tightening the return type to ``str`` we keep the runtime\nbehaviour unchanged while satisfying the type checker.\n\"\"\"\n\ndef get_a() -> str:\n    \"\"\"Return the constant string ``\"A\"``.\n\n    The function never returns ``None``; the return type reflects that fact.\n    \"\"\"\n    return \"A\"\n\n\ndef run_a() -> int:\n    \"\"\"Return the length of the string produced by :func:`get_a`.\n\n    Because ``get_a`` now returns ``str`` the call to ``len`` is type\u2011safe.\n    \"\"\"\n    return len(get_a())\n",
+    "pkg/part_b.py": "from typing import Optional\ndef get_b() -> Optional[int]:\n    return 10\ndef run_b() -> int:\n    return get_b() + 1\n",
+    "tests/test_dist.py": "from pkg.part_a import run_a\nfrom pkg.part_b import run_b\ndef test_dist():\n    assert run_a() == 1\n    assert run_b() == 11\n"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-fc7310ff-9de3-4da1-9191-6cf7fbbde49b",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "The patch format needs correct diff syntax. Use *** Begin Patch etc. Provide proper diff. Let's craft correctly.\n\n",
+        "tool_calls": [
+          {
+            "id": "fc_78c72b0f-aea7-4008-b73d-7582e04ddb11",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/events.py\\n@@\\n-def process(q: EventQueue) -\\u003e List[int]:\\n-    e1 = q.pop_event()\\n-    e2 = q.pop_event()\\n-    l1 = len(e1)\\n-    l2 = len(e2)\\n-    return [l1, l2]\\n+def process(q: EventQueue) -\\u003e List[int]:\\n+    \\\"\\\"\\\"Process two events from the queue and return their lengths.\\n+\\n+    ``EventQueue.pop_event`` is typed as returning ``Optional[str]`` because a\\n+    real implementation could signal an empty queue with ``None``.  In the\\n+    simplified test scenario the method always returns a string, but the type\\n+    checker still sees the possibility of ``None``.  To satisfy static typing\\n+    without changing the public API we assert that the values are not ``None``.\\n+    The assertions act as runtime guards (preserving behaviour) and also narrow\\n+    the type for the subsequent ``len`` calls.\\n+    \\\"\\\"\\\"\\n+\\n+    e1 = q.pop_event()\\n+    e2 = q.pop_event()\\n+    # Ensure the values are strings for type checking and runtime safety.\\n+    assert e1 is not None, \\\"EventQueue.pop_event() returned None for the first event\\\"\\n+    assert e2 is not None, \\\"EventQueue.pop_event() returned None for the second event\\\"\\n+    l1 = len(e1)\\n+    l2 = len(e2)\\n+    return [l1, l2]\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789137816,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_d1bc601726",
+  "usage": {
+    "completion_tokens": 406,
+    "prompt_tokens": 1118,
+    "total_tokens": 1524,
+    "completion_time": 0.866641648,
+    "completion_tokens_details": {
+      "reasoning_tokens": 23
+    },
+    "prompt_time": 0.051934768,
+    "prompt_tokens_details": null,
+    "queue_time": 0.048278642,
+    "total_time": 0.918576416
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28es2deehqvyzqgmw1vdgjk",
+    "debug": null,
+    "seed": 1400456932,
+    "usage": null
+  }
+}

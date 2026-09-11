@@ -50,9 +50,9 @@ TOOL_SCHEMA: dict[str, Any] = {
     "function": {
         "name": "patch_and_check",
         "description": (
-            "Apply a multi-file unified diff to the current repository and return "
-            "validation feedback. The diff must use standard unified-diff format with "
-            "'a/' and 'b/' path prefixes. Paths are relative to the task root. "
+            "Apply source edits and return validation feedback. The patch may use "
+            "Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) "
+            "or standard unified diff. Paths are relative to the task root. "
             "Only existing, allowlisted source files may be edited — no new files, "
             "deletions, renames, or binary changes. All hunks must apply exactly. "
             "Returns: application status, public runtime-test results, and the "
@@ -64,9 +64,8 @@ TOOL_SCHEMA: dict[str, Any] = {
                 "patch": {
                     "type": "string",
                     "description": (
-                        "A multi-file unified diff in standard format. "
-                        "Paths use 'a/' and 'b/' prefixes and are relative to the task root. "
-                        "Example header: --- a/src/mod.py\\n+++ b/src/mod.py"
+                        "A source patch in Begin-Patch or standard unified-diff format. "
+                        "Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
                     ),
                 }
             },
@@ -231,6 +230,64 @@ def _parse_unified_diff(patch_text: str) -> list[dict[str, Any]]:
     return files
 
 
+def _parse_begin_patch(patch_text: str) -> list[dict[str, Any]]:
+    """Parse the conservative, existing-file-only Begin-Patch envelope."""
+    lines = patch_text.splitlines()
+    start = next((i for i, line in enumerate(lines) if line.strip()), None)
+    if start is None or lines[start].strip() != "*** Begin Patch":
+        raise ValueError("parse_error")
+    end_positions = [i for i, line in enumerate(lines) if line.strip() == "*** End Patch"]
+    if len(end_positions) != 1 or end_positions[0] <= start:
+        raise ValueError("parse_error")
+    end = end_positions[0]
+    if any(line.strip() for line in lines[end + 1:]):
+        raise ValueError("parse_error")
+    files: list[dict[str, Any]] = []
+    i = start + 1
+    while i < end:
+        line = lines[i]
+        if not line.strip():
+            i += 1
+            continue
+        if not line.startswith("*** Update File: "):
+            if line.startswith(("*** Add File:", "*** Delete File:", "*** Move to:")):
+                raise ValueError("file_creation" if "Add" in line else "file_deletion" if "Delete" in line else "rename_copy")
+            raise ValueError("parse_error")
+        path = _normalize_path(line[len("*** Update File: "):].strip())
+        if not path:
+            raise ValueError("invalid_path")
+        i += 1
+        hunks: list[dict[str, Any]] = []
+        while i < end and not lines[i].startswith("*** Update File: "):
+            if not lines[i].strip():
+                i += 1
+                continue
+            if not lines[i].startswith("@@"):
+                raise ValueError("parse_error")
+            i += 1
+            body: list[str] = []
+            while i < end and not lines[i].startswith(("@@", "*** Update File: ")):
+                item = lines[i]
+                if item and item[0] in " +-":
+                    body.append(item)
+                else:
+                    raise ValueError("parse_error")
+                i += 1
+            if not body or not any(item.startswith(("-", "+")) for item in body):
+                raise ValueError("no_hunks")
+            if not any(item.startswith((" ", "-")) for item in body):
+                raise ValueError("hunk_mismatch")
+            hunks.append({"old_start": 0, "old_count": sum(item[0] in " -" for item in body),
+                          "new_start": 0, "new_count": sum(item[0] in " +" for item in body),
+                          "lines": body, "begin_patch": True})
+        if not hunks:
+            raise ValueError("no_hunks")
+        files.append({"old_path": path, "new_path": path, "path": path, "hunks": hunks})
+    if not files:
+        raise ValueError("no_hunks")
+    return files
+
+
 def _apply_hunk(
     file_lines: list[str], hunk: dict[str, Any], line_offset: int = 0
 ) -> list[str] | None:
@@ -284,7 +341,8 @@ def apply_patch(
     """
     # Parse
     try:
-        file_changes = _parse_unified_diff(patch_text)
+        is_begin = patch_text.lstrip().startswith("*** Begin Patch")
+        file_changes = _parse_begin_patch(patch_text) if is_begin else _parse_unified_diff(patch_text)
     except ValueError as exc:
         reason = exc.args[0] if exc.args else "parse_error"
         return {"status": "rejected", "reason": reason, "detail": str(exc), "files": []}
@@ -392,13 +450,31 @@ def apply_patch(
             }
         line_offset = 0
         for hunk in fc["hunks"]:
-            result = _apply_hunk(lines, hunk, line_offset)
+            if hunk.get("begin_patch"):
+                old = [item[1:] for item in hunk["lines"] if item[0] in " -"]
+                new = [item[1:] for item in hunk["lines"] if item[0] in " +"]
+                matches = [
+                    idx for idx in range(len(lines) - len(old) + 1)
+                    if lines[idx:idx + len(old)] == old
+                ]
+                if len(matches) != 1:
+                    return {"status": "rejected", "reason": "hunk_mismatch",
+                            "detail": f"Expected one exact match, found {len(matches)}", "files": []}
+                idx = matches[0]
+                result = lines[:idx] + new + lines[idx + len(old):]
+            else:
+                result = _apply_hunk(lines, hunk, line_offset)
             if result is None:
                 return {
                     "status": "rejected",
                     "reason": "hunk_mismatch",
                     "detail": f"Hunk at line {hunk['old_start']} of {fc['path']} did not match.",
                     "files": [],
+                }
+            if result == lines:
+                return {
+                    "status": "rejected", "reason": "no_hunks",
+                    "detail": "Patch contains no effective changes", "files": [],
                 }
             lines = result
             line_offset += hunk["new_count"] - hunk["old_count"]

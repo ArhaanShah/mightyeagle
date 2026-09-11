@@ -1,0 +1,106 @@
+{
+  "episode_id": "cal_00_expanded",
+  "generation_number": 2,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "tool_calls",
+  "termination_code": "tool_call_received",
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "request_hash": "413290824d8aba33",
+      "timestamp_utc": "2026-09-11T14:35:07.846015+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-1a712ef5-f38d-4e9d-84b6-4b050beb5710",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 1089,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 565,
+      "output_tokens_actual": 85,
+      "reasoning_tokens_actual": 68,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "998",
+        "x-ratelimit-remaining-tokens": "6623",
+        "x-ratelimit-reset-requests": "2m52.8s",
+        "x-ratelimit-reset-tokens": "10.327s",
+        "x-request-id": "req_01m28e9jegeqqsfvwm1m95zsw9"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-1a712ef5-f38d-4e9d-84b6-4b050beb5710",
+    "choices": [
+      {
+        "finish_reason": "tool_calls",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": null,
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": "We need to run mypy to see errors. The repository minimal. Probably type errors elsewhere? But only file is clean.py with simple function; should type-check fine. However maybe mypy config expects something else? Let's run patch_and_check with empty patch to see diagnostics.",
+          "tool_calls": [
+            {
+              "id": "fc_1a3bdaff-38f7-45db-a342-c89b3cc9fbcb",
+              "function": {
+                "arguments": "{\"patch\":\"*** Begin Patch\\n*** End Patch\"}",
+                "name": "patch_and_check"
+              },
+              "type": "function"
+            }
+          ]
+        }
+      }
+    ],
+    "created": 1789137308,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_02b0d31eca",
+    "usage": {
+      "completion_tokens": 85,
+      "prompt_tokens": 565,
+      "total_tokens": 650,
+      "completion_time": 0.178597379,
+      "completion_tokens_details": {
+        "reasoning_tokens": 68
+      },
+      "prompt_time": 0.030680024,
+      "prompt_tokens_details": null,
+      "queue_time": 0.348221143,
+      "total_time": 0.209277403
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28e9jegeqqsfvwm1m95zsw9",
+      "debug": null,
+      "seed": 1794992785,
+      "usage": null
+    }
+  },
+  "assistant_content": null,
+  "reasoning_content": "We need to run mypy to see errors. The repository minimal. Probably type errors elsewhere? But only file is clean.py with simple function; should type-check fine. However maybe mypy config expects something else? Let's run patch_and_check with empty patch to see diagnostics.",
+  "tool_calls": [
+    {
+      "id": "fc_1a3bdaff-38f7-45db-a342-c89b3cc9fbcb",
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "arguments": "{\"patch\":\"*** Begin Patch\\n*** End Patch\"}"
+      }
+    }
+  ],
+  "total_input_tokens": 565,
+  "total_output_tokens": 85,
+  "error_detail": "",
+  "provider_fingerprint": "fp_02b0d31eca"
+}

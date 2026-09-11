@@ -1,7 +1,0 @@
-{
-  "files": {
-    "pkg/__init__.py": "",
-    "pkg/renderer.py": "from typing import Protocol, List\n\nclass Renderer(Protocol):\n    def render(self, text: str) -> str: ...\n\nclass MarkdownRenderer:\n    def format(self, text: str) -> str:\n        return f\"*{text}*\"\n\ndef display_title(r: Renderer, title: str) -> str:\n    return r.render(title)\n\ndef run_render() -> List[str]:\n    m = MarkdownRenderer()\n    t1 = display_title(m, \"Hello\")\n    t2 = display_title(m, \"World\")\n    return [t1, t2]\n",
-    "tests/test_renderer.py": "from pkg.renderer import MarkdownRenderer\n\ndef test_renderer():\n    m = MarkdownRenderer()\n    assert m.format(\"Hello\") == \"*Hello*\"\n"
-  }
-}

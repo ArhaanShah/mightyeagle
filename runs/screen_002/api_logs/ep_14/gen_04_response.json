@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-3c2c8507-8e5e-41d0-aea9-9fc6ce13f262",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "The patch format must be correct. Use unified diff style with --- and +++. Let's craft correct diff.\n\n",
+        "tool_calls": [
+          {
+            "id": "fc_a855fa88-a8d3-470e-872e-0d437511b506",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/config_b.py\\n@@\\n-from typing import Optional\\n-\\n-def get_port() -\\u003e Optional[int]:\\n-    return 8080\\n+from typing import Optional\\n+\\n+# ``get_port`` always returns a concrete integer port. The original signature\\n+# allowed ``None`` which caused a type error when the result was used in an\\n+# arithmetic expression. Tightening the return type to ``int`` matches the\\n+# implementation and satisfies the type checker without altering runtime\\n+# semantics.\\n+def get_port() -\\u003e int:\\n+    return 8080\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789138433,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_803c0ba83d",
+  "usage": {
+    "completion_tokens": 177,
+    "prompt_tokens": 1490,
+    "total_tokens": 1667,
+    "completion_time": 1.0277728289999999,
+    "completion_tokens_details": {
+      "reasoning_tokens": 22
+    },
+    "prompt_time": 0.07212834,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.40324035,
+    "total_time": 1.099901169
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28fbweqe5eszb74sdvdx1mz",
+    "debug": null,
+    "seed": 1868830135,
+    "usage": null
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.\n\nDo not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.\n\nUse patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.\n\nINITIAL TYPE-CHECKER REPORT\n=== TYPE-CHECKER REPORT ===\n===\nseverity: error\ncode: arg-type\nmessage: Argument 1 to \"dispatch\" has incompatible type \"AlphaHandler\"; expected \"Handler\"\nextras: {\"hint\": null}\nmultiplicity: 2\n  LOC|{\"col\": 18, \"file\": \"pkg/handler_a.py\", \"line\": 9, \"occurrence_index\": 1}\n  LOC|{\"col\": 18, \"file\": \"pkg/handler_a.py\", \"line\": 10, \"occurrence_index\": 2}\n===\nseverity: error\ncode: arg-type\nmessage: Argument 1 to \"dispatch\" has incompatible type \"BetaHandler\"; expected \"Handler\"\nextras: {\"hint\": null}\nmultiplicity: 1\n  LOC|{\"col\": 20, \"file\": \"pkg/handler_b.py\", \"line\": 9, \"occurrence_index\": 0}\n===\n--- 3 error(s), 3 record(s) total ---\n\nSOURCE, PUBLIC TESTS, AND CONFIGURATION\n# FILE: pkg/__init__.py\n```\n\n```\n\n# FILE: pkg/handler_a.py\n```\nfrom pkg.proto import dispatch\n\nclass AlphaHandler:\n    def process(self, msg: str) -> str:\n        return f\"A:{msg}\"\n\ndef run_a() -> str:\n    h = AlphaHandler()\n    d1 = dispatch(h, \"1\")\n    d2 = dispatch(h, \"2\")\n    return d1 + d2\n\n```\n\n# FILE: pkg/handler_b.py\n```\nfrom pkg.proto import dispatch\n\nclass BetaHandler:\n    def process(self, msg: str) -> str:\n        return f\"B:{msg}\"\n\ndef run_b() -> str:\n    h = BetaHandler()\n    return dispatch(h, \"3\")\n\n```\n\n# FILE: pkg/proto.py\n```\nfrom typing import Protocol\n\nclass Handler(Protocol):\n    def handle(self, msg: str) -> str: ...\n\ndef dispatch(h: Handler, msg: str) -> str:\n    return h.handle(msg)\n\n```\n\n# FILE: tests/test_handlers.py\n```\nfrom pkg.handler_a import AlphaHandler\nfrom pkg.handler_b import BetaHandler\n\ndef test_a():\n    assert AlphaHandler().process(\"1\") == \"A:1\"\n\ndef test_b():\n    assert BetaHandler().process(\"3\") == \"B:3\"\n\n```\n\n"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "fc_1e42374b-bc7a-49b6-bcee-cb4114cb6fe5",
+          "type": "function",
+          "function": {
+            "name": "patch_and_check",
+            "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/handler_a.py\\n@@\\n class AlphaHandler:\\n-    def process(self, msg: str) -\\u003e str:\\n-        return f\\\"A:{msg}\\\"\\n+    def process(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Process a message and return a formatted string.\\n+\\n+        This method is part of the public API used by the tests.  The\\n+        :func:`pkg.proto.dispatch` helper expects a ``handle`` method as\\n+        defined by the ``Handler`` protocol.  To satisfy the protocol while\\n+        preserving the original behaviour we provide a thin ``handle``\\n+        wrapper that forwards to ``process``.\\n+        \\\"\\\"\\\"\\n+        return f\\\"A:{msg}\\\"\\n+\\n+    # The protocol ``Handler`` requires a ``handle`` method.  Adding this\\n+    # method makes ``AlphaHandler`` a structural subtype of ``Handler``\\n+    # without altering its external contract.\\n+    def handle(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Delegate to :meth:`process` to satisfy the ``Handler`` protocol.\\n+\\n+        Keeping the implementation separate from ``process`` ensures that\\n+        existing callers that rely on ``process`` continue to work unchanged.\\n+        \\\"\\\"\\\"\\n+        return self.process(msg)\\n*** End Patch\\n*** End Patch\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "fc_1e42374b-bc7a-49b6-bcee-cb4114cb6fe5",
+      "content": "PATCH REJECTED: The patch could not be parsed as a unified diff.\n\nDetail: parse_error"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "fc_8d323e9e-078e-43a6-aea8-c72ccd6a0e20",
+          "type": "function",
+          "function": {
+            "name": "patch_and_check",
+            "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/handler_a.py\\n@@\\n class AlphaHandler:\\n-    def process(self, msg: str) -\\u003e str:\\n-        return f\\\"A:{msg}\\\"\\n+    def process(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Process a message and return a formatted string.\\n+\\n+        This method is part of the public API used by the tests. The\\n+        :func:`pkg.proto.dispatch` helper expects a ``handle`` method as\\n+        defined by the ``Handler`` protocol. To satisfy the protocol while\\n+        preserving the original behaviour we provide a thin ``handle``\\n+        wrapper that forwards to ``process``.\\n+        \\\"\\\"\\\"\\n+        return f\\\"A:{msg}\\\"\\n+\\n+    # The protocol ``Handler`` requires a ``handle`` method. Adding this\\n+    # method makes ``AlphaHandler`` a structural subtype of ``Handler``\\n+    # without altering its external contract.\\n+    def handle(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Delegate to :meth:`process` to satisfy the ``Handler`` protocol.\\n+\\n+        Keeping the implementation separate from ``process`` ensures that\\n+        existing callers that rely on ``process`` continue to work unchanged.\\n+        \\\"\\\"\\\"\\n+        return self.process(msg)\\n*** End Patch\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "fc_8d323e9e-078e-43a6-aea8-c72ccd6a0e20",
+      "content": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n===\nseverity: error\ncode: arg-type\nmessage: Argument 1 to \"dispatch\" has incompatible type \"BetaHandler\"; expected \"Handler\"\nextras: {\"hint\": null}\nmultiplicity: 1\n  LOC|{\"col\": 20, \"file\": \"pkg/handler_b.py\", \"line\": 9, \"occurrence_index\": 0}\n===\n--- 1 error(s), 1 record(s) total ---"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "fc_695bb3ab-85f9-4c2f-be32-59c78e58bbbe",
+          "type": "function",
+          "function": {
+            "name": "patch_and_check",
+            "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/handler_b.py\\n@@\\n class BetaHandler:\\n-    def process(self, msg: str) -\\u003e str:\\n-        return f\\\"B:{msg}\\\"\\n+    def process(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Process a message and return a formatted string.\\n+\\n+        As with :class:`pkg.handler_a.AlphaHandler`, the ``dispatch`` helper\\n+        expects a ``handle`` method defined by the ``Handler`` protocol.  We\\n+        provide that method below, delegating to ``process`` so the public\\n+        API remains unchanged.\\n+        \\\"\\\"\\\"\\n+        return f\\\"B:{msg}\\\"\\n+\\n+    # Implement the protocol's required ``handle`` method.\\n+    def handle(self, msg: str) -\\u003e str:\\n+        \\\"\\\"\\\"Forward to :meth:`process` to satisfy ``Handler``.\\n+        \\\"\\\"\\\"\\n+        return self.process(msg)\\n*** End Patch\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "fc_695bb3ab-85f9-4c2f-be32-59c78e58bbbe",
+      "content": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n===\n--- 0 error(s), 0 record(s) total ---"
+    }
+  ],
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_completion_tokens": 2048,
+  "include_reasoning": true,
+  "tool_choice": "auto",
+  "parallel_tool_calls": false,
+  "stream": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "description": "Apply source edits and return validation feedback. The patch may use Begin-Patch format (*** Begin Patch / *** Update File / @@ / *** End Patch) or standard unified diff. Paths are relative to the task root. Only existing, allowlisted source files may be edited — no new files, deletions, renames, or binary changes. All hunks must apply exactly. Returns: application status, public runtime-test results, and the complete mypy type-checker report.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "patch": {
+              "type": "string",
+              "description": "A source patch in Begin-Patch or standard unified-diff format. Example: *** Begin Patch\\n*** Update File: pkg/mod.py\\n@@\\n-old\\n+new\\n*** End Patch"
+            }
+          },
+          "required": [
+            "patch"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+"""Utilities for part B.
+
+The original code annotated ``get_b`` as returning ``Optional[int]`` even though
+the function always returns an ``int``.  Adding ``1`` to the result therefore
+triggered a type‑checking error because ``None`` cannot be added to an ``int``.
+
+We correct the annotation to ``int`` while preserving the exact runtime
+behaviour required by the tests (``run_b`` should return ``11``).
+"""
+
+from typing import Optional  # kept for possible future extensions
+
+
+def get_b() -> int:
+    """Return the constant integer ``10``.
+
+    The function never yields ``None``; the ``Optional`` annotation was a
+    mistake.
+    """
+    return 10
+
+
+def run_b() -> int:
+    """Return ``get_b()`` incremented by one."""
+    return get_b() + 1

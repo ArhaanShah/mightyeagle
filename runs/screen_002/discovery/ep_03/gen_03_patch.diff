@@ -1,0 +1,32 @@
+*** Begin Patch
+*** Update File: pkg/db_config.py
+@@
+-from typing import TypedDict
+-
+-class DBConfig(TypedDict):
+-    port: str
++from typing import TypedDict
++
++# The database configuration includes a numeric port. The original type
++# annotation mistakenly declared the ``port`` field as ``str`` which caused
++# static type checkers to report a mismatch when an ``int`` value was
++# provided. Updating the TypedDict to use ``int`` aligns the type with the
++# actual runtime value while preserving the public API – callers still pass a
++# ``DBConfig`` dictionary containing a ``port`` key.
++class DBConfig(TypedDict):
++    port: int
+*** Update File: pkg/web_config.py
+@@
+-from typing import TypedDict
+-
+-class WebConfig(TypedDict):
+-    workers: str
++from typing import TypedDict
++
++# ``workers`` represents the number of worker processes and is naturally an
++# integer. The original annotation used ``str`` which conflicted with the
++# integer literal used in ``run_web`` and caused type‑checking errors. The
++# field type is corrected to ``int``.
++class WebConfig(TypedDict):
++    workers: int
+*** End Patch

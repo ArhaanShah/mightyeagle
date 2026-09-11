@@ -1,0 +1,88 @@
+{
+  "episode_id": "ep_08",
+  "generation_number": 3,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "stop",
+  "termination_code": "model_final",
+  "attempts": [
+    {
+      "attempt_number": 30,
+      "request_hash": "c5b0469fed539901",
+      "timestamp_utc": "2026-09-11T14:49:56.128411+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-deef1bcc-0443-4601-a1b0-2979c81025ac",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 2272,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1178,
+      "output_tokens_actual": 84,
+      "reasoning_tokens_actual": 22,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "944",
+        "x-ratelimit-remaining-tokens": "6016",
+        "x-ratelimit-reset-requests": "1h20m38.4s",
+        "x-ratelimit-reset-tokens": "14.879s",
+        "x-request-id": "req_01m28f4p1aegqvnpc350nfafjb"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-deef1bcc-0443-4601-a1b0-2979c81025ac",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Implemented a fix by correcting the `AppConfig` TypedDict definition: changed `timeout` field type from `str` to `int`. Added explanatory comments to clarify the change and maintain consistency with runtime behavior and tests. All type checks now pass with zero errors.",
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": "All type errors resolved. Need ensure no other hidden errors. Run tests already passed. Provide final answer.",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1789138197,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_0708ac49a5",
+    "usage": {
+      "completion_tokens": 84,
+      "prompt_tokens": 1178,
+      "total_tokens": 1262,
+      "completion_time": 0.179354526,
+      "completion_tokens_details": {
+        "reasoning_tokens": 22
+      },
+      "prompt_time": 0.105461997,
+      "prompt_tokens_details": null,
+      "queue_time": 0.349463299,
+      "total_time": 0.284816523
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28f4p1aegqvnpc350nfafjb",
+      "debug": null,
+      "seed": 1268338942,
+      "usage": null
+    }
+  },
+  "assistant_content": "Implemented a fix by correcting the `AppConfig` TypedDict definition: changed `timeout` field type from `str` to `int`. Added explanatory comments to clarify the change and maintain consistency with runtime behavior and tests. All type checks now pass with zero errors.",
+  "reasoning_content": "All type errors resolved. Need ensure no other hidden errors. Run tests already passed. Provide final answer.",
+  "tool_calls": [],
+  "total_input_tokens": 1178,
+  "total_output_tokens": 84,
+  "error_detail": "",
+  "provider_fingerprint": "fp_0708ac49a5"
+}

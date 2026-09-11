@@ -1,0 +1,4 @@
+{
+  "approved_for_discovery": true,
+  "reviewer_notes": "Live calibration inspected: all eight calibration episodes completed without technical failure, request-outcome uncertainty, model-identity failure, or rate-limit censoring. Accepted patches reached validation in both cal_trivial presentation conditions and in additional cal_dist repair episodes. Fixture validation and the machine calibration gate passed."
+}

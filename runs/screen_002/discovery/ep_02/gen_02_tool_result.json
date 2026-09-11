@@ -1,0 +1,7 @@
+{
+  "status": "applied",
+  "feedback": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n---\noccurrence_index: 0\nseverity: error\nfile: pkg/web_config.py\nline: 7\ncol: 11\ncode: return-value\nmessage: Incompatible return value type (got \"str\", expected \"int\")\nextras: {\"hint\": null}\n---\noccurrence_index: 1\nseverity: error\nfile: pkg/web_config.py\nline: 10\ncol: 33\ncode: typeddict-item\nmessage: Incompatible types (expression has type \"int\", TypedDict item \"workers\" has type \"str\")\nextras: {\"hint\": null}\n---\n--- 2 error(s), 2 record(s) total ---",
+  "post_workspace_hash": "3b6a75c19848e1c534b5d755b1621eca48bc33cee7fc96e662990b91b932497c",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

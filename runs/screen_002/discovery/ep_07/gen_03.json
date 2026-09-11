@@ -1,0 +1,44 @@
+{
+  "episode_id": "ep_07",
+  "generation_number": 3,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": null,
+  "finish_reason": null,
+  "termination_code": "model_action_invalid",
+  "attempts": [
+    {
+      "attempt_number": 27,
+      "request_hash": "cce547bc88465670",
+      "timestamp_utc": "2026-09-11T14:49:13.373931+00:00",
+      "http_status": 400,
+      "request_id": null,
+      "outcome": "model_action_invalid",
+      "retry_after": null,
+      "input_tokens_reserved": 2990,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": null,
+      "output_tokens_actual": null,
+      "reasoning_tokens_actual": null,
+      "error_detail": "{\"type\": \"invalid_request_error\", \"code\": \"tool_use_failed\", \"message\": \"Tool call validation failed: tool call validation failed: attempted to call tool 'repo_browser.open_file' which was not in request.tools\", \"failed_generation\": \"{\\\"name\\\": \\\"repo_browser.open_file\\\", \\\"arguments\\\": {\\\"path\\\":\\\"pkg/scale.py\\\",\\\"line_start\\\":1,\\\"line_end\\\":400}}\"}",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "947",
+        "x-ratelimit-remaining-tokens": "5247",
+        "x-ratelimit-reset-requests": "1h16m19.2s",
+        "x-ratelimit-reset-tokens": "20.647s",
+        "x-request-id": "req_01m28f3cbdec4a5me962nn2xyh"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": null,
+  "assistant_content": null,
+  "reasoning_content": null,
+  "tool_calls": [],
+  "total_input_tokens": null,
+  "total_output_tokens": null,
+  "error_detail": "{\"type\": \"invalid_request_error\", \"code\": \"tool_use_failed\", \"message\": \"Tool call validation failed: tool call validation failed: attempted to call tool 'repo_browser.open_file' which was not in request.tools\", \"failed_generation\": \"{\\\"name\\\": \\\"repo_browser.open_file\\\", \\\"arguments\\\": {\\\"path\\\":\\\"pkg/scale.py\\\",\\\"line_start\\\":1,\\\"line_end\\\":400}}\"}",
+  "provider_fingerprint": null
+}

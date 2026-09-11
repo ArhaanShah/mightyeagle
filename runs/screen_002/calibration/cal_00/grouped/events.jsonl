@@ -1,0 +1,13 @@
+{"timestamp": "2026-09-11T14:35:19.539696+00:00", "event_type": "episode_start", "data": {"episode_id": "cal_00_grouped", "fixture_id": "cal_clean", "condition": "grouped", "workspace_hash": "669d01adc064a0d7ea4a4e3db95e164749ecb42b7576e11da97d197faca57525", "prompt_length": 826, "report_hash": "78e46825909165e2310b262e5cb0261f208e4a588829d65e9323858939768d8d", "source_hash": "0a4a8f0bc0f0536cea75a8d2cf1b4d5d27eedd4efa186bc18a73889497f5842e"}}
+{"timestamp": "2026-09-11T14:35:19.570702+00:00", "event_type": "api_intent", "data": {"generation": 1, "message_count": 1}}
+{"timestamp": "2026-09-11T14:35:20.171950+00:00", "event_type": "tool_intent", "data": {"generation": 1, "patch_hash": "f5e3cd3b197bf35a", "pre_workspace_hash": "669d01adc064a0d7ea4a4e3db95e164749ecb42b7576e11da97d197faca57525"}}
+{"timestamp": "2026-09-11T14:35:20.206712+00:00", "event_type": "tool_result", "data": {"generation": 1, "status": "rejected", "post_workspace_hash": ""}}
+{"timestamp": "2026-09-11T14:35:20.239325+00:00", "event_type": "api_intent", "data": {"generation": 2, "message_count": 3}}
+{"timestamp": "2026-09-11T14:35:22.475357+00:00", "event_type": "tool_intent", "data": {"generation": 2, "patch_hash": "ec2e683071f89ea0", "pre_workspace_hash": "669d01adc064a0d7ea4a4e3db95e164749ecb42b7576e11da97d197faca57525"}}
+{"timestamp": "2026-09-11T14:35:29.143092+00:00", "event_type": "tool_result", "data": {"generation": 2, "status": "applied", "post_workspace_hash": "1cf67e6bae39eb5573b1326580ab0bf49acbdcad356fda52772db59316973760"}}
+{"timestamp": "2026-09-11T14:35:29.201172+00:00", "event_type": "api_intent", "data": {"generation": 3, "message_count": 5}}
+{"timestamp": "2026-09-11T14:35:31.471185+00:00", "event_type": "tool_intent", "data": {"generation": 3, "patch_hash": "18ca1926d2754def", "pre_workspace_hash": "1cf67e6bae39eb5573b1326580ab0bf49acbdcad356fda52772db59316973760"}}
+{"timestamp": "2026-09-11T14:35:31.524396+00:00", "event_type": "tool_result", "data": {"generation": 3, "status": "rejected", "post_workspace_hash": ""}}
+{"timestamp": "2026-09-11T14:35:31.567048+00:00", "event_type": "api_intent", "data": {"generation": 4, "message_count": 7}}
+{"timestamp": "2026-09-11T14:35:32.809278+00:00", "event_type": "model_final", "data": {"generation": 4}}
+{"timestamp": "2026-09-11T14:35:32.812463+00:00", "event_type": "episode_end", "data": {"termination_reason": "model_final"}}

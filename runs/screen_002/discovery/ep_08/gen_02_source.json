@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/appconfig.py": "from typing import TypedDict, List\n\n# The application configuration expects a numeric timeout value. The original\n# TypedDict incorrectly declared the ``timeout`` field as a ``str`` which caused\n# mypy to report type mismatches when the functions returned an ``int`` and when\n# the dictionary literal used an ``int`` value. Updating the field type to\n# ``int`` aligns the static type information with the runtime behavior and the\n# tests.\nclass AppConfig(TypedDict):\n    timeout: int\n\ndef get_timeout_primary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef get_timeout_secondary(cfg: AppConfig) -> int:\n    return cfg[\"timeout\"]\n\ndef run_app() -> List[int]:\n    cfg: AppConfig = {\"timeout\": 30}\n    t1 = get_timeout_primary(cfg)\n    t2 = get_timeout_secondary(cfg)\n    return [t1, t2]\n",
+    "tests/test_appconfig.py": "from pkg.appconfig import run_app\n\ndef test_app():\n    assert run_app() == [30, 30]\n"
+  }
+}

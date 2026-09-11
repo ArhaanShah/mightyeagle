@@ -1,0 +1,37 @@
+*** Begin Patch
+*** Update File: pkg/part_a.py
+@@
+-from typing import Optional
+-def get_a() -> Optional[str]:
+-    return "A"
+-def run_a() -> int:
+-    return len(get_a())
++"""Utilities for part A.
++
++The original implementation annotated :func:`get_a` as returning ``Optional[str]``
++even though the function always returns a concrete string.  This caused a
++type‑checking error in :func:`run_a` because ``len`` expects a ``Sized`` object,
++but the static type was ``str | None``.
++
++Since the runtime contract guarantees a non‑``None`` value, we tighten the
++annotation to ``str``.  This removes the spurious ``Optional`` and satisfies the
++type checker while preserving the existing behaviour (the tests expect
++``run_a()`` to return ``1``).
++"""
++
++def get_a() -> str:
++    """Return the constant string ``"A"``.
++
++    The function never returns ``None``; the return type reflects that fact.
++    """
++    return "A"
++
++
++def run_a() -> int:
++    """Return the length of the string produced by :func:`get_a`.
++
++    Because ``get_a`` now returns ``str`` the call to ``len`` is type‑safe.
++    """
++    return len(get_a())
+*** End Patch
+*** End Patch

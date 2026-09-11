@@ -1,0 +1,47 @@
+Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.
+
+Do not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.
+
+Use patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
+
+INITIAL TYPE-CHECKER REPORT
+=== TYPE-CHECKER REPORT ===
+---
+occurrence_index: 0
+severity: error
+file: pkg/trivial.py
+line: 8
+col: <no-col>
+code: operator
+message: Unsupported operand types for + ("None" and "int")
+extras: {"column": 11, "hint": "Left operand is of type \\"int \| None\\""}
+---
+--- 1 error(s), 1 record(s) total ---
+
+SOURCE, PUBLIC TESTS, AND CONFIGURATION
+# FILE: pkg/__init__.py
+```
+
+```
+
+# FILE: pkg/trivial.py
+```
+from typing import Optional
+
+def compute(x: int) -> Optional[int]:
+    return x * 2
+
+def run() -> int:
+    val = compute(5)
+    return val + 1
+
+```
+
+# FILE: tests/test_trivial.py
+```
+from pkg.trivial import run
+def test_trivial():
+    assert run() == 11
+
+```
+

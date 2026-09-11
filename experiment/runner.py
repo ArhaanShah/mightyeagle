@@ -543,6 +543,12 @@ def run_episode(
             outcome.termination_reason = "model_action_invalid"
             break
 
+        if code == "rate_limit_censored":
+            ep_log.append_event("rate_limit_censored", {"generation": generation_number})
+            outcome.rate_limit_censored = True
+            outcome.termination_reason = "rate_limit_censored"
+            break
+
         if code == "technical_failure":
             ep_log.append_event("technical_failure", {"generation": generation_number, "detail": gen.error_detail})
             outcome.technical_failure = True
@@ -999,6 +1005,35 @@ def _run_preflight(
     logger.info("Running preflight checks...")
     errors: list[str] = []
 
+    schema_description = TOOL_SCHEMA["function"]["description"]
+    if "Begin-Patch" not in schema_description or "unified diff" not in schema_description:
+        errors.append("Tool schema does not advertise both patch formats.")
+    config_path = Path(__file__).parent / "config.json"
+    try:
+        harness_config = json.loads(config_path.read_text(encoding="utf-8"))
+        if int(harness_config.get("rate_limit_fallback_tpm", 0)) <= 0:
+            errors.append("Invalid fallback TPM configuration.")
+    except (OSError, json.JSONDecodeError):
+        errors.append("Rate-limit configuration is unavailable.")
+    gate_path = run_dir / "calibration_gate.json"
+    if not gate_path.exists():
+        errors.append("Machine calibration gate result is missing.")
+    else:
+        try:
+            if not json.loads(gate_path.read_text(encoding="utf-8")).get("passed"):
+                errors.append("Machine calibration gate did not pass.")
+        except json.JSONDecodeError:
+            errors.append("Machine calibration gate result is invalid.")
+    review_path = run_dir / "calibration" / "review.json"
+    if not review_path.exists():
+        errors.append("Calibration review is missing.")
+    else:
+        try:
+            if json.loads(review_path.read_text(encoding="utf-8")).get("approved_for_discovery") is not True:
+                errors.append("Calibration review did not explicitly approve discovery.")
+        except json.JSONDecodeError:
+            errors.append("Calibration review is invalid.")
+
     for ep in episodes:
         fixture_id = ep["fixture_id"]
         fixture_dir = fixtures_root / fixture_id
@@ -1137,6 +1172,12 @@ def run_freeze(run_dir: Path, config: dict[str, Any]) -> None:
         raise FileNotFoundError(
             "No calibration review record found. Complete calibration review before freezing."
         )
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    if review.get("approved_for_discovery") is not True:
+        raise RuntimeError("Calibration review must explicitly approve discovery.")
+    gate_path = run_dir / "calibration_gate.json"
+    if not gate_path.exists() or not json.loads(gate_path.read_text(encoding="utf-8")).get("passed"):
+        raise RuntimeError("Machine calibration gate has not passed.")
 
     val_path = run_dir / "fixture_validation.json"
     if not val_path.exists():
@@ -1203,6 +1244,67 @@ def run_freeze(run_dir: Path, config: dict[str, Any]) -> None:
     logger.info("Operational freeze saved to %s", freeze_path)
 
 
+def run_calibration_gate(run_dir: Path) -> dict[str, Any]:
+    """Fail closed unless calibration demonstrates a healthy complete tool loop."""
+    failures: list[str] = []
+    validation = run_dir / "fixture_validation.json"
+    if not validation.exists():
+        failures.append("missing_fixture_validation")
+    elif not json.loads(validation.read_text(encoding="utf-8")).get("all_passed"):
+        failures.append("fixture_validation_failed")
+    outcomes = []
+    for path in sorted((run_dir / "calibration").glob("**/outcome.json")):
+        try:
+            outcomes.append(json.loads(path.read_text(encoding="utf-8")))
+        except (OSError, json.JSONDecodeError):
+            failures.append(f"invalid_outcome:{path}")
+    if not outcomes:
+        failures.append("missing_calibration_outcomes")
+    for out in outcomes:
+        for key in ("technical_failure", "request_outcome_unknown", "model_identity_failure", "rate_limit_censored"):
+            if out.get(key):
+                failures.append(f"{key}:{out.get('episode_id', '')}")
+    accepted = [out for out in outcomes if out.get("patches_accepted", 0) > 0]
+    trivial = [out for out in accepted if out.get("fixture_id") == "cal_trivial"]
+    if {out.get("condition") for out in trivial} != {"expanded", "grouped"}:
+        failures.append("cal_trivial_tool_loop_missing")
+    if not any(out.get("fixture_id") in {"cal_dist", "cal_long_exp"} for out in accepted):
+        failures.append("additional_repair_acceptance_missing")
+    for patch_path in sorted((run_dir / "calibration").glob("**/gen_*_patch.diff")):
+        try:
+            patch_text = patch_path.read_text(encoding="utf-8")
+            if patch_text.lstrip().startswith("*** Begin Patch"):
+                # A neighboring tool result is the durable rejection record.
+                result_path = patch_path.with_name(patch_path.name.replace("_patch.diff", "_tool_result.json"))
+                if result_path.exists() and json.loads(result_path.read_text(encoding="utf-8")).get("status") == "rejected":
+                    feedback = json.loads(result_path.read_text(encoding="utf-8")).get("feedback", "")
+                    added = {
+                        line[1:]
+                        for line in patch_text.splitlines()
+                        if line.startswith("+") and not line.startswith("+++")
+                    }
+                    removed = {
+                        line[1:]
+                        for line in patch_text.splitlines()
+                        if line.startswith("-") and not line.startswith("---")
+                    }
+                    if (
+                        "no hunks" in feedback.lower()
+                        and added
+                        and removed
+                        and added != removed
+                    ):
+                        failures.append("begin_patch_rejected_as_no_hunks")
+        except (OSError, json.JSONDecodeError):
+            continue
+    result = {"passed": not failures, "failures": failures,
+              "outcome_count": len(outcomes)}
+    (run_dir / "calibration_gate.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    if failures:
+        raise RuntimeError("Calibration gate failed: " + ", ".join(failures))
+    return result
+
+
 def _hash_directory(path: Path) -> str:
     h = hashlib.sha256()
     ignored = {".pytest_cache", ".mypy_cache", "__pycache__", ".git"}
@@ -1236,6 +1338,8 @@ def main() -> None:
                         help="Use mock client (no API calls)")
     parser.add_argument("--freeze", action="store_true",
                         help="Save operational freeze (requires calibration review)")
+    parser.add_argument("--calibration-gate", action="store_true",
+                        help="Run machine calibration acceptance gate")
     parser.add_argument("--preflight", action="store_true",
                         help="Run local preflight checks only")
     parser.add_argument("--resume", action="store_true",
@@ -1264,6 +1368,10 @@ def main() -> None:
     # Load prompt template
     prompt_path = Path(__file__).parent / "prompt.txt"
     prompt_template = prompt_path.read_text(encoding="utf-8")
+
+    if args.calibration_gate:
+        run_calibration_gate(run_dir)
+        return
 
     if args.freeze:
         run_freeze(run_dir, config)
@@ -1339,7 +1447,13 @@ def main() -> None:
         client = GroqExperimentClient(
             api_key=api_key,
             model_id=model_id,
-            model_settings=model_settings,
+            model_settings={
+                **model_settings,
+                "_rate_limit_fallback_tpm": config.get("rate_limit_fallback_tpm", 8000),
+                "_rate_limit_safety_margin_tokens": config.get("rate_limit_safety_margin_tokens", 256),
+                "_rate_limit_guard_seconds": config.get("rate_limit_guard_seconds", 0.25),
+                "_max_rate_limit_retries_per_generation": config.get("max_rate_limit_retries_per_generation", 3),
+            },
             budget=budget,
             log_dir=log_dir,
         )

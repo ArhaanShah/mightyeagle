@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/long.py": "from typing import List\n\ndef fetch_data() -> str:\n    \"\"\"Return a non\u2011null string.\n\n    The original annotation allowed ``None`` but the implementation always\n    returns the literal ``\"item\"``. Narrowing the return type to ``str``\n    eliminates the ``len`` type errors while preserving the runtime\n    behaviour expected by the tests.\n    \"\"\"\n    return \"item\"\n\ndef run_many() -> List[int]:\n    res = []\n    # 8 identical call site errors\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    res.append(len(fetch_data()))\n    return res\n",
+    "tests/test_long.py": "from pkg.long import run_many\ndef test_long():\n    assert run_many() == [4] * 8\n"
+  }
+}

@@ -1,6 +1,6 @@
 # Experiment Summary: mock_screen
 
-Generated: 2026-09-11T09:36:36.390663+00:00
+Generated: 2026-09-11T14:03:58.004080+00:00
 
 ## Run Counts
 - Scheduled episodes: 16
@@ -13,6 +13,7 @@ Generated: 2026-09-11T09:36:36.390663+00:00
 - Technical failures: 0
 - Token censored: 0
 - Budget censored: 0
+- Rate-limit censored: 0
 - Request outcome unknown: 0
 - Content filtered: 0
 - Model identity failures: 0

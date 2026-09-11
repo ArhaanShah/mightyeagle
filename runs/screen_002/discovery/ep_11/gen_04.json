@@ -1,0 +1,88 @@
+{
+  "episode_id": "ep_11",
+  "generation_number": 4,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "stop",
+  "termination_code": "model_final",
+  "attempts": [
+    {
+      "attempt_number": 40,
+      "request_hash": "cac5704e37c03f6f",
+      "timestamp_utc": "2026-09-11T14:51:57.747296+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-23578717-df85-4b26-9e7e-b4bd5a37eaa3",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 3667,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 2007,
+      "output_tokens_actual": 58,
+      "reasoning_tokens_actual": null,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "934",
+        "x-ratelimit-remaining-tokens": "5285",
+        "x-ratelimit-reset-requests": "1h35m2.4s",
+        "x-ratelimit-reset-tokens": "20.362s",
+        "x-request-id": "req_01m28f8csgebwt4j6kq6c2h1ec"
+      },
+      "wait_reason": "token_tpm",
+      "wait_seconds": 11.90599999999904
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-23578717-df85-4b26-9e7e-b4bd5a37eaa3",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Implemented protocol compliance by adding `handle` methods to both `AlphaHandler` and `BetaHandler`, delegating to existing `process` methods. Added comprehensive docstrings and comments to clarify behavior and maintain public API integrity. All type errors resolved and tests continue to pass.",
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1789138318,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_6dedd2be22",
+    "usage": {
+      "completion_tokens": 58,
+      "prompt_tokens": 2007,
+      "total_tokens": 2065,
+      "completion_time": 0.143736256,
+      "completion_tokens_details": null,
+      "prompt_time": 0.118663336,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "queue_time": 0.219456884,
+      "total_time": 0.262399592
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28f8csgebwt4j6kq6c2h1ec",
+      "debug": null,
+      "seed": 271960479,
+      "usage": null
+    }
+  },
+  "assistant_content": "Implemented protocol compliance by adding `handle` methods to both `AlphaHandler` and `BetaHandler`, delegating to existing `process` methods. Added comprehensive docstrings and comments to clarify behavior and maintain public API integrity. All type errors resolved and tests continue to pass.",
+  "reasoning_content": null,
+  "tool_calls": [],
+  "total_input_tokens": 2007,
+  "total_output_tokens": 58,
+  "error_detail": "",
+  "provider_fingerprint": "fp_6dedd2be22"
+}

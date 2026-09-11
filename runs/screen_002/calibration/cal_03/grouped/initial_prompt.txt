@@ -1,0 +1,61 @@
+Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.
+
+Do not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.
+
+Use patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
+
+INITIAL TYPE-CHECKER REPORT
+=== TYPE-CHECKER REPORT ===
+===
+severity: error
+code: arg-type
+message: Argument 1 to "len" has incompatible type "str \| None"; expected "Sized"
+extras: {"column": 19, "hint": null}
+multiplicity: 8
+  LOC|{"col": null, "file": "pkg/long.py", "line": 9, "occurrence_index": 0}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 10, "occurrence_index": 1}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 11, "occurrence_index": 2}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 12, "occurrence_index": 3}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 13, "occurrence_index": 4}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 14, "occurrence_index": 5}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 15, "occurrence_index": 6}
+  LOC|{"col": null, "file": "pkg/long.py", "line": 16, "occurrence_index": 7}
+===
+--- 8 error(s), 8 record(s) total ---
+
+SOURCE, PUBLIC TESTS, AND CONFIGURATION
+# FILE: pkg/__init__.py
+```
+
+```
+
+# FILE: pkg/long.py
+```
+from typing import Optional, List
+
+def fetch_data() -> Optional[str]:
+    return "item"
+
+def run_many() -> List[int]:
+    res = []
+    # 8 identical call site errors
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    res.append(len(fetch_data()))
+    return res
+
+```
+
+# FILE: tests/test_long.py
+```
+from pkg.long import run_many
+def test_long():
+    assert run_many() == [4] * 8
+
+```
+

@@ -1,0 +1,56 @@
+{
+  "id": "chatcmpl-99c33b67-89a8-4f5b-9841-9d5d916b4176",
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": null,
+        "role": "assistant",
+        "annotations": null,
+        "executed_tools": null,
+        "function_call": null,
+        "reasoning": "We need to format patch correctly. Use Begin-Patch format. Provide *** Begin Patch etc. Let's craft correctly.",
+        "tool_calls": [
+          {
+            "id": "fc_559c5d32-3060-4312-ab96-811220d9634a",
+            "function": {
+              "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/pipeline.py\\n@@\\n-from typing import Optional, List\\n+from typing import List\\n@@\\n-def compute_summary(values: List[float]) -\\u003e Optional[float]:\\n-    if not values:\\n-        return 0.0\\n-    total = sum(values)\\n-    return total / len(values)\\n+def compute_summary(values: List[float]) -\\u003e float:\\n+    \\\"\\\"\\\"Compute the arithmetic mean of a list of numbers.\\n+\\n+    Returns ``0.0`` for an empty list to keep the return type consistently a\\n+    ``float``. This aligns with the expectations of callers such as\\n+    ``format_result`` which require a ``float`` argument.\\n+    \\\"\\\"\\\"\\n+    if not values:\\n+        return 0.0\\n+    total = sum(values)\\n+    return total / len(values)\\n*** End Patch\"}",
+              "name": "patch_and_check"
+            },
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1789138388,
+  "model": "openai/gpt-oss-120b",
+  "object": "chat.completion",
+  "mcp_list_tools": null,
+  "service_tier": "on_demand",
+  "system_fingerprint": "fp_64b2f1c926",
+  "usage": {
+    "completion_tokens": 254,
+    "prompt_tokens": 1287,
+    "total_tokens": 1541,
+    "completion_time": 0.630298743,
+    "completion_tokens_details": {
+      "reasoning_tokens": 24
+    },
+    "prompt_time": 0.579341129,
+    "prompt_tokens_details": {
+      "cached_tokens": 256
+    },
+    "queue_time": 0.349289001,
+    "total_time": 1.209639872
+  },
+  "usage_breakdown": null,
+  "x_groq": {
+    "id": "req_01m28fafkteyg9ex2y5w0hppw6",
+    "debug": null,
+    "seed": 1216997347,
+    "usage": null
+  }
+}

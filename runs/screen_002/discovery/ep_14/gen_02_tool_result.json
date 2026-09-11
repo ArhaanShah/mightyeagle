@@ -1,0 +1,7 @@
+{
+  "status": "applied",
+  "feedback": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n===\nseverity: error\ncode: operator\nmessage: Unsupported operand types for + (\"None\" and \"int\")\nextras: {\"hint\": \"Left operand is of type \\\\\"int \\| None\\\\\"\"}\nmultiplicity: 1\n  LOC|{\"col\": 11, \"file\": \"pkg/config_b.py\", \"line\": 8, \"occurrence_index\": 0}\n===\n--- 1 error(s), 1 record(s) total ---",
+  "post_workspace_hash": "d00f2dcac29d0b113acad29676ffc2a116a363d37d244dea85d4a8f9f67a5f52",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

@@ -1,0 +1,27 @@
+"""Trivial computation module.
+
+The original implementation incorrectly annotated :func:`compute` as returning
+``Optional[int]`` even though the function always returns an ``int``.  This
+caused a type‑checking error when the result was used in an arithmetic
+expression in :func:`run`.  The fix is to tighten the return type to ``int``
+and update the docstring accordingly.  No runtime behaviour is changed – the
+function still returns ``x * 2`` and ``run`` still adds one to the result of
+``compute(5)``.
+"""
+
+def compute(x: int) -> int:
+    """Return ``x`` multiplied by two.
+
+    The function is deliberately simple and always returns an ``int``.
+    """
+    return x * 2
+
+
+def run() -> int:
+    """Execute a sample computation.
+
+    Calls :func:`compute` with the constant ``5`` and adds ``1`` to the result.
+    The return type is ``int``.
+    """
+    val = compute(5)
+    return val + 1

@@ -1,0 +1,7 @@
+{
+  "files": {
+    "pkg/__init__.py": "",
+    "pkg/trivial.py": "\"\"\"Trivial computation module.\n\nThe original implementation incorrectly annotated :func:`compute` as returning\n``Optional[int]`` even though the function always returns an ``int``.  This\ncaused a type\u2011checking error when the result was used in an arithmetic\nexpression in :func:`run`.  The fix is to tighten the return type to ``int``\nand update the docstring accordingly.  No runtime behaviour is changed \u2013 the\nfunction still returns ``x * 2`` and ``run`` still adds one to the result of\n``compute(5)``.\n\"\"\"\n\ndef compute(x: int) -> int:\n    \"\"\"Return ``x`` multiplied by two.\n\n    The function is deliberately simple and always returns an ``int``.\n    \"\"\"\n    return x * 2\n\n\ndef run() -> int:\n    \"\"\"Execute a sample computation.\n\n    Calls :func:`compute` with the constant ``5`` and adds ``1`` to the result.\n    The return type is ``int``.\n    \"\"\"\n    val = compute(5)\n    return val + 1\n",
+    "tests/test_trivial.py": "from pkg.trivial import run\ndef test_trivial():\n    assert run() == 11\n"
+  }
+}

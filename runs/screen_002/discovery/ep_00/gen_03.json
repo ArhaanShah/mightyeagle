@@ -1,0 +1,88 @@
+{
+  "episode_id": "ep_00",
+  "generation_number": 3,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "stop",
+  "termination_code": "model_final",
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "request_hash": "38c204f220e9f4de",
+      "timestamp_utc": "2026-09-11T14:43:43.402880+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-7db7d2b4-4d56-4d00-a7b6-2207ca306d9a",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 2755,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1564,
+      "output_tokens_actual": 44,
+      "reasoning_tokens_actual": null,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "971",
+        "x-ratelimit-remaining-tokens": "5345",
+        "x-ratelimit-reset-requests": "41m45.6s",
+        "x-ratelimit-reset-tokens": "19.912s",
+        "x-request-id": "req_01m28esa6sefasaebs75ehv1xx"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-7db7d2b4-4d56-4d00-a7b6-2207ca306d9a",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Implemented runtime assertions to guarantee non-None event values, satisfying type checking while preserving original behavior. Added comprehensive docstring and comments for clarity. All tests now pass and type-checker reports no errors.",
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1789137824,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_d1bc601726",
+    "usage": {
+      "completion_tokens": 44,
+      "prompt_tokens": 1564,
+      "total_tokens": 1608,
+      "completion_time": 0.109937253,
+      "completion_tokens_details": null,
+      "prompt_time": 0.842519372,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "queue_time": 0.04847407,
+      "total_time": 0.952456625
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28esa6sefasaebs75ehv1xx",
+      "debug": null,
+      "seed": 1143250645,
+      "usage": null
+    }
+  },
+  "assistant_content": "Implemented runtime assertions to guarantee non-None event values, satisfying type checking while preserving original behavior. Added comprehensive docstring and comments for clarity. All tests now pass and type-checker reports no errors.",
+  "reasoning_content": null,
+  "tool_calls": [],
+  "total_input_tokens": 1564,
+  "total_output_tokens": 44,
+  "error_detail": "",
+  "provider_fingerprint": "fp_d1bc601726"
+}

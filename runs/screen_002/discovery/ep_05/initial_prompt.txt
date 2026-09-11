@@ -1,0 +1,67 @@
+Repair the type errors in this package while preserving its specified runtime behavior. Change the source as needed.
+
+Do not weaken type checking, suppress diagnostics, introduce unrestricted Any, remove required functionality, or alter tests and checker configuration.
+
+Use patch_and_check to apply source patches and validate changes. You may edit several allowed source files in one call. Paths are relative to the task root. Report the final state accurately. If work remains incomplete, say what remains.
+
+INITIAL TYPE-CHECKER REPORT
+=== TYPE-CHECKER REPORT ===
+---
+occurrence_index: 0
+severity: error
+file: pkg/renderer.py
+line: 15
+col: 23
+code: arg-type
+message: Argument 1 to "display_title" has incompatible type "MarkdownRenderer"; expected "Renderer"
+extras: {"hint": null}
+---
+occurrence_index: 1
+severity: error
+file: pkg/renderer.py
+line: 16
+col: 23
+code: arg-type
+message: Argument 1 to "display_title" has incompatible type "MarkdownRenderer"; expected "Renderer"
+extras: {"hint": null}
+---
+--- 2 error(s), 2 record(s) total ---
+
+SOURCE, PUBLIC TESTS, AND CONFIGURATION
+# FILE: pkg/__init__.py
+```
+
+```
+
+# FILE: pkg/renderer.py
+```
+from typing import Protocol, List
+
+class Renderer(Protocol):
+    def render(self, text: str) -> str: ...
+
+class MarkdownRenderer:
+    def format(self, text: str) -> str:
+        return f"*{text}*"
+
+def display_title(r: Renderer, title: str) -> str:
+    return r.render(title)
+
+def run_render() -> List[str]:
+    m = MarkdownRenderer()
+    t1 = display_title(m, "Hello")
+    t2 = display_title(m, "World")
+    return [t1, t2]
+
+```
+
+# FILE: tests/test_renderer.py
+```
+from pkg.renderer import MarkdownRenderer
+
+def test_renderer():
+    m = MarkdownRenderer()
+    assert m.format("Hello") == "*Hello*"
+
+```
+

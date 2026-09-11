@@ -1,0 +1,18 @@
+*** Begin Patch
+*** Update File: pkg/config_a.py
+@@
+-from typing import Optional
+-
+-def get_host() -> Optional[str]:
+-    return "localhost"
++from typing import Optional
++
++# The function always returns a string representing the host.
++# The original type hint allowed ``None`` which caused type-checking errors
++# when ``len`` was called on the result.  The runtime behavior never returns
++# ``None`` (the implementation returns a constant string), so we tighten the
++# return type to ``str``.  This preserves the observable behavior while fixing
++# the type error.
++def get_host() -> str:
++    return "localhost"
+*** End Patch

@@ -1,0 +1,86 @@
+{
+  "episode_id": "cal_03_expanded",
+  "generation_number": 3,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "stop",
+  "termination_code": "model_final",
+  "attempts": [
+    {
+      "attempt_number": 25,
+      "request_hash": "cfa75bcfb86f3656",
+      "timestamp_utc": "2026-09-11T14:39:25.626179+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-53b83e77-c476-45bb-80cc-290d5cda3044",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 3201,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1775,
+      "output_tokens_actual": 75,
+      "reasoning_tokens_actual": null,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "975",
+        "x-ratelimit-remaining-tokens": "5566",
+        "x-ratelimit-reset-requests": "36m0s",
+        "x-ratelimit-reset-tokens": "18.255s",
+        "x-request-id": "req_01m28ehe9je03acxq0hgm0e6y3"
+      },
+      "wait_reason": "token_tpm",
+      "wait_seconds": 26.666999999997643
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-53b83e77-c476-45bb-80cc-290d5cda3044",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": "Implemented a fix by updating `fetch_data` in **pkg/long.py**:\n\n- Removed unnecessary `Optional` import and annotation.\n- Added detailed documentation and comments.\n- Updated return type to `str`, matching actual behavior.\n- Ensured type safety for `len(fetch_data())` calls.\n\nAll tests now pass and type checking reports zero errors.",
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": null,
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1789137566,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_4b2f03d631",
+    "usage": {
+      "completion_tokens": 75,
+      "prompt_tokens": 1775,
+      "total_tokens": 1850,
+      "completion_time": 0.168047458,
+      "completion_tokens_details": null,
+      "prompt_time": 0.101573187,
+      "prompt_tokens_details": null,
+      "queue_time": 0.646999296,
+      "total_time": 0.269620645
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28ehe9je03acxq0hgm0e6y3",
+      "debug": null,
+      "seed": 20408362,
+      "usage": null
+    }
+  },
+  "assistant_content": "Implemented a fix by updating `fetch_data` in **pkg/long.py**:\n\n- Removed unnecessary `Optional` import and annotation.\n- Added detailed documentation and comments.\n- Updated return type to `str`, matching actual behavior.\n- Ensured type safety for `len(fetch_data())` calls.\n\nAll tests now pass and type checking reports zero errors.",
+  "reasoning_content": null,
+  "tool_calls": [],
+  "total_input_tokens": 1775,
+  "total_output_tokens": 75,
+  "error_detail": "",
+  "provider_fingerprint": "fp_4b2f03d631"
+}

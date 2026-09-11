@@ -41,22 +41,23 @@ Invoked only after offline implementation passes:
 
 ```bash
 # 1. Calibration Phase (up to 8 episodes, 32 generation slots)
-python -m experiment.runner --phase calibration --execute --run runs/screen_001
+python -m experiment.runner --phase calibration --execute --run runs/screen_002
 
 # 2. Save fixture validation results and operational freeze
-python -m experiment.validate_fixtures --output runs/screen_001/fixture_validation.json
-# (Record calibration review in runs/screen_001/calibration/review.json)
-python -m experiment.runner --freeze --run runs/screen_001
+python -m experiment.validate_fixtures --output runs/screen_002/fixture_validation.json
+# (Record calibration review in runs/screen_002/calibration/review.json)
+python -m experiment.runner --calibration-gate --run runs/screen_002
+python -m experiment.runner --freeze --run runs/screen_002
 
 # 3. Generate deterministic Latin-square schedule
-python -m experiment.schedule --seed 20260911 --run runs/screen_001
+python -m experiment.schedule --seed 20260911 --run runs/screen_002
 
 # 4. Local preflight validation and budget checks
-python -m experiment.runner --phase discovery --preflight --run runs/screen_001
+python -m experiment.runner --phase discovery --preflight --run runs/screen_002
 
 # 5. Live Discovery Phase execution with safe resume
-python -m experiment.runner --phase discovery --execute --resume --run runs/screen_001
+python -m experiment.runner --phase discovery --execute --resume --run runs/screen_002
 
 # 6. Generate final summary
-python -m experiment.summarize --run runs/screen_001
+python -m experiment.summarize --run runs/screen_002
 ```

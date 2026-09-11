@@ -1,0 +1,7 @@
+{
+  "status": "applied",
+  "feedback": "PATCH APPLIED: 1 file(s) modified.\n\n--- PUBLIC TEST RESULTS ---\nStatus: PASS\nExit code: 0\n\n--- TYPE-CHECKER REPORT ---\n=== TYPE-CHECKER REPORT ===\n---\noccurrence_index: 0\nseverity: error\nfile: pkg/part_b.py\nline: 5\ncol: 11\ncode: operator\nmessage: Unsupported operand types for + (\"None\" and \"int\")\nextras: {\"hint\": \"Left operand is of type \\\\\"int \\| None\\\\\"\"}\n---\n--- 1 error(s), 1 record(s) total ---",
+  "post_workspace_hash": "f8df98d8372880451fc65f6223ee310ded2c2724b86ce19f820daa3e8eb445e6",
+  "policy_observations": [],
+  "infrastructure_failure": ""
+}

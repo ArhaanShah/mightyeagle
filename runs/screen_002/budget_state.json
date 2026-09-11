@@ -1,0 +1,15 @@
+{
+  "daily_tokens_used": 122306,
+  "daily_tokens_reserved": 0,
+  "daily_token_allowance": 180000,
+  "total_http_attempts": 82,
+  "max_http_attempts": 112,
+  "retry_http_attempts": 0,
+  "max_retry_http_attempts": 16,
+  "minute_window_start": 1789138471.1041508,
+  "minute_requests": 2,
+  "rpm_limit": 30,
+  "quota_reset_timestamp": null,
+  "calibration_generation_slots": 28,
+  "discovery_generation_slots": 54
+}

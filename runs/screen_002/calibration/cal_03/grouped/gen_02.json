@@ -1,0 +1,106 @@
+{
+  "episode_id": "cal_03_grouped",
+  "generation_number": 2,
+  "model_id_requested": "openai/gpt-oss-120b",
+  "model_id_returned": "openai/gpt-oss-120b",
+  "finish_reason": "tool_calls",
+  "termination_code": "tool_call_received",
+  "attempts": [
+    {
+      "attempt_number": 27,
+      "request_hash": "1e91ab854128eabf",
+      "timestamp_utc": "2026-09-11T14:39:27.889286+00:00",
+      "http_status": 200,
+      "request_id": "chatcmpl-ef0853fa-0559-4fbc-901d-cd1943400348",
+      "outcome": "success",
+      "retry_after": null,
+      "input_tokens_reserved": 1872,
+      "output_tokens_reserved": 2048,
+      "input_tokens_actual": 1054,
+      "output_tokens_actual": 195,
+      "reasoning_tokens_actual": 24,
+      "error_detail": "",
+      "quota_headers": {
+        "x-ratelimit-limit-requests": "1000",
+        "x-ratelimit-limit-tokens": "8000",
+        "x-ratelimit-remaining-requests": "973",
+        "x-ratelimit-remaining-tokens": "3893",
+        "x-ratelimit-reset-requests": "38m52.8s",
+        "x-ratelimit-reset-tokens": "30.802s",
+        "x-request-id": "req_01m28ehgd2ebrvbra3a4b6hhg8"
+      },
+      "wait_reason": null,
+      "wait_seconds": null
+    }
+  ],
+  "raw_response": {
+    "id": "chatcmpl-ef0853fa-0559-4fbc-901d-cd1943400348",
+    "choices": [
+      {
+        "finish_reason": "tool_calls",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "content": null,
+          "role": "assistant",
+          "annotations": null,
+          "executed_tools": null,
+          "function_call": null,
+          "reasoning": "We need to format patch correctly using Begin-Patch format. Use *** Begin Patch etc. Let's construct proper patch.\n\n",
+          "tool_calls": [
+            {
+              "id": "fc_73b0f7fb-0434-4aa0-870c-1f5c32f6c19f",
+              "function": {
+                "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/long.py\\n@@\\n-from typing import Optional, List\\n+from typing import List\\n@@\\n-def fetch_data() -\\u003e Optional[str]:\\n-    return \\\"item\\\"\\n+def fetch_data() -\\u003e str:\\n+    \\\"\\\"\\\"Return a non\u2011null string.\\n+\\n+    The original annotation allowed ``None`` but the implementation always\\n+    returns the literal ``\\\"item\\\"``. Narrowing the return type to ``str``\\n+    eliminates the ``len`` type errors while preserving the runtime\\n+    behaviour expected by the tests.\\n+    \\\"\\\"\\\"\\n+    return \\\"item\\\"\\n*** End Patch\"}",
+                "name": "patch_and_check"
+              },
+              "type": "function"
+            }
+          ]
+        }
+      }
+    ],
+    "created": 1789137569,
+    "model": "openai/gpt-oss-120b",
+    "object": "chat.completion",
+    "mcp_list_tools": null,
+    "service_tier": "on_demand",
+    "system_fingerprint": "fp_9241e9962b",
+    "usage": {
+      "completion_tokens": 195,
+      "prompt_tokens": 1054,
+      "total_tokens": 1249,
+      "completion_time": 0.414338469,
+      "completion_tokens_details": {
+        "reasoning_tokens": 24
+      },
+      "prompt_time": 0.051720476,
+      "prompt_tokens_details": null,
+      "queue_time": 0.40226715,
+      "total_time": 0.466058945
+    },
+    "usage_breakdown": null,
+    "x_groq": {
+      "id": "req_01m28ehgd2ebrvbra3a4b6hhg8",
+      "debug": null,
+      "seed": 1961522528,
+      "usage": null
+    }
+  },
+  "assistant_content": null,
+  "reasoning_content": "We need to format patch correctly using Begin-Patch format. Use *** Begin Patch etc. Let's construct proper patch.\n\n",
+  "tool_calls": [
+    {
+      "id": "fc_73b0f7fb-0434-4aa0-870c-1f5c32f6c19f",
+      "type": "function",
+      "function": {
+        "name": "patch_and_check",
+        "arguments": "{\"patch\":\"*** Begin Patch\\n*** Update File: pkg/long.py\\n@@\\n-from typing import Optional, List\\n+from typing import List\\n@@\\n-def fetch_data() -\\u003e Optional[str]:\\n-    return \\\"item\\\"\\n+def fetch_data() -\\u003e str:\\n+    \\\"\\\"\\\"Return a non\u2011null string.\\n+\\n+    The original annotation allowed ``None`` but the implementation always\\n+    returns the literal ``\\\"item\\\"``. Narrowing the return type to ``str``\\n+    eliminates the ``len`` type errors while preserving the runtime\\n+    behaviour expected by the tests.\\n+    \\\"\\\"\\\"\\n+    return \\\"item\\\"\\n*** End Patch\"}"
+      }
+    }
+  ],
+  "total_input_tokens": 1054,
+  "total_output_tokens": 195,
+  "error_detail": "",
+  "provider_fingerprint": "fp_9241e9962b"
+}

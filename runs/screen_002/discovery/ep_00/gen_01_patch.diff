@@ -1,0 +1,34 @@
+*** Begin Patch
+*** Update File: pkg/events.py
+@@
+-def process(q: EventQueue) -> List[int]:
+-    e1 = q.pop_event()
+-    e2 = q.pop_event()
+-    l1 = len(e1)
+-    l2 = len(e2)
+-    return [l1, l2]
++def process(q: EventQueue) -> List[int]:
++    """Process two events from the queue and return their lengths.
++
++    The :class:`EventQueue.pop_event` method is typed as returning ``Optional[str]``
++    because a real implementation could return ``None`` when the queue is empty.
++    In this simplified example the queue always yields a string, but the type
++    checker still sees the return type as ``Optional[str]``.  To keep the public
++    signature unchanged while satisfying the type checker we explicitly assert
++    that the returned values are not ``None``.  The ``assert`` statements act as
++    runtime checks (preserving behaviour) and also narrow the type for static
++    analysis, allowing ``len`` to be called safely.
++    """
++
++    e1 = q.pop_event()
++    e2 = q.pop_event()
++    # The queue is expected to always provide a string in this test scenario.
++    # The assertions both protect against ``None`` at runtime and inform the
++    # type checker that ``e1`` and ``e2`` are now ``str``.
++    assert e1 is not None, "EventQueue.pop_event() returned None for the first event"
++    assert e2 is not None, "EventQueue.pop_event() returned None for the second event"
++    l1 = len(e1)
++    l2 = len(e2)
++    return [l1, l2]
+*** End Patch
+*** End Patch

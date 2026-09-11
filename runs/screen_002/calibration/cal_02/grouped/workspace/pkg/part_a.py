@@ -1,0 +1,26 @@
+"""Utilities for part A.
+
+The original implementation annotated ``get_a`` as returning ``Optional[str]``
+even though it always returns a concrete string. This caused ``len`` to be
+applied to a ``str | None`` value, which the type checker flagged as an error.
+
+We tighten the return type to ``str`` while keeping the runtime behaviour
+identical – the function still returns ``"A"``.  The tests expect ``run_a`` to
+return ``1``, which remains true.
+"""
+
+from typing import Optional  # retained for potential future use
+
+
+def get_a() -> str:
+    """Return the constant string ``"A"``.
+
+    The function never returns ``None``; the ``Optional`` annotation was a
+    mistake.
+    """
+    return "A"
+
+
+def run_a() -> int:
+    """Return the length of the string produced by :func:`get_a`."""
+    return len(get_a())

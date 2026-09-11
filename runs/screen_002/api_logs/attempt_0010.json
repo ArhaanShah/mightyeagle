@@ -1,0 +1,26 @@
+{
+  "attempt_number": 10,
+  "request_hash": "95128874bac403fd",
+  "timestamp_utc": "2026-09-11T14:45:06.238600+00:00",
+  "http_status": 200,
+  "request_id": "chatcmpl-75c714db-01c6-408f-b359-e40f51cfa94f",
+  "outcome": "success",
+  "retry_after": null,
+  "input_tokens_reserved": 4496,
+  "output_tokens_reserved": 2048,
+  "input_tokens_actual": 2653,
+  "output_tokens_actual": 529,
+  "reasoning_tokens_actual": 63,
+  "error_detail": "",
+  "quota_headers": {
+    "x-ratelimit-limit-requests": "1000",
+    "x-ratelimit-limit-tokens": "8000",
+    "x-ratelimit-remaining-requests": "964",
+    "x-ratelimit-remaining-tokens": "4639",
+    "x-ratelimit-reset-requests": "51m50.399s",
+    "x-ratelimit-reset-tokens": "25.207s",
+    "x-request-id": "req_01m28evtwfe8dsv2ynvr6h4zdf"
+  },
+  "wait_reason": "token_tpm",
+  "wait_seconds": 23.77299999999741
+}
